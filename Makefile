@@ -188,6 +188,54 @@ clean:
 	@echo "✅ Clean complete!"
 
 # ============================================================================
+# Local Supabase
+# ============================================================================
+
+supabase-start:
+	@echo "🗄️  Starting local Supabase..."
+	@cd backend && npx supabase start
+
+supabase-stop:
+	@echo "🗄️  Stopping local Supabase..."
+	@cd backend && npx supabase stop
+
+supabase-status:
+	@cd backend && npx supabase status
+
+supabase-reset:
+	@echo "🗄️  Resetting local Supabase database..."
+	@cd backend && npx supabase db reset
+
+# ============================================================================
+# Redis
+# ============================================================================
+
+redis-start:
+	@echo "📮 Starting Redis..."
+	@docker run -d --name kidpen-redis -p 6379:6379 redis:7-alpine 2>/dev/null || docker start kidpen-redis 2>/dev/null || echo "Redis already running"
+
+redis-stop:
+	@echo "📮 Stopping Redis..."
+	@docker stop kidpen-redis 2>/dev/null || true
+
+# ============================================================================
+# Manual Development Mode (recommended for local Supabase)
+# ============================================================================
+
+dev-manual: redis-start
+	@echo "🚀 Starting Kidpen in manual mode..."
+	@echo "Starting backend and frontend in parallel..."
+	@$(MAKE) -j2 be fe
+
+dev-be: redis-start
+	@echo "🔧 Starting backend only..."
+	@$(MAKE) be
+
+dev-fe:
+	@echo "🎨 Starting frontend only..."
+	@$(MAKE) fe
+
+# ============================================================================
 # Quick shortcuts
 # ============================================================================
 
@@ -195,9 +243,9 @@ clean:
 fe:
 	@cd apps/frontend && pnpm dev
 
-# Backend development
+# Backend development (use uv run for virtual env)
 be:
-	@cd backend && python -m uvicorn main:app --reload --host 0.0.0.0 --port 8000
+	@cd backend && uv run uvicorn api:app --reload --host 0.0.0.0 --port 8000
 
 # Mobile development
 mobile:

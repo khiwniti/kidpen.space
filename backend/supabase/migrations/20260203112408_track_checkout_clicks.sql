@@ -41,6 +41,9 @@ $$;
 -- 3. Update funnel RPC to include clicked_checkout
 -- =============================================================================
 
+-- Drop existing function first to change return type
+DROP FUNCTION IF EXISTS get_free_signups_with_activity(TIMESTAMPTZ, TIMESTAMPTZ);
+
 CREATE OR REPLACE FUNCTION get_free_signups_with_activity(
     date_from TIMESTAMPTZ,
     date_to TIMESTAMPTZ
