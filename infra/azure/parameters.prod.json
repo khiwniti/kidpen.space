@@ -1,0 +1,31 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "environment": {
+      "value": "prod"
+    },
+    "location": {
+      "value": "southeastasia"
+    },
+    "containerRegistryName": {
+      "value": "kidpencr"
+    },
+    "postgresPassword": {
+      "reference": {
+        "keyVault": {
+          "id": "/subscriptions/<SUBSCRIPTION_ID>/resourceGroups/kidpen-prod-rg/providers/Microsoft.KeyVault/vaults/kidpen-prod-kv"
+        },
+        "secretName": "postgres-password"
+      }
+    },
+    "redisPassword": {
+      "reference": {
+        "keyVault": {
+          "id": "/subscriptions/<SUBSCRIPTION_ID>/resourceGroups/kidpen-prod-rg/providers/Microsoft.KeyVault/vaults/kidpen-prod-kv"
+        },
+        "secretName": "redis-password"
+      }
+    }
+  }
+}

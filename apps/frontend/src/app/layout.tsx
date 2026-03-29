@@ -7,8 +7,9 @@ import { PresenceProvider } from '@/components/presence-provider';
 import { ReactQueryProvider } from './react-query-provider';
 import { Toaster } from '@/components/ui/sonner';
 import '@/lib/polyfills';
-import { roobert } from './fonts/roobert';
-import { roobertMono } from './fonts/roobert-mono';
+import { outfit } from './fonts/outfit';
+import { ibmPlexSansThai } from './fonts/ibm-plex-sans-thai';
+import { jetbrainsMono } from './fonts/jetbrains-mono';
 import { Suspense, lazy } from 'react';
 import { I18nProvider } from '@/components/i18n-provider';
 import { featureFlags } from '@/lib/feature-flags';
@@ -27,8 +28,8 @@ const CookieVisibility = lazy(() => import('@/components/cookie-visibility').the
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: '(prefers-color-scheme: light)', color: 'white' },
-    { media: '(prefers-color-scheme: dark)', color: 'black' }
+    { media: '(prefers-color-scheme: light)', color: 'var(--kidpen-bg-primary)' },
+    { media: '(prefers-color-scheme: dark)', color: 'var(--kidpen-bg-primary)' }
   ],
   width: 'device-width',
   initialScale: 1,
@@ -102,16 +103,11 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" suppressHydrationWarning className={`${roobert.variable} ${roobertMono.variable}`}>
+    <html lang="th" suppressHydrationWarning className={`${outfit.variable} ${ibmPlexSansThai.variable} ${jetbrainsMono.variable}`}>
       <head>
-        {/* Preload critical fonts for faster FCP - local fonts need crossOrigin for CORS */}
-        <link
-          rel="preload"
-          href="/fonts/roobert/RoobertUprightsVF.woff2"
-          as="font"
-          type="font/woff2"
-          crossOrigin="anonymous"
-        />
+        {/* DNS prefetch for Google Fonts */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         
         {/* DNS prefetch for analytics (loaded later but resolve DNS early) */}
         <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
@@ -166,18 +162,18 @@ export default function RootLayout({
         />
         
         {/* Static SEO meta tags - rendered in initial HTML */}
-        <title>Kidpen: Your Autonomous AI Worker</title>
-        <meta name="description" content="Built for complex tasks, designed for everything. The ultimate AI assistant that handles it all—from simple requests to mega-complex projects." />
-        <meta name="keywords" content="Kidpen, AI Worker, Agentic AI, Autonomous AI Worker, AI Automation, AI Workflow Automation, AI Assistant, Task Automation" />
-        <meta property="og:title" content="Kidpen: Your Autonomous AI Worker" />
-        <meta property="og:description" content="Built for complex tasks, designed for everything. The ultimate AI assistant that handles it all—from simple requests to mega-complex projects." />
+        <title>Kidpen.space - แพลตฟอร์ม STEM สำหรับเด็กไทย</title>
+        <meta name="description" content="Kidpen.space - แพลตฟอร์มการเรียนรู้ STEM แบบเกมมิฟิเคชันสำหรับเด็กไทย วิชาคณิตศาสตร์ วิทยาศาสตร์ โค้ดดิ้ง และฟิสิกส์" />
+        <meta name="keywords" content="Kidpen, STEM, การศึกษา, คณิตศาสตร์, วิทยาศาสตร์, โค้ดดิ้ง, ฟิสิกส์, เด็กไทย, แพลตฟอร์มการเรียนรู้" />
+        <meta property="og:title" content="Kidpen.space - แพลตฟอร์ม STEM สำหรับเด็กไทย" />
+        <meta property="og:description" content="แพลตฟอร์มการเรียนรู้ STEM แบบเกมมิฟิเคชันสำหรับเด็กไทย เรียนรู้อย่างสนุกสนาน" />
         <meta property="og:image" content="https://kidpen.space/banner.png" />
         <meta property="og:url" content="https://kidpen.space" />
         <meta property="og:type" content="website" />
         <meta property="og:site_name" content="Kidpen" />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Kidpen: Your Autonomous AI Worker" />
-        <meta name="twitter:description" content="Built for complex tasks, designed for everything. The ultimate AI assistant that handles it all—from simple requests to mega-complex projects." />
+        <meta name="twitter:title" content="Kidpen.space - แพลตฟอร์ม STEM สำหรับเด็กไทย" />
+        <meta name="twitter:description" content="แพลตฟอร์มการเรียนรู้ STEM แบบเกมมิฟิเคชันสำหรับเด็กไทย เรียนรู้อย่างสนุกสนาน" />
         <meta name="twitter:image" content="https://kidpen.space/banner.png" />
         <meta name="twitter:site" content="@kidpen" />
         <link rel="canonical" href="https://kidpen.space" />

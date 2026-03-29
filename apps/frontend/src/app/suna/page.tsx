@@ -110,7 +110,7 @@ export default function SunaPage() {
               <div className="relative mb-8 sm:mb-12" style={{ width: '80px', height: '80px' }}>
                 <Image
                   src="/kidpen-symbol.svg"
-                  alt="Kortix"
+                  alt="Kidpen"
                   fill
                   className="object-contain dark:invert"
                   priority
@@ -213,7 +213,7 @@ export default function SunaPage() {
               <div className="relative w-full h-full" style={{ isolation: 'isolate' }}>
                 <Image
                   src="/wordmark.svg"
-                  alt="Kortix"
+                  alt="Kidpen"
                   fill
                   className="object-contain dark:invert opacity-10"
                   priority

@@ -32,6 +32,15 @@ help:
 	@echo "║    make docker-down  - Stop Docker services                    ║"
 	@echo "║    make docker-logs  - Show Docker logs                        ║"
 	@echo "║                                                                ║"
+	@echo "║  Azure Deployment                                              ║"
+	@echo "║    make azure-deploy-dev  - Deploy to Azure (dev)              ║"
+	@echo "║    make azure-deploy-prod - Deploy to Azure (prod)             ║"
+	@echo "║    make azure-infra       - Deploy infrastructure only         ║"
+	@echo "║    make azure-apps        - Build & deploy apps only           ║"
+	@echo "║    make azure-status      - Check Azure app status             ║"
+	@echo "║    make azure-logs-fe     - Stream frontend logs               ║"
+	@echo "║    make azure-logs-be     - Stream backend logs                ║"
+	@echo "║                                                                ║"
 	@echo "║  Quality                                                       ║"
 	@echo "║    make test         - Run all tests                           ║"
 	@echo "║    make lint         - Run linters                             ║"
@@ -234,6 +243,38 @@ dev-be: redis-start
 dev-fe:
 	@echo "🎨 Starting frontend only..."
 	@$(MAKE) fe
+
+# ============================================================================
+# Azure Deployment
+# ============================================================================
+
+azure-deploy-dev:
+	@echo "☁️  Deploying to Azure (dev)..."
+	@chmod +x infra/azure/deploy.sh && ./infra/azure/deploy.sh dev
+
+azure-deploy-prod:
+	@echo "☁️  Deploying to Azure (prod)..."
+	@chmod +x infra/azure/deploy.sh && ./infra/azure/deploy.sh prod
+
+azure-infra:
+	@echo "🏗️  Deploying Azure infrastructure only..."
+	@chmod +x infra/azure/deploy.sh && ./infra/azure/deploy.sh dev --infra-only
+
+azure-apps:
+	@echo "📦 Building and deploying apps only..."
+	@chmod +x infra/azure/deploy.sh && ./infra/azure/deploy.sh dev --apps-only
+
+azure-logs-fe:
+	@echo "📋 Streaming frontend logs..."
+	@az containerapp logs show -n kidpen-prod-frontend -g kidpen-prod-rg --follow
+
+azure-logs-be:
+	@echo "📋 Streaming backend logs..."
+	@az containerapp logs show -n kidpen-prod-backend -g kidpen-prod-rg --follow
+
+azure-status:
+	@echo "📊 Azure Container Apps status..."
+	@az containerapp list -g kidpen-prod-rg -o table
 
 # ============================================================================
 # Quick shortcuts

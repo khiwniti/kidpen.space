@@ -33,7 +33,7 @@ export function SimplePlaybackControls({
   return (
     <div className={`fixed top-4 ${controlsPositionClass} z-50 transition-all duration-200`}>
       <div className="flex items-center gap-2 rounded-full border border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80 px-3 py-2 shadow-lg">
-        {/* Kortix Logo */}
+        {/* Kidpen Logo */}
         <Link
           href="https://www.kortix.com"
           target="_blank"

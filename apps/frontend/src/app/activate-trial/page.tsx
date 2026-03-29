@@ -3,7 +3,7 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { CreditCard, Zap, Shield, ArrowRight, CheckCircle, LogOut } from 'lucide-react';
-import { KortixLoader } from '@/components/ui/kortix-loader';
+import { KidpenLoader } from '@/components/ui/kidpen-loader';
 import { toast } from '@/lib/toast';
 import { useRouter } from 'next/navigation';
 import { useState, useEffect, Suspense, lazy } from 'react';
@@ -180,7 +180,7 @@ export default function ActivateTrialPage() {
             >
               {startTrialMutation.isPending ? (
                 <>
-                  <KortixLoader size="small" />
+                  <KidpenLoader size="small" />
                   Starting trial...
                 </>
               ) : (

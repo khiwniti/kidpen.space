@@ -9,7 +9,7 @@ import { useAuth } from '@/components/AuthProvider';
 import { useRouter } from 'next/navigation';
 import { useOptimisticAgentStart } from '@/hooks/threads';
 import { useAgentSelection } from '@/stores/agent-selection-store';
-import { useSunaModePersistence } from '@/stores/suna-modes-store';
+import { useKidpenModePersistence } from '@/stores/kidpen-modes-store';
 import { useQuery } from '@tanstack/react-query';
 import { agentKeys } from '@/hooks/agents/keys';
 import { getAgents } from '@/hooks/agents/utils';
@@ -41,7 +41,7 @@ export default function BerlinPage() {
     setSelectedCharts,
     setSelectedOutputFormat,
     setSelectedTemplate,
-  } = useSunaModePersistence();
+  } = useKidpenModePersistence();
 
   const { data: agentsResponse } = useQuery({
     queryKey: agentKeys.list({

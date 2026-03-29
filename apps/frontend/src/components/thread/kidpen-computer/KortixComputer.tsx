@@ -8,7 +8,7 @@ import { createPortal } from 'react-dom';
 import { Skeleton } from '@/components/ui/skeleton';
 import { ApiMessageType } from '@/components/thread/types';
 import { Globe, CircleDashed } from 'lucide-react';
-import { KortixLoader } from '@/components/ui/kortix-loader';
+import { KidpenLoader } from '@/components/ui/kidpen-loader';
 import { useIsMobile } from '@/hooks/utils';
 import { ToolView } from '../tool-views/wrapper';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -18,7 +18,7 @@ import { useTranslations } from 'next-intl';
 import { Drawer, DrawerContent } from '@/components/ui/drawer';
 import { useDocumentModalStore } from '@/stores/use-document-modal-store';
 import { 
-  useKortixComputerStore,
+  useKidpenComputerStore,
   useKortixComputerPendingToolNavIndex,
   useKortixComputerClearPendingToolNav,
 } from '@/stores/kidpen-computer-store';
@@ -44,7 +44,7 @@ export interface ToolCallInput {
   messages?: ApiMessageType[];
 }
 
-interface KortixComputerProps {
+interface KidpenComputerProps {
   isOpen: boolean;
   onClose: () => void;
   toolCalls: ToolCallInput[];
@@ -84,7 +84,7 @@ type NavigationMode = 'live' | 'manual';
 
 const FLOATING_LAYOUT_ID = 'kidpen-computer-float';
 
-export const KortixComputer = memo(function KortixComputer({
+export const KidpenComputer = memo(function KidpenComputer({
   isOpen,
   onClose,
   toolCalls,
@@ -103,7 +103,7 @@ export const KortixComputer = memo(function KortixComputer({
   sandboxId,
   projectId,
   sidePanelRef,
-}: KortixComputerProps) {
+}: KidpenComputerProps) {
   const t = useTranslations('thread');
   const [dots, setDots] = useState('');
   const [internalIndex, setInternalIndex] = useState(0);
@@ -127,7 +127,7 @@ export const KortixComputer = memo(function KortixComputer({
     currentPath,
     navigateToPath,
     openFile,
-  } = useKortixComputerStore();
+  } = useKidpenComputerStore();
   
   const pendingToolNavIndex = useKortixComputerPendingToolNavIndex();
   const clearPendingToolNav = useKortixComputerClearPendingToolNav();
@@ -155,7 +155,7 @@ export const KortixComputer = memo(function KortixComputer({
     const sandboxChanged = prevSandboxIdRef.current !== null && prevSandboxIdRef.current !== sandboxId && sandboxId !== null;
     
     if (projectChanged || sandboxChanged) {
-      console.log('[KortixComputer] Project or sandbox changed, resetting local state', { projectId, sandboxId });
+      console.log('[KidpenComputer] Project or sandbox changed, resetting local state', { projectId, sandboxId });
       // Reset local component state
       setInternalIndex(0);
       setNavigationMode('live');

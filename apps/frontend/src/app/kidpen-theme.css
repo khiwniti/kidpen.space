@@ -1,0 +1,389 @@
+/* ================================================================
+   KIDPEN.SPACE DESIGN SYSTEM v2.0 — "Spark of Joy"
+
+   Design Philosophy:
+   "Learning should feel like a tiny party" — Khan Academy
+   "Balance of art, UI, and motion for playful feel" — Brilliant × ustwo
+   "Pointy shapes are off-brand" — Duolingo
+   "Soft brutalism with empathy" — 2026 Design Trends
+
+   Core Principles:
+   1. LIGHT & WARM — cream backgrounds, not cold whites
+   2. ROUNDED EVERYTHING — no sharp corners, ever
+   3. SUBJECT COLORS — each subject has its own world
+   4. CELEBRATE PROGRESS — delight in every correct answer
+   5. THAI-NATIVE — designed in Thai from day one
+   ================================================================ */
+
+/* ─── KIDPEN CSS VARIABLES ─── */
+:root {
+  /* ─── BRAND ─── */
+  --kidpen-brand: #F5A623;
+  --kidpen-brand-light: #FFF0D4;
+  --kidpen-brand-dark: #C47A06;
+
+  /* ─── BACKGROUNDS (warm, never cold white) ─── */
+  --kidpen-bg-primary: #FFFCF7;
+  --kidpen-bg-secondary: #FFF8EF;
+  --kidpen-bg-tertiary: #F5F0E8;
+  --kidpen-bg-card: #FFFFFF;
+  --kidpen-bg-elevated: #FFFFFF;
+  --kidpen-bg-dark: #1A1B2E;
+  --kidpen-bg-dark-card: #252740;
+
+  /* ─── TEXT ─── */
+  --kidpen-text-primary: #1A1B2E;
+  --kidpen-text-secondary: #5C5E7A;
+  --kidpen-text-muted: #9496AD;
+  --kidpen-text-hint: #B8BAC9;
+  --kidpen-text-inverse: #FFFFFF;
+
+  /* ─── SUBJECT COLORS ─── */
+  /* Math — Confident Blue */
+  --kidpen-math-50: #EEF4FF;
+  --kidpen-math-100: #D4E4FF;
+  --kidpen-math-200: #A8C8FF;
+  --kidpen-math-400: #4D8AFF;
+  --kidpen-math-500: #2563EB;
+  --kidpen-math-600: #1D4ED8;
+  --kidpen-math-700: #1E40AF;
+  --kidpen-math-800: #1E3A8A;
+
+  /* Science — Living Green */
+  --kidpen-science-50: #ECFDF5;
+  --kidpen-science-100: #D1FAE5;
+  --kidpen-science-200: #A7F3D0;
+  --kidpen-science-400: #34D399;
+  --kidpen-science-500: #10B981;
+  --kidpen-science-600: #059669;
+  --kidpen-science-700: #047857;
+  --kidpen-science-800: #065F46;
+
+  /* Coding — Creative Purple */
+  --kidpen-coding-50: #F5F3FF;
+  --kidpen-coding-100: #EDE9FE;
+  --kidpen-coding-200: #DDD6FE;
+  --kidpen-coding-400: #A78BFA;
+  --kidpen-coding-500: #8B5CF6;
+  --kidpen-coding-600: #7C3AED;
+  --kidpen-coding-700: #6D28D9;
+  --kidpen-coding-800: #5B21B6;
+
+  /* Physics — Energetic Orange */
+  --kidpen-physics-50: #FFF7ED;
+  --kidpen-physics-100: #FFEDD5;
+  --kidpen-physics-200: #FED7AA;
+  --kidpen-physics-400: #FB923C;
+  --kidpen-physics-500: #F97316;
+  --kidpen-physics-600: #EA580C;
+  --kidpen-physics-700: #C2410C;
+  --kidpen-physics-800: #9A3412;
+
+  /* Data — Curious Teal */
+  --kidpen-data-50: #F0FDFA;
+  --kidpen-data-100: #CCFBF1;
+  --kidpen-data-200: #99F6E4;
+  --kidpen-data-400: #2DD4BF;
+  --kidpen-data-500: #14B8A6;
+  --kidpen-data-600: #0D9488;
+  --kidpen-data-700: #0F766E;
+  --kidpen-data-800: #115E59;
+
+  /* ─── FEEDBACK ─── */
+  --kidpen-success: #22C55E;
+  --kidpen-success-bg: #F0FDF4;
+  --kidpen-success-border: #BBF7D0;
+  --kidpen-error: #EF4444;
+  --kidpen-error-bg: #FEF2F2;
+  --kidpen-error-border: #FECACA;
+  --kidpen-warning: #F59E0B;
+  --kidpen-warning-bg: #FFFBEB;
+  --kidpen-warning-border: #FDE68A;
+  --kidpen-info: #6366F1;
+  --kidpen-info-bg: #EEF2FF;
+  --kidpen-info-border: #C7D2FE;
+  --kidpen-hint: #8B5CF6;
+  --kidpen-hint-bg: #F5F3FF;
+  --kidpen-hint-border: #DDD6FE;
+
+  /* ─── GAMIFICATION ─── */
+  --kidpen-xp-gold: #FFB800;
+  --kidpen-streak-flame: #FF6B35;
+  --kidpen-level-emerald: #10B981;
+  --kidpen-league-blue: #3B82F6;
+
+  /* ─── BORDERS ─── */
+  --kidpen-border-light: rgba(0, 0, 0, 0.06);
+  --kidpen-border-default: rgba(0, 0, 0, 0.1);
+  --kidpen-border-strong: rgba(0, 0, 0, 0.15);
+  --kidpen-border-focus: var(--kidpen-brand);
+
+  /* ─── RADII (generous, always rounded) ─── */
+  --kidpen-r-sm: 8px;
+  --kidpen-r-md: 12px;
+  --kidpen-r-lg: 16px;
+  --kidpen-r-xl: 20px;
+  --kidpen-r-2xl: 24px;
+  --kidpen-r-3xl: 32px;
+  --kidpen-r-pill: 999px;
+
+  /* ─── SHADOWS (soft, warm — "gummy" feel) ─── */
+  --kidpen-shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --kidpen-shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.06);
+  --kidpen-shadow-md: 0 4px 16px rgba(0, 0, 0, 0.08);
+  --kidpen-shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.1);
+  --kidpen-shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.12);
+  --kidpen-shadow-button: 0 4px 0px rgba(0, 0, 0, 0.1);
+  --kidpen-shadow-button-active: 0 2px 0px rgba(0, 0, 0, 0.1);
+  --kidpen-shadow-glow: 0 0 24px rgba(245, 166, 35, 0.2);
+
+  /* ─── TRANSITIONS ─── */
+  --kidpen-ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --kidpen-ease-smooth: cubic-bezier(0.16, 1, 0.3, 1);
+  --kidpen-ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --kidpen-dur-fast: 150ms;
+  --kidpen-dur-normal: 250ms;
+  --kidpen-dur-slow: 400ms;
+}
+
+/* ─── DARK MODE ─── */
+.dark {
+  --kidpen-bg-primary: #0F1019;
+  --kidpen-bg-secondary: #181924;
+  --kidpen-bg-tertiary: #1F2133;
+  --kidpen-bg-card: #252740;
+  --kidpen-bg-elevated: #2D2F48;
+  --kidpen-text-primary: #F0F1F5;
+  --kidpen-text-secondary: #A8AABE;
+  --kidpen-text-muted: #6B6D82;
+  --kidpen-text-hint: #4A4C5E;
+  --kidpen-border-light: rgba(255, 255, 255, 0.06);
+  --kidpen-border-default: rgba(255, 255, 255, 0.1);
+  --kidpen-border-strong: rgba(255, 255, 255, 0.16);
+  --kidpen-shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+  --kidpen-shadow-md: 0 4px 16px rgba(0, 0, 0, 0.35);
+  --kidpen-shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.4);
+  --kidpen-shadow-button: 0 4px 0px rgba(0, 0, 0, 0.4);
+}
+
+/* ─── KIDPEN COMPONENT CLASSES ─── */
+
+/* Buttons (Duolingo-style: rounded, raised, bouncy) */
+.kidpen-btn {
+  font-family: 'Outfit', 'Nunito', sans-serif;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  border-radius: var(--kidpen-r-pill);
+  transition: all var(--kidpen-dur-fast);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  position: relative;
+  transform: translateY(0);
+}
+
+.kidpen-btn:active {
+  transform: translateY(2px);
+}
+
+/* Button sizes */
+.kidpen-btn-sm { padding: 6px 16px; font-size: 13px; }
+.kidpen-btn-md { padding: 10px 24px; font-size: 14px; }
+.kidpen-btn-lg { padding: 14px 32px; font-size: 16px; }
+.kidpen-btn-xl { padding: 18px 40px; font-size: 18px; }
+
+/* Primary button (gold, raised) */
+.kidpen-btn-primary {
+  background: var(--kidpen-brand);
+  color: #fff;
+  box-shadow: 0 4px 0 var(--kidpen-brand-dark);
+}
+
+.kidpen-btn-primary:hover {
+  background: #FFB940;
+  transform: translateY(-1px);
+  box-shadow: 0 5px 0 var(--kidpen-brand-dark);
+}
+
+.kidpen-btn-primary:active {
+  box-shadow: 0 2px 0 var(--kidpen-brand-dark);
+  transform: translateY(2px);
+}
+
+/* Subject buttons */
+.kidpen-btn-math {
+  background: var(--kidpen-math-500);
+  color: #fff;
+  box-shadow: 0 4px 0 var(--kidpen-math-700);
+}
+
+.kidpen-btn-science {
+  background: var(--kidpen-science-500);
+  color: #fff;
+  box-shadow: 0 4px 0 var(--kidpen-science-700);
+}
+
+.kidpen-btn-coding {
+  background: var(--kidpen-coding-500);
+  color: #fff;
+  box-shadow: 0 4px 0 var(--kidpen-coding-700);
+}
+
+.kidpen-btn-physics {
+  background: var(--kidpen-physics-500);
+  color: #fff;
+  box-shadow: 0 4px 0 var(--kidpen-physics-700);
+}
+
+/* Cards (soft elevated, "gummy") */
+.kidpen-card {
+  background: var(--kidpen-bg-card);
+  border: 1px solid var(--kidpen-border-light);
+  border-radius: var(--kidpen-r-2xl);
+  padding: 24px;
+  box-shadow: var(--kidpen-shadow-sm);
+  transition: all var(--kidpen-dur-normal) var(--kidpen-ease-smooth);
+}
+
+.kidpen-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--kidpen-shadow-lg);
+}
+
+/* Badges */
+.kidpen-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 12px;
+  border-radius: var(--kidpen-r-pill);
+  font-size: 12px;
+  font-weight: 700;
+  font-family: 'Outfit', sans-serif;
+}
+
+.kidpen-badge-gold { background: var(--kidpen-brand-light); color: var(--kidpen-brand-dark); }
+.kidpen-badge-math { background: var(--kidpen-math-100); color: var(--kidpen-math-700); }
+.kidpen-badge-science { background: var(--kidpen-science-100); color: var(--kidpen-science-700); }
+.kidpen-badge-coding { background: var(--kidpen-coding-100); color: var(--kidpen-coding-700); }
+.kidpen-badge-physics { background: var(--kidpen-physics-100); color: var(--kidpen-physics-700); }
+.kidpen-badge-success { background: var(--kidpen-success-bg); color: #15803D; }
+.kidpen-badge-error { background: var(--kidpen-error-bg); color: #B91C1C; }
+
+/* XP & Streak */
+.kidpen-xp {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 14px;
+  border-radius: var(--kidpen-r-pill);
+  font-size: 13px;
+  font-weight: 800;
+  font-family: 'Outfit', sans-serif;
+  background: linear-gradient(135deg, #FFE066, #FFB800);
+  color: #7A5200;
+  box-shadow: 0 2px 8px rgba(255, 184, 0, 0.3);
+}
+
+.kidpen-streak {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 14px;
+  border-radius: var(--kidpen-r-pill);
+  font-size: 13px;
+  font-weight: 800;
+  font-family: 'Outfit', sans-serif;
+  background: linear-gradient(135deg, #FFAA7A, #FF6B35);
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(255, 107, 53, 0.3);
+}
+
+/* Inputs */
+.kidpen-input {
+  width: 100%;
+  padding: 12px 16px;
+  background: var(--kidpen-bg-card);
+  border: 2px solid var(--kidpen-border-default);
+  border-radius: var(--kidpen-r-lg);
+  color: var(--kidpen-text-primary);
+  font-family: 'IBM Plex Sans Thai', 'Outfit', sans-serif;
+  font-size: 15px;
+  transition: all var(--kidpen-dur-fast);
+  outline: none;
+}
+
+.kidpen-input::placeholder {
+  color: var(--kidpen-text-hint);
+}
+
+.kidpen-input:hover {
+  border-color: var(--kidpen-border-strong);
+}
+
+.kidpen-input:focus {
+  border-color: var(--kidpen-brand);
+  box-shadow: 0 0 0 4px rgba(245, 166, 35, 0.15);
+}
+
+/* Progress */
+.kidpen-progress-track {
+  width: 100%;
+  height: 10px;
+  background: var(--kidpen-bg-tertiary);
+  border-radius: var(--kidpen-r-pill);
+  overflow: hidden;
+}
+
+.kidpen-progress-fill {
+  height: 100%;
+  border-radius: var(--kidpen-r-pill);
+  transition: width var(--kidpen-dur-slow) var(--kidpen-ease-smooth);
+}
+
+.kidpen-progress-gold { background: linear-gradient(90deg, var(--kidpen-brand), #FFD166); }
+.kidpen-progress-math { background: linear-gradient(90deg, var(--kidpen-math-600), var(--kidpen-math-400)); }
+.kidpen-progress-science { background: linear-gradient(90deg, var(--kidpen-science-600), var(--kidpen-science-400)); }
+
+/* Feedback states */
+.kidpen-feedback {
+  border-radius: var(--kidpen-r-xl);
+  padding: 16px 20px;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.kidpen-feedback-success {
+  background: var(--kidpen-success-bg);
+  border: 2px solid var(--kidpen-success-border);
+}
+
+.kidpen-feedback-error {
+  background: var(--kidpen-error-bg);
+  border: 2px solid var(--kidpen-error-border);
+}
+
+.kidpen-feedback-hint {
+  background: var(--kidpen-hint-bg);
+  border: 2px solid var(--kidpen-hint-border);
+}
+
+/* Selection highlight */
+::selection {
+  background: rgba(245, 166, 35, 0.2);
+}
+
+/* Warm background utility classes */
+.kidpen-bg-primary { background: var(--kidpen-bg-primary); }
+.kidpen-bg-secondary { background: var(--kidpen-bg-secondary); }
+.kidpen-bg-tertiary { background: var(--kidpen-bg-tertiary); }
+.kidpen-bg-card { background: var(--kidpen-bg-card); }
+
+/* Text utility classes */
+.kidpen-text-primary { color: var(--kidpen-text-primary); }
+.kidpen-text-secondary { color: var(--kidpen-text-secondary); }
+.kidpen-text-muted { color: var(--kidpen-text-muted); }
+.kidpen-text-brand { color: var(--kidpen-brand); }

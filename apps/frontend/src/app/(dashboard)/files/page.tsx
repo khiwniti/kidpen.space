@@ -2,12 +2,12 @@
 
 import React, { useState, useMemo, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { KortixLoader } from '@/components/ui/kortix-loader';
+import { KidpenLoader } from '@/components/ui/kidpen-loader';
 import { useThreads } from '@/hooks/threads/use-threads';
 import { FileBrowserView } from '@/components/thread/kidpen-computer/FileBrowserView';
 import { FileViewerView } from '@/components/thread/kidpen-computer/FileViewerView';
 import { SandboxStatusView } from '@/components/thread/kidpen-computer/components/SandboxStatusView';
-import { useKortixComputerStore } from '@/stores/kidpen-computer-store';
+import { useKidpenComputerStore } from '@/stores/kidpen-computer-store';
 import { useSandboxStatusWithAutoStart, isSandboxUsable } from '@/hooks/files/use-sandbox-details';
 import { Button } from '@/components/ui/button';
 import {
@@ -24,7 +24,7 @@ export default function FilesPage() {
   const [selectedProjectId, setSelectedProjectId] = useState<string | null>(null);
   
   // Get store state - exactly like KortixComputer
-  const { navigateToPath, filesSubView, selectedFilePath } = useKortixComputerStore();
+  const { navigateToPath, filesSubView, selectedFilePath } = useKidpenComputerStore();
 
   // Fetch threads to build project list
   const { data: threadsResponse, isLoading: isThreadsLoading } = useThreads({
@@ -94,7 +94,7 @@ export default function FilesPage() {
   if (isThreadsLoading) {
     return (
       <div className="flex items-center justify-center h-[100dvh] bg-background">
-        <KortixLoader size="medium" />
+        <KidpenLoader size="medium" />
       </div>
     );
   }

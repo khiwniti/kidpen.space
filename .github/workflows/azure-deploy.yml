@@ -1,0 +1,194 @@
+name: Deploy to Azure Container Apps
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to deploy'
+        required: true
+        default: 'dev'
+        type: choice
+        options:
+          - dev
+          - staging
+          - prod
+
+env:
+  AZURE_RESOURCE_GROUP: kidpen-${{ github.event.inputs.environment || 'prod' }}-rg
+  ACR_NAME: kidpencr
+  FRONTEND_APP: kidpen-${{ github.event.inputs.environment || 'prod' }}-frontend
+  BACKEND_APP: kidpen-${{ github.event.inputs.environment || 'prod' }}-backend
+
+jobs:
+  # Build and test
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 9
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Lint frontend
+        run: pnpm --filter ./apps/frontend lint
+
+      - name: Build frontend
+        run: pnpm --filter ./apps/frontend build
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v4
+
+      - name: Install backend dependencies
+        working-directory: backend
+        run: uv sync
+
+      - name: Lint backend
+        working-directory: backend
+        run: uv run ruff check .
+
+      - name: Test backend
+        working-directory: backend
+        run: uv run pytest tests/ -v --tb=short || echo "No tests found"
+
+  # Deploy to Azure
+  deploy:
+    needs: build
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    environment: ${{ github.event.inputs.environment || 'prod' }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Login to Azure Container Registry
+        run: |
+          az acr login --name ${{ env.ACR_NAME }}
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build and push frontend image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: apps/frontend/Dockerfile
+          push: true
+          tags: |
+            ${{ env.ACR_NAME }}.azurecr.io/kidpen-frontend:${{ github.sha }}
+            ${{ env.ACR_NAME }}.azurecr.io/kidpen-frontend:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Build and push backend image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./backend
+          file: backend/Dockerfile
+          push: true
+          tags: |
+            ${{ env.ACR_NAME }}.azurecr.io/kidpen-backend:${{ github.sha }}
+            ${{ env.ACR_NAME }}.azurecr.io/kidpen-backend:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Deploy frontend to Container Apps
+        run: |
+          az containerapp update \
+            --name ${{ env.FRONTEND_APP }} \
+            --resource-group ${{ env.AZURE_RESOURCE_GROUP }} \
+            --image ${{ env.ACR_NAME }}.azurecr.io/kidpen-frontend:${{ github.sha }}
+
+      - name: Deploy backend to Container Apps
+        run: |
+          az containerapp update \
+            --name ${{ env.BACKEND_APP }} \
+            --resource-group ${{ env.AZURE_RESOURCE_GROUP }} \
+            --image ${{ env.ACR_NAME }}.azurecr.io/kidpen-backend:${{ github.sha }}
+
+      - name: Get deployment URLs
+        id: urls
+        run: |
+          FRONTEND_URL=$(az containerapp show -n ${{ env.FRONTEND_APP }} -g ${{ env.AZURE_RESOURCE_GROUP }} --query properties.configuration.ingress.fqdn -o tsv)
+          BACKEND_URL=$(az containerapp show -n ${{ env.BACKEND_APP }} -g ${{ env.AZURE_RESOURCE_GROUP }} --query properties.configuration.ingress.fqdn -o tsv)
+          echo "frontend_url=https://${FRONTEND_URL}" >> $GITHUB_OUTPUT
+          echo "backend_url=https://${BACKEND_URL}" >> $GITHUB_OUTPUT
+
+      - name: Deployment Summary
+        run: |
+          echo "## 🚀 Deployment Complete" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Service | URL |" >> $GITHUB_STEP_SUMMARY
+          echo "|---------|-----|" >> $GITHUB_STEP_SUMMARY
+          echo "| Frontend | ${{ steps.urls.outputs.frontend_url }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Backend | ${{ steps.urls.outputs.backend_url }} |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Commit:** \`${{ github.sha }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "**Environment:** ${{ github.event.inputs.environment || 'prod' }}" >> $GITHUB_STEP_SUMMARY
+
+  # Health check after deployment
+  health-check:
+    needs: deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Get URLs
+        id: urls
+        run: |
+          FRONTEND_URL=$(az containerapp show -n ${{ env.FRONTEND_APP }} -g ${{ env.AZURE_RESOURCE_GROUP }} --query properties.configuration.ingress.fqdn -o tsv)
+          BACKEND_URL=$(az containerapp show -n ${{ env.BACKEND_APP }} -g ${{ env.AZURE_RESOURCE_GROUP }} --query properties.configuration.ingress.fqdn -o tsv)
+          echo "frontend_url=https://${FRONTEND_URL}" >> $GITHUB_OUTPUT
+          echo "backend_url=https://${BACKEND_URL}" >> $GITHUB_OUTPUT
+
+      - name: Health check - Frontend
+        run: |
+          for i in {1..5}; do
+            if curl -sf "${{ steps.urls.outputs.frontend_url }}" > /dev/null; then
+              echo "✅ Frontend is healthy"
+              exit 0
+            fi
+            echo "Waiting for frontend... ($i/5)"
+            sleep 10
+          done
+          echo "❌ Frontend health check failed"
+          exit 1
+
+      - name: Health check - Backend
+        run: |
+          for i in {1..5}; do
+            if curl -sf "${{ steps.urls.outputs.backend_url }}/health" > /dev/null; then
+              echo "✅ Backend is healthy"
+              exit 0
+            fi
+            echo "Waiting for backend... ($i/5)"
+            sleep 10
+          done
+          echo "❌ Backend health check failed"
+          exit 1

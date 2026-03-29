@@ -19,7 +19,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { Search, Check, ChevronDown, Plus, Plug, Brain, LibraryBig, Zap, Sparkles, ChevronLeft } from 'lucide-react';
-import { KortixLoader } from '@/components/ui/kortix-loader';
+import { KidpenLoader } from '@/components/ui/kidpen-loader';
 import { useAgents } from '@/hooks/agents/use-agents';
 import { KidpenLogo } from '@/components/sidebar/kidpen-logo';
 import { SpotlightCard } from '@/components/ui/spotlight-card';
@@ -185,7 +185,7 @@ const LoggedInMenu: React.FC<UnifiedConfigMenuProps> = memo(function LoggedInMen
 
     const renderAgentIcon = useCallback((agent: any, size: number = 32) => {
         if (!agent && (isLoading || sunaAgent)) {
-            return <AgentAvatar isSunaDefault={true} agentName="Kortix" size={size} className="flex-shrink-0 !border-0" />;
+            return <AgentAvatar isSunaDefault={true} agentName="Kidpen" size={size} className="flex-shrink-0 !border-0" />;
         }
         return <AgentAvatar agent={agent} agentId={agent?.agent_id} size={size} className="flex-shrink-0 !border-0" />;
     }, [isLoading, sunaAgent]);
@@ -259,7 +259,7 @@ const LoggedInMenu: React.FC<UnifiedConfigMenuProps> = memo(function LoggedInMen
                             >
                                 {isFetching ? (
                                     <>
-                                        <KortixLoader size="small" className="mr-2" />
+                                        <KidpenLoader size="small" className="mr-2" />
                                         Loading...
                                     </>
                                 ) : (

@@ -2,7 +2,7 @@
 
 import { memo } from 'react';
 import { Cpu, HardDrive, MemoryStick, MapPin, AlertTriangle, Loader2 } from 'lucide-react';
-import { KortixLoader } from '@/components/ui/kortix-loader';
+import { KidpenLoader } from '@/components/ui/kidpen-loader';
 import { KidpenLogo } from '@/components/sidebar/kidpen-logo';
 import { cn } from '@/lib/utils';
 import type { SandboxDetails, SandboxState, SandboxStatus } from '@/hooks/files/use-sandbox-details';
@@ -89,7 +89,7 @@ export const SystemInfoContent = memo(function SystemInfoContent({
   if (isLoading) {
     return (
       <div className="h-full flex items-center justify-center">
-        <KortixLoader size="medium" />
+        <KidpenLoader size="medium" />
       </div>
     );
   }

@@ -203,7 +203,7 @@ export function FileDownloadButton({
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
       font-size: 16px;
       line-height: 1.6;
-      color: #1a1a1a;
+      color: var(--kidpen-text-primary);
       max-width: 720px;
       margin: 0 auto;
       padding: 48px 24px;
@@ -214,22 +214,22 @@ export function FileDownloadButton({
       line-height: 1.3;
       margin: 1.5em 0 0.75em 0;
     }
-    h1 { font-size: 2em; border-bottom: 1px solid #e0e0e0; padding-bottom: 0.4em; }
+    h1 { font-size: 2em; border-bottom: 1px solid var(--kidpen-border-default); padding-bottom: 0.4em; }
     h2 { font-size: 1.5em; }
     h3 { font-size: 1.25em; }
     p { margin: 1em 0; line-height: 1.7; }
-    a { color: #0066cc; text-decoration: underline; }
+    a { color: var(--kidpen-math-500); text-decoration: underline; }
     code {
       font-family: 'SF Mono', Monaco, 'Courier New', monospace;
       font-size: 0.9em;
-      background: #f4f4f5;
+      background: var(--kidpen-bg-tertiary);
       padding: 0.15em 0.4em;
       border-radius: 4px;
     }
     pre {
       margin: 1.5em 0;
       padding: 1em;
-      background: #f4f4f5;
+      background: var(--kidpen-bg-tertiary);
       border-radius: 8px;
       overflow-x: auto;
     }

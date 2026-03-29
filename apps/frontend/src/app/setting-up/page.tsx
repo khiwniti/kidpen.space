@@ -12,7 +12,7 @@ import { Button } from '@/components/ui/button';
 
 // Lazy load heavy components
 const AnimatedBg = lazy(() => import('@/components/ui/animated-bg').then(mod => ({ default: mod.AnimatedBg })));
-const KortixLoader = lazy(() => import('@/components/ui/kortix-loader').then(mod => ({ default: mod.KortixLoader })));
+const KidpenLoader = lazy(() => import('@/components/ui/kortix-loader').then(mod => ({ default: mod.KidpenLoader })));
 
 export default function SettingUpPage() {
   const router = useRouter();
@@ -153,8 +153,8 @@ export default function SettingUpPage() {
                       </div>
                     </div>
                     <div className="h-12 w-12 flex items-center justify-center">
-                      <Suspense fallback={<KortixLoader size="small" />}>
-                        <KortixLoader size="small" customSize={24} />
+                      <Suspense fallback={<KidpenLoader size="small" />}>
+                        <KidpenLoader size="small" customSize={24} />
                       </Suspense>
                     </div>
                   </div>

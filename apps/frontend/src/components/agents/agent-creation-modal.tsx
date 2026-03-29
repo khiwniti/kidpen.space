@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { Globe, Wrench, MessageSquare, ChevronLeft } from 'lucide-react';
-import { KortixLoader } from '@/components/ui/kortix-loader';
+import { KidpenLoader } from '@/components/ui/kidpen-loader';
 import {
   Dialog,
   DialogContent,
@@ -248,7 +248,7 @@ export function AgentCreationModal({ open, onOpenChange, onSuccess }: AgentCreat
                             {option.label}
                           </span>
                           {isLoading && (
-                            <KortixLoader customSize={16} />
+                            <KidpenLoader customSize={16} />
                           )}
                         </div>
                         <p className="text-xs sm:text-sm text-muted-foreground mt-0.5">

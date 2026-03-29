@@ -67,7 +67,7 @@ import { fileQueryKeys } from '@/hooks/files';
 import { useProjectRealtime } from '@/hooks/threads';
 import { handleGoogleSlidesUpload } from './tool-views/utils/presentation-utils';
 import { useTranslations } from 'next-intl';
-import { useKortixComputerStore, useSetIsSidePanelOpen } from '@/stores/kidpen-computer-store';
+import { useKidpenComputerStore, useSetIsSidePanelOpen } from '@/stores/kidpen-computer-store';
 import { useToolStreamStore } from '@/stores/tool-stream-store';
 import { useOptimisticFilesStore } from '@/stores/optimistic-files-store';
 import { useProcessStreamOperation } from '@/stores/spreadsheet-store';
@@ -345,9 +345,9 @@ export function ThreadComponent({ projectId, threadId, compact = false, configur
     setAutoOpenedPanel(true);
   }, [setIsSidePanelOpen, setAutoOpenedPanel]);
 
-  const openFileInComputer = useKortixComputerStore((state) => state.openFileInComputer);
-  const openFileBrowser = useKortixComputerStore((state) => state.openFileBrowser);
-  const setSandboxContext = useKortixComputerStore((state) => state.setSandboxContext);
+  const openFileInComputer = useKidpenComputerStore((state) => state.openFileInComputer);
+  const openFileBrowser = useKidpenComputerStore((state) => state.openFileBrowser);
+  const setSandboxContext = useKidpenComputerStore((state) => state.setSandboxContext);
 
   const billingModal = useBillingModal();
   const threadBilling = useThreadBilling(

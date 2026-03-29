@@ -30,7 +30,7 @@ interface SunaModesState {
   selectVideoStyle: (styleId: string) => void;
 }
 
-export const useSunaModesStore = create<SunaModesState>()(
+export const useKidpenModesStore = create<SunaModesState>()(
   persist(
     (set, get) => ({
       selectedMode: null,
@@ -235,8 +235,8 @@ export const useSunaModesStore = create<SunaModesState>()(
 );
 
 // Convenience hook for backward compatibility
-export function useSunaModePersistence() {
-  const store = useSunaModesStore();
+export function useKidpenModePersistence() {
+  const store = useKidpenModesStore();
   
   return {
     selectedMode: store.selectedMode,

@@ -183,7 +183,7 @@ function ImagePreview({ blobUrl, fileName }: { blobUrl?: string; fileName: strin
       className="flex-1"
       contentContainerStyle={{ padding: 16 }}
       showsVerticalScrollIndicator={false}
-      style={{ backgroundColor: isDark ? '#121215' : '#ffffff' }}
+      style={{ backgroundColor: isDark ? 'var(--kidpen-bg-primary)' : 'var(--kidpen-bg-card)' }}
     >
       {hasError ? (
         <View className="items-center justify-center p-8">
@@ -245,7 +245,7 @@ function MarkdownPreview({ content }: { content: string }) {
     <ScrollView
       className="flex-1 px-4 py-4"
       showsVerticalScrollIndicator={true}
-      style={{ backgroundColor: isDark ? '#121215' : '#ffffff' }}
+      style={{ backgroundColor: isDark ? 'var(--kidpen-bg-primary)' : 'var(--kidpen-bg-card)' }}
     >
       <SelectableMarkdownText isDark={isDark}>
         {autoLinkUrls(content)}
@@ -272,14 +272,14 @@ function JsonPreview({ content }: { content: string }) {
   }, [content]);
 
   const lines = useMemo(() => formattedJson.split('\n'), [formattedJson]);
-  const textColor = isDark ? '#eeffff' : '#24292e';
-  const bgColor = isDark ? '#1e1e1e' : '#ffffff';
+  const textColor = isDark ? 'var(--kidpen-text-primary)' : 'var(--kidpen-text-primary)';
+  const bgColor = isDark ? 'var(--kidpen-bg-secondary)' : 'var(--kidpen-bg-card)';
 
   return (
     <ScrollView
       className="flex-1"
       showsVerticalScrollIndicator={true}
-      style={{ backgroundColor: isDark ? '#121215' : '#ffffff' }}
+      style={{ backgroundColor: isDark ? 'var(--kidpen-bg-primary)' : 'var(--kidpen-bg-card)' }}
     >
       <View className="px-4 py-3 border-b" style={{
         borderBottomColor: isDark ? 'rgba(248, 248, 248, 0.1)' : 'rgba(18, 18, 21, 0.1)',
@@ -328,14 +328,14 @@ function CodePreview({ content, fileName }: { content: string; fileName: string 
   const language = getLanguageFromFilename(fileName);
 
   const lines = useMemo(() => content.split('\n'), [content]);
-  const textColor = isDark ? '#eeffff' : '#24292e';
-  const bgColor = isDark ? '#1e1e1e' : '#ffffff';
+  const textColor = isDark ? 'var(--kidpen-text-primary)' : 'var(--kidpen-text-primary)';
+  const bgColor = isDark ? 'var(--kidpen-bg-secondary)' : 'var(--kidpen-bg-card)';
 
   return (
     <ScrollView
       className="flex-1"
       showsVerticalScrollIndicator={true}
-      style={{ backgroundColor: isDark ? '#121215' : '#ffffff' }}
+      style={{ backgroundColor: isDark ? 'var(--kidpen-bg-primary)' : 'var(--kidpen-bg-card)' }}
     >
       <View className="px-4 py-3 border-b" style={{
         borderBottomColor: isDark ? 'rgba(248, 248, 248, 0.1)' : 'rgba(18, 18, 21, 0.1)',
@@ -397,7 +397,7 @@ function HtmlPreview({
       <View className="flex-1">
         <WebView
           source={{ uri: htmlPreviewUrl }}
-          style={{ flex: 1, backgroundColor: isDark ? '#121215' : '#ffffff' }}
+          style={{ flex: 1, backgroundColor: isDark ? 'var(--kidpen-bg-primary)' : 'var(--kidpen-bg-card)' }}
           originWhitelist={['*']}
           javaScriptEnabled={true}
           domStorageEnabled={true}
@@ -433,11 +433,11 @@ function TextPreview({ content }: { content: string }) {
     <ScrollView
       className="flex-1 px-4 py-4"
       showsVerticalScrollIndicator={true}
-      style={{ backgroundColor: isDark ? '#121215' : '#ffffff' }}
+      style={{ backgroundColor: isDark ? 'var(--kidpen-bg-primary)' : 'var(--kidpen-bg-card)' }}
     >
       <Text
         style={{
-          color: isDark ? '#f8f8f8' : '#121215',
+          color: isDark ? 'var(--kidpen-text-primary)' : 'var(--kidpen-bg-primary)',
           fontFamily: 'monospace',
           fontSize: 13,
           lineHeight: 20,
@@ -467,12 +467,12 @@ function CsvPreview({ content }: { content: string }) {
       horizontal
       showsHorizontalScrollIndicator={true}
       className="flex-1"
-      style={{ backgroundColor: isDark ? '#121215' : '#ffffff' }}
+      style={{ backgroundColor: isDark ? 'var(--kidpen-bg-primary)' : 'var(--kidpen-bg-card)' }}
     >
       <ScrollView
         showsVerticalScrollIndicator={true}
         className="px-4 py-4"
-        style={{ backgroundColor: isDark ? '#121215' : '#ffffff' }}
+        style={{ backgroundColor: isDark ? 'var(--kidpen-bg-primary)' : 'var(--kidpen-bg-card)' }}
       >
         {/* Headers */}
         <View className="flex-row border-b pb-2 mb-2"
@@ -486,7 +486,7 @@ function CsvPreview({ content }: { content: string }) {
               style={{ width: 120, marginRight: 12 }}
             >
               <Text
-                style={{ color: isDark ? '#f8f8f8' : '#121215' }}
+                style={{ color: isDark ? 'var(--kidpen-text-primary)' : 'var(--kidpen-bg-primary)' }}
                 className="text-xs font-roobert-semibold"
                 numberOfLines={1}
               >
@@ -540,8 +540,8 @@ function CsvPreview({ content }: { content: string }) {
  * Android WebView doesn't support native PDF rendering, so we use pdf.js
  */
 function generatePdfJsHtml(base64Data: string, isDark: boolean): string {
-  const bgColor = isDark ? '#121215' : '#ffffff';
-  const textColor = isDark ? '#f8f8f8' : '#121215';
+  const bgColor = isDark ? 'var(--kidpen-bg-primary)' : 'var(--kidpen-bg-card)';
+  const textColor = isDark ? 'var(--kidpen-text-primary)' : 'var(--kidpen-bg-primary)';
   
   return `
 <!DOCTYPE html>
@@ -582,7 +582,7 @@ function generatePdfJsHtml(base64Data: string, isDark: boolean): string {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       font-size: 14px;
     }
-    #error { color: #ef4444; display: none; }
+    #error { color: var(--kidpen-error); display: none; }
     .page-num {
       color: ${isDark ? 'rgba(248,248,248,0.5)' : 'rgba(18,18,21,0.5)'};
       font-size: 12px;
@@ -725,7 +725,7 @@ function PdfPreview({ blobUrl, fileName }: { blobUrl?: string; fileName: string 
 
   if (isLoading) {
     return (
-      <View className="flex-1 items-center justify-center" style={{ backgroundColor: isDark ? '#121215' : '#ffffff' }}>
+      <View className="flex-1 items-center justify-center" style={{ backgroundColor: isDark ? 'var(--kidpen-bg-primary)' : 'var(--kidpen-bg-card)' }}>
         <KidpenLoader size="large" />
         <Text className="text-sm text-muted-foreground mt-4">
           Preparing PDF...
@@ -756,7 +756,7 @@ function PdfPreview({ blobUrl, fileName }: { blobUrl?: string; fileName: string 
   // Android: Use pdf.js HTML
   if (isAndroid && pdfHtml) {
     return (
-      <View className="flex-1" style={{ backgroundColor: isDark ? '#121215' : '#ffffff' }}>
+      <View className="flex-1" style={{ backgroundColor: isDark ? 'var(--kidpen-bg-primary)' : 'var(--kidpen-bg-card)' }}>
         <WebView
           source={{ html: pdfHtml }}
           style={{ flex: 1, backgroundColor: 'transparent' }}
@@ -767,7 +767,7 @@ function PdfPreview({ blobUrl, fileName }: { blobUrl?: string; fileName: string 
           allowFileAccess={true}
           startInLoadingState={true}
           renderLoading={() => (
-            <View className="absolute inset-0 items-center justify-center" style={{ backgroundColor: isDark ? '#121215' : '#ffffff' }}>
+            <View className="absolute inset-0 items-center justify-center" style={{ backgroundColor: isDark ? 'var(--kidpen-bg-primary)' : 'var(--kidpen-bg-card)' }}>
               <KidpenLoader size="large" />
               <Text className="text-sm text-muted-foreground mt-4">
                 Rendering PDF...
@@ -785,7 +785,7 @@ function PdfPreview({ blobUrl, fileName }: { blobUrl?: string; fileName: string 
 
   // iOS: Use native file:// URL rendering
   return (
-    <View className="flex-1" style={{ backgroundColor: isDark ? '#121215' : '#ffffff' }}>
+    <View className="flex-1" style={{ backgroundColor: isDark ? 'var(--kidpen-bg-primary)' : 'var(--kidpen-bg-card)' }}>
       <WebView
         source={{ uri: pdfFileUri! }}
         style={{ flex: 1, backgroundColor: 'transparent' }}
@@ -797,7 +797,7 @@ function PdfPreview({ blobUrl, fileName }: { blobUrl?: string; fileName: string 
         allowUniversalAccessFromFileURLs={true}
         startInLoadingState={true}
         renderLoading={() => (
-          <View className="absolute inset-0 items-center justify-center" style={{ backgroundColor: isDark ? '#121215' : '#ffffff' }}>
+          <View className="absolute inset-0 items-center justify-center" style={{ backgroundColor: isDark ? 'var(--kidpen-bg-primary)' : 'var(--kidpen-bg-card)' }}>
             <KidpenLoader size="large" />
             <Text className="text-sm text-muted-foreground mt-4">
               Rendering PDF...
@@ -822,8 +822,8 @@ function PdfPreview({ blobUrl, fileName }: { blobUrl?: string; fileName: string 
  * mammoth.js works reliably in WebView and converts DOCX to clean HTML
  */
 function generateDocxHtml(base64Data: string, isDark: boolean): string {
-  const bgColor = isDark ? '#121215' : '#ffffff';
-  const textColor = isDark ? '#f8f8f8' : '#121215';
+  const bgColor = isDark ? 'var(--kidpen-bg-primary)' : 'var(--kidpen-bg-card)';
+  const textColor = isDark ? 'var(--kidpen-text-primary)' : 'var(--kidpen-bg-primary)';
 
   return `
 <!DOCTYPE html>
@@ -858,7 +858,7 @@ function generateDocxHtml(base64Data: string, isDark: boolean): string {
       left: 50%;
       transform: translate(-50%, -50%);
       text-align: center;
-      color: #ef4444;
+      color: var(--kidpen-error);
       display: none;
       padding: 20px;
     }
@@ -1083,7 +1083,7 @@ function DocxPreview({ blobUrl, fileName }: { blobUrl?: string; fileName: string
 
   if (isLoading) {
     return (
-      <View className="flex-1 items-center justify-center" style={{ backgroundColor: isDark ? '#121215' : '#ffffff' }}>
+      <View className="flex-1 items-center justify-center" style={{ backgroundColor: isDark ? 'var(--kidpen-bg-primary)' : 'var(--kidpen-bg-card)' }}>
         <KidpenLoader size="large" />
         <Text className="text-sm text-muted-foreground mt-4">
           Preparing document...
@@ -1112,7 +1112,7 @@ function DocxPreview({ blobUrl, fileName }: { blobUrl?: string; fileName: string
   }
 
   return (
-    <View className="flex-1" style={{ backgroundColor: isDark ? '#121215' : '#ffffff' }}>
+    <View className="flex-1" style={{ backgroundColor: isDark ? 'var(--kidpen-bg-primary)' : 'var(--kidpen-bg-card)' }}>
       <WebView
         source={{ html: docxHtml }}
         style={{ flex: 1, backgroundColor: 'transparent' }}
@@ -1122,7 +1122,7 @@ function DocxPreview({ blobUrl, fileName }: { blobUrl?: string; fileName: string
         mixedContentMode="compatibility"
         startInLoadingState={true}
         renderLoading={() => (
-          <View className="absolute inset-0 items-center justify-center" style={{ backgroundColor: isDark ? '#121215' : '#ffffff' }}>
+          <View className="absolute inset-0 items-center justify-center" style={{ backgroundColor: isDark ? 'var(--kidpen-bg-primary)' : 'var(--kidpen-bg-card)' }}>
             <KidpenLoader size="large" />
             <Text className="text-sm text-muted-foreground mt-4">
               Rendering document...

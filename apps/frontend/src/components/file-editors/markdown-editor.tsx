@@ -649,8 +649,8 @@ export function MarkdownEditor({
             
             /* Pre block - code container (light mode default) */
             .tiptap-editor pre {
-              background-color: #f4f4f5;
-              color: #27272a;
+              background-color: var(--kidpen-bg-tertiary);
+              color: var(--kidpen-text-primary);
               border-radius: 0.75rem;
               padding: 1rem;
               margin-top: 1.25rem;
@@ -659,12 +659,12 @@ export function MarkdownEditor({
               font-size: 13px;
               line-height: 1.625;
               font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
-              border: 1px solid #e4e4e7;
+              border: 1px solid var(--kidpen-border-default);
             }
             .dark .tiptap-editor pre {
-              background-color: #18181b;
-              color: #e4e4e7;
-              border-color: #27272a;
+              background-color: var(--kidpen-bg-secondary);
+              color: var(--kidpen-text-primary);
+              border-color: var(--kidpen-border-default);
             }
             .tiptap-editor pre code {
               background-color: transparent;

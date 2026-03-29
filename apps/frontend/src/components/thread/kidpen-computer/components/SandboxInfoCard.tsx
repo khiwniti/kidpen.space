@@ -3,7 +3,7 @@
 import { memo } from 'react';
 import { motion } from 'framer-motion';
 import { Cpu, HardDrive, MemoryStick, MapPin, AlertTriangle, Loader2 } from 'lucide-react';
-import { KortixLoader } from '@/components/ui/kortix-loader';
+import { KidpenLoader } from '@/components/ui/kidpen-loader';
 import { KidpenLogo } from '@/components/sidebar/kidpen-logo';
 import { cn } from '@/lib/utils';
 import type { SandboxState, SandboxStatus, SandboxDetails } from '@/hooks/files/use-sandbox-details';
@@ -126,7 +126,7 @@ export const SandboxInfoCard = memo(function SandboxInfoCard({
         className="absolute inset-0 flex items-center justify-center pointer-events-none"
       >
         <Card variant="glass" className="p-8 rounded-3xl gap-0">
-          <KortixLoader size="medium" />
+          <KidpenLoader size="medium" />
         </Card>
       </motion.div>
     );

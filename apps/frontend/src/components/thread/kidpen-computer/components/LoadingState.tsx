@@ -3,7 +3,7 @@
 import { memo } from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { DrawerContent } from '@/components/ui/drawer';
-import { useKortixComputerStore } from '@/stores/kidpen-computer-store';
+import { useKidpenComputerStore } from '@/stores/kidpen-computer-store';
 import { PanelHeader } from './PanelHeader';
 
 interface LoadingStateProps {
@@ -17,7 +17,7 @@ export const LoadingState = memo(function LoadingState({
   onClose, 
   isMobile 
 }: LoadingStateProps) {
-  const { activeView, setActiveView } = useKortixComputerStore();
+  const { activeView, setActiveView } = useKidpenComputerStore();
   
   if (isMobile) {
     return (

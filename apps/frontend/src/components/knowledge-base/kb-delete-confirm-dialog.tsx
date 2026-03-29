@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { KortixLoader } from '@/components/ui/kortix-loader';
+import { KidpenLoader } from '@/components/ui/kidpen-loader';
 
 import {
   AlertDialog,
@@ -57,7 +57,7 @@ export function KBDeleteConfirmDialog({
           >
             {isDeleting ? (
               <>
-                <KortixLoader size="small" className="mr-2" />
+                <KidpenLoader size="small" className="mr-2" />
                 Deleting...
               </>
             ) : (

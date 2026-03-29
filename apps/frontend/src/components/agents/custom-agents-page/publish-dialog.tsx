@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { Globe, Plus, Trash2, User, Bot, Wrench } from 'lucide-react';
-import { KortixLoader } from '@/components/ui/kortix-loader';
+import { KidpenLoader } from '@/components/ui/kidpen-loader';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
@@ -224,7 +224,7 @@ export const PublishDialog = ({
           >
             {templatesActioningId ? (
               <>
-                <KortixLoader customSize={16} className="mr-1" />
+                <KidpenLoader customSize={16} className="mr-1" />
                 Publishing...
               </>
             ) : (

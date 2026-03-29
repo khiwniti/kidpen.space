@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import Image from 'next/image';
 import { Computer, CornerDownLeft, Paperclip, Mic, Zap, FolderOpen, Globe, Presentation, BarChart3, FileText, Search, Image as ImageIcon, ChevronRight, File, Database } from 'lucide-react';
-import { KortixLoader } from '@/components/ui/kortix-loader';
+import { KidpenLoader } from '@/components/ui/kidpen-loader';
 import { motion } from 'framer-motion';
 import { KidpenLogo } from '@/components/sidebar/kidpen-logo';
 
@@ -333,7 +333,7 @@ export function ExampleShowcase() {
                         <div className="flex items-center gap-1 mb-1">
                           <img
                             src="/kidpen-logomark-white.svg"
-                            alt="Kortix"
+                            alt="Kidpen"
                             className="dark:invert-0 invert flex-shrink-0"
                             style={{ height: '8px', width: 'auto' }}
                           />
@@ -358,7 +358,7 @@ export function ExampleShowcase() {
                         <IconComponent className="h-2.5 w-2.5 text-muted-foreground flex-shrink-0" />
                         <span className="font-mono text-[9px] text-foreground">{step.title}</span>
                         {isCurrentStep && (
-                          <KortixLoader size="small" className="ml-0.5" />
+                          <KidpenLoader size="small" className="ml-0.5" />
                         )}
                       </button>
                     </div>

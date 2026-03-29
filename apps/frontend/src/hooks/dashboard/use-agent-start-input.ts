@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useLeadingDebouncedCallback } from '@/hooks/utils';
 import { useOptimisticAgentStart, AgentLimitInfo } from '@/hooks/threads';
 import { useAgentSelection } from '@/stores/agent-selection-store';
-import { useSunaModePersistence } from '@/stores/suna-modes-store';
+import { useKidpenModePersistence } from '@/stores/kidpen-modes-store';
 import { useAgents } from '@/hooks/agents/use-agents';
 import { useAuth } from '@/components/AuthProvider';
 import type { ChatInputHandles } from '@/components/thread/chat-input/chat-input';
@@ -131,7 +131,7 @@ export function useAgentStartInput(options: UseAgentStartInputOptions = {}): Use
     setSelectedImageStyle,
     setSelectedCanvasAction,
     setSelectedVideoStyle,
-  } = useSunaModePersistence();
+  } = useKidpenModePersistence();
   
   // Callback to reset loading states when a background error occurs
   const handleBackgroundError = useCallback(() => {

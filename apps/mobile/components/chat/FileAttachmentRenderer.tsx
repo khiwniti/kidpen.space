@@ -45,6 +45,29 @@ import { log } from '@/lib/logger';
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
+// kidpen.space Design System v2.0 "Spark of Joy" colors
+// Reference: /teamspace/studios/this_studio/kidpen/design_system.html
+const KIDPEN_COLORS = {
+  light: {
+    bg: '#FFFCF7',      // --kidpen-bg-primary
+    text: '#1A1B2E',    // --kidpen-text-primary
+    textMuted: '#6B7280',    // --kidpen-text-muted
+    border: '#E5E7EB',       // --kidpen-border-default
+    bgSecondary: '#FFF8EF',  // --kidpen-bg-secondary
+    link: '#2563EB',         // --kidpen-math-500
+    error: '#EF4444',        // --kidpen-error
+  },
+  dark: {
+    bg: '#0F1019',      // --kidpen-bg-primary (dark)
+    text: '#F0F1F5',    // --kidpen-text-primary (dark)
+    textMuted: '#6B6D82',    // --kidpen-text-muted (dark)
+    border: 'rgba(255,255,255,0.1)',  // --kidpen-border-default (dark)
+    bgSecondary: '#181924',  // --kidpen-bg-secondary (dark)
+    link: '#60A5FA',         // lighter blue for dark mode
+    error: '#EF4444',        // --kidpen-error
+  }
+};
+
 /**
  * Helper to check if a filepath is a presentation attachment
  * Matches: presentations/[name]/slide_XX.html (with or without /workspace/ prefix)
@@ -96,8 +119,9 @@ function constructHtmlPreviewUrl(sandboxUrl: string, filePath: string): string {
  * mammoth.js works reliably in WebView and converts DOCX to clean HTML
  */
 function generateDocxPreviewHtml(base64Data: string, isDark: boolean): string {
-  const bgColor = isDark ? '#121215' : '#ffffff';
-  const textColor = isDark ? '#f8f8f8' : '#121215';
+  const colors = isDark ? KIDPEN_COLORS.dark : KIDPEN_COLORS.light;
+  const bgColor = colors.bg;
+  const textColor = colors.text;
 
   // Extract just the base64 part if it's a data URL
   const base64Content = base64Data.includes(',') ? base64Data.split(',')[1] : base64Data;
@@ -136,7 +160,7 @@ function generateDocxPreviewHtml(base64Data: string, isDark: boolean): string {
       left: 50%;
       transform: translate(-50%, -50%);
       text-align: center;
-      color: #ef4444;
+      color: ${colors.error};
       padding: 20px;
     }
     #container {
@@ -157,21 +181,21 @@ function generateDocxPreviewHtml(base64Data: string, isDark: boolean): string {
       font-size: 13px;
     }
     #container th, #container td {
-      border: 1px solid ${isDark ? 'rgba(248,248,248,0.3)' : '#d1d5db'};
+      border: 1px solid ${colors.border};
       padding: 8px 10px;
       text-align: left;
     }
     #container th {
-      background: ${isDark ? 'rgba(248,248,248,0.1)' : '#f3f4f6'};
+      background: ${colors.bgSecondary};
       font-weight: 600;
     }
     #container img { max-width: 100%; height: auto; margin: 0.8em 0; }
-    #container a { color: ${isDark ? '#60a5fa' : '#2563eb'}; }
+    #container a { color: ${colors.link}; }
     #container blockquote {
-      border-left: 3px solid ${isDark ? 'rgba(248,248,248,0.3)' : '#d1d5db'};
+      border-left: 3px solid ${colors.border};
       padding-left: 1em;
       margin: 0.8em 0;
-      color: ${isDark ? 'rgba(248,248,248,0.7)' : '#6b7280'};
+      color: ${colors.textMuted};
     }
     #container strong, #container b { font-weight: 600; }
     #container em, #container i { font-style: italic; }
@@ -225,7 +249,8 @@ function generateDocxPreviewHtml(base64Data: string, isDark: boolean): string {
  * Uses the official PDF.js viewer for reliable PDF rendering in WebView
  */
 function generatePdfPreviewHtml(base64Data: string, isDark: boolean): string {
-  const bgColor = isDark ? '#121215' : '#ffffff';
+  const colors = isDark ? KIDPEN_COLORS.dark : KIDPEN_COLORS.light;
+  const bgColor = colors.bg;
 
   // Extract just the base64 part if it's a data URL
   const base64Content = base64Data.includes(',') ? base64Data.split(',')[1] : base64Data;
@@ -254,7 +279,7 @@ function generatePdfPreviewHtml(base64Data: string, isDark: boolean): string {
       transform: translate(-50%, -50%);
       text-align: center;
       font-size: 14px;
-      color: ${isDark ? '#a1a1aa' : '#71717a'};
+      color: ${colors.textMuted};
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     }
     #error {
@@ -264,7 +289,7 @@ function generatePdfPreviewHtml(base64Data: string, isDark: boolean): string {
       left: 50%;
       transform: translate(-50%, -50%);
       text-align: center;
-      color: #ef4444;
+      color: ${colors.error};
       padding: 20px;
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     }
@@ -710,7 +735,7 @@ function ImageAttachment({
                 <View className="absolute inset-0 bg-muted/50 items-center justify-center">
                   <ActivityIndicator
                     size="small"
-                    color={colorScheme === 'dark' ? '#ffffff' : '#000000'}
+                    color={colorScheme === 'dark' ? KIDPEN_COLORS.dark.text : KIDPEN_COLORS.light.text}
                   />
                 </View>
               )}
@@ -719,7 +744,7 @@ function ImageAttachment({
             <View className="flex-1 items-center justify-center bg-muted/30">
               <ActivityIndicator
                 size="small"
-                color={colorScheme === 'dark' ? '#ffffff' : '#000000'}
+                color={colorScheme === 'dark' ? KIDPEN_COLORS.dark.text : KIDPEN_COLORS.light.text}
               />
               <Text className="text-xs text-muted-foreground mt-2">
                 Loading...
@@ -1294,8 +1319,8 @@ function PresentationAttachment({
           <Icon
             as={Play}
             size={12}
-            color={isDark ? '#f8f8f8' : '#121215'}
-            fill={isDark ? '#f8f8f8' : '#121215'}
+            color={isDark ? KIDPEN_COLORS.dark.text : KIDPEN_COLORS.light.text}
+            fill={isDark ? KIDPEN_COLORS.dark.text : KIDPEN_COLORS.light.text}
           />
           <Text className="text-xs font-roobert-medium text-foreground">
             Open

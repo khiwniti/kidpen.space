@@ -5,7 +5,7 @@ import { cn } from '@/lib/utils';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Maximize2, X, ZoomIn, ZoomOut, RotateCcw } from 'lucide-react';
-import { KortixLoader } from '@/components/ui/kortix-loader';
+import { KidpenLoader } from '@/components/ui/kidpen-loader';
 
 // Global cache for rendered Mermaid diagrams
 const mermaidCache = new Map<string, string>();
@@ -290,7 +290,7 @@ export const MermaidRenderer: React.FC<MermaidRendererProps> = React.memo(({
       // For fullscreen, show a fallback message instead of crashing
       if (isFullscreenOpen) {
         setFullscreenRenderedContent(`
-          <div style="display: flex; align-items: center; justify-content: center; height: 200px; color: #6b7280; font-family: ui-sans-serif, system-ui, sans-serif;">
+          <div style="display: flex; align-items: center; justify-content: center; height: 200px; color: var(--kidpen-text-muted); font-family: ui-sans-serif, system-ui, sans-serif;">
             <div style="text-align: center;">
               <div style="font-size: 24px; margin-bottom: 8px;">📊</div>
               <div>Diagram rendering failed</div>
@@ -492,7 +492,7 @@ export const MermaidRenderer: React.FC<MermaidRendererProps> = React.memo(({
       )}>
         <div className="text-center">
           <div className="text-sm text-muted-foreground mb-2">🎨 Rendering Mermaid diagram...</div>
-          <KortixLoader size="medium" />
+          <KidpenLoader size="medium" />
         </div>
       </div>
     );
@@ -718,7 +718,7 @@ export const MermaidRenderer: React.FC<MermaidRendererProps> = React.memo(({
                 <div className="flex items-center justify-center h-full w-full">
                   <div className="text-center">
                     <div className="text-sm text-muted-foreground mb-2">🎨 Loading fullscreen diagram...</div>
-                    <KortixLoader size="medium" />
+                    <KidpenLoader size="medium" />
                   </div>
                 </div>
               )}

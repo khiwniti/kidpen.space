@@ -19,7 +19,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { X, Image as ImageIcon, Presentation, BarChart3, FileText, Search, Palette, Video, Code2, Sparkles, Brain as BrainIcon, MessageSquare, CornerDownLeft, Plug, Lock } from 'lucide-react';
-import { KortixLoader } from '@/components/ui/kortix-loader';
+import { KidpenLoader } from '@/components/ui/kidpen-loader';
 import { VoiceRecorder } from './voice-recorder';
 import { useTheme } from 'next-themes';
 import { useTranslations } from 'next-intl';
@@ -32,7 +32,7 @@ import { ToolCallInput } from './floating-tool-preview';
 import { ChatSnack } from './chat-snack';
 import { Brain, Zap, Database, ArrowDown, ArrowUp, Wrench, Clock, Send } from 'lucide-react';
 import { useMessageQueueStore } from '@/stores/message-queue-store';
-import { useSunaModesStore } from '@/stores/suna-modes-store';
+import { useKidpenModesStore } from '@/stores/kidpen-modes-store';
 import { useComposioToolkitIcon } from '@/hooks/composio/use-composio';
 import { Skeleton } from '@/components/ui/skeleton';
 import { ContextUsageIndicator } from '../ContextUsageIndicator';
@@ -417,14 +417,14 @@ function ModeButton({
   
   // Read ALL mode state directly from Zustand store with individual selectors
   // Each selector returns a primitive/stable reference, so no infinite loop
-  const selectedMode = useSunaModesStore((state) => state.selectedMode);
-  const selectedCharts = useSunaModesStore((state) => state.selectedCharts);
-  const selectedOutputFormat = useSunaModesStore((state) => state.selectedOutputFormat);
-  const selectedTemplate = useSunaModesStore((state) => state.selectedTemplate);
-  const selectedDocsType = useSunaModesStore((state) => state.selectedDocsType);
-  const selectedImageStyle = useSunaModesStore((state) => state.selectedImageStyle);
-  const selectedCanvasAction = useSunaModesStore((state) => state.selectedCanvasAction);
-  const selectedVideoStyle = useSunaModesStore((state) => state.selectedVideoStyle);
+  const selectedMode = useKidpenModesStore((state) => state.selectedMode);
+  const selectedCharts = useKidpenModesStore((state) => state.selectedCharts);
+  const selectedOutputFormat = useKidpenModesStore((state) => state.selectedOutputFormat);
+  const selectedTemplate = useKidpenModesStore((state) => state.selectedTemplate);
+  const selectedDocsType = useKidpenModesStore((state) => state.selectedDocsType);
+  const selectedImageStyle = useKidpenModesStore((state) => state.selectedImageStyle);
+  const selectedCanvasAction = useKidpenModesStore((state) => state.selectedCanvasAction);
+  const selectedVideoStyle = useKidpenModesStore((state) => state.selectedVideoStyle);
   
   // Generate mode-specific display text - computed directly (no useMemo to ensure fresh values)
   const getDisplayText = () => {
@@ -690,7 +690,7 @@ const SubmitButton = memo(function SubmitButton({
             disabled={isDisabled}
           >
             {((loading || isUploading) && !isAgentRunning) ? (
-              <KortixLoader size="small" customSize={20} variant={buttonLoaderVariant} />
+              <KidpenLoader size="small" customSize={20} variant={buttonLoaderVariant} />
             ) : showAddToQueue ? (
               <MessageSquare className="h-4 w-4" />
             ) : isAgentRunning ? (
@@ -878,9 +878,9 @@ export const ChatInput = memo(forwardRef<ChatInputHandles, ChatInputProps>(
     const [sunaAgentModes, setSunaAgentModes] = useState<'adaptive' | 'autonomous' | 'chat'>('adaptive');
 
     // Read mode-specific state directly from Zustand for markdown generation
-    const selectedCharts = useSunaModesStore((state) => state.selectedCharts);
-    const selectedOutputFormat = useSunaModesStore((state) => state.selectedOutputFormat);
-    const selectedTemplate = useSunaModesStore((state) => state.selectedTemplate);
+    const selectedCharts = useKidpenModesStore((state) => state.selectedCharts);
+    const selectedOutputFormat = useKidpenModesStore((state) => state.selectedOutputFormat);
+    const selectedTemplate = useKidpenModesStore((state) => state.selectedTemplate);
 
     // Voice player state for snack visibility
     const voiceState = useVoicePlayerStore((s) => s.state);

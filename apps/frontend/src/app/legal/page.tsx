@@ -1288,7 +1288,7 @@ function LegalContent() {
                         Trademarks and Patents
                       </h3>
                       <p className="text-muted-foreground text-balance mb-6">
-                        All Kortix logos, marks, and designations are trademarks or
+                        All Kidpen logos, marks, and designations are trademarks or
                         registered trademarks of the Company. All other trademarks
                         mentioned on this website are the property of their
                         respective owners. The trademarks and logos displayed on

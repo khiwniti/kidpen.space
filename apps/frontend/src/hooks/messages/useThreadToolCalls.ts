@@ -6,7 +6,7 @@ import { safeJsonParse } from '@/components/thread/utils';
 import { useIsMobile } from '@/hooks/utils';
 import { isAskOrCompleteTool } from './utils';
 import { isHiddenTool } from '@agentpress/shared/tools';
-import { useKortixComputerStore, useIsSidePanelOpen, useSetIsSidePanelOpen } from '@/stores/kidpen-computer-store';
+import { useKidpenComputerStore, useIsSidePanelOpen, useSetIsSidePanelOpen } from '@/stores/kidpen-computer-store';
 import { getOrAssignToolNumber, getToolNumber } from './tool-tracking';
 
 interface UseThreadToolCallsReturn {
@@ -51,7 +51,7 @@ export function useThreadToolCalls(
   const userNavigatedRef = useRef(false);
   const isMobile = useIsMobile();
   
-  const navigateToToolCall = useKortixComputerStore((state) => state.navigateToToolCall);
+  const navigateToToolCall = useKidpenComputerStore((state) => state.navigateToToolCall);
 
   const toggleSidePanel = useCallback(() => {
     const newState = !isSidePanelOpen;

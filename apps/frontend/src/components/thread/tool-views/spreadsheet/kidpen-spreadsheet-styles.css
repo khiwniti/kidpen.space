@@ -1,27 +1,29 @@
 /*
  * Kidpen Brand Styles for Syncfusion Spreadsheet
- * Black accent theme overrides
+ * Uses kidpen.space Design System v2.0 "Spark of Joy"
+ * Reference: /teamspace/studios/this_studio/kidpen/design_system.html
  */
 
 /* ============================================
-   CSS VARIABLES
+   CSS VARIABLES - Using kidpen Design System
    ============================================ */
 
 .e-spreadsheet {
-  --kidpen-accent: #000000;
-  --kidpen-accent-hover: #1a1a1a;
+  /* Using kidpen design system variables */
+  --kidpen-accent: var(--kidpen-text-primary);
+  --kidpen-accent-hover: var(--kidpen-text-secondary);
   --kidpen-bg-hover: rgba(0, 0, 0, 0.05);
   --kidpen-bg-active: rgba(0, 0, 0, 0.08);
   --kidpen-bg-pressed: rgba(0, 0, 0, 0.12);
-  --kidpen-text: #374151;
-  --kidpen-text-muted: #6b7280;
+  --kidpen-text: var(--kidpen-text-primary);
+  --kidpen-text-muted: var(--kidpen-text-muted);
 }
 
 /* Ensure toolbar has proper background for contrast */
 .e-spreadsheet .e-toolbar-items,
 .e-spreadsheet .e-tab-header,
 .e-spreadsheet .e-ribbon {
-  background-color: #f9fafb !important; /* Gray-50 light background */
+  background-color: var(--kidpen-bg-secondary) !important; /* Warm cream background */
 }
 
 /* Override Syncfusion variables */
@@ -60,25 +62,25 @@
 .e-spreadsheet .e-toolbar-item .e-tab-text,
 .e-spreadsheet .e-tab-header .e-tab-text,
 .e-spreadsheet .e-ribbon .e-tab-text {
-  color: #374151 !important; /* Gray-700 for readable inactive tabs */
+  color: var(--kidpen-text-primary) !important; /* kidpen primary text */
 }
 
 /* File menu item text */
 .e-spreadsheet .e-menu-item,
 .e-spreadsheet .e-file-menu .e-menu-item,
 .e-spreadsheet .e-menu-parent .e-menu-item {
-  color: #374151 !important;
+  color: var(--kidpen-text-primary) !important;
 }
 
 /* Caret icons in menu */
 .e-spreadsheet .e-menu-item .e-caret,
 .e-spreadsheet .e-file-menu .e-caret {
-  color: #374151 !important;
+  color: var(--kidpen-text-primary) !important;
 }
 
 /* Close icons on tabs */
 .e-spreadsheet .e-close-icon {
-  color: #9ca3af !important; /* Gray-400 for subtle close icons */
+  color: var(--kidpen-text-muted) !important; /* kidpen muted text */
 }
 
 /* Active tabs - text styling */
@@ -144,7 +146,7 @@
 .e-spreadsheet .e-btn.e-primary {
   background-color: var(--kidpen-accent) !important;
   border-color: var(--kidpen-accent) !important;
-  color: #fff !important;
+  color: var(--kidpen-text-inverse) !important;
 }
 
 .e-spreadsheet .e-btn.e-primary:is(:hover, :focus) {
@@ -240,7 +242,7 @@
 .e-spreadsheet .e-filter-popup .e-btn.e-primary {
   background-color: var(--kidpen-accent) !important;
   border-color: var(--kidpen-accent) !important;
-  color: #fff !important;
+  color: var(--kidpen-text-inverse) !important;
 }
 
 .e-spreadsheet .e-filter-popup .e-btn.e-primary:hover {

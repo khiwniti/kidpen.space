@@ -10,7 +10,7 @@ import { WebLinksAddon } from '@xterm/addon-web-links';
 import '@xterm/xterm/css/xterm.css';
 import { useAuth } from '@/components/AuthProvider';
 import { RefreshCw, Copy, Check, TerminalSquare } from 'lucide-react';
-import { KortixLoader } from '@/components/ui/kortix-loader';
+import { KidpenLoader } from '@/components/ui/kidpen-loader';
 import { toast } from '@/lib/toast';
 import { backendApi } from '@/lib/api-client';
 import { fileQueryKeys } from '@/hooks/files/use-file-queries';

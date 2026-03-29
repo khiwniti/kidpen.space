@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import { useKortixComputerStore } from '@/stores/kidpen-computer-store';
+import { useKidpenComputerStore } from '@/stores/kidpen-computer-store';
 
 type Mode = 'slides' | 'sheets' | 'docs' | 'canvas' | 'video' | 'research';
 
@@ -16,7 +16,7 @@ export function useModeViewerInit(
   accessToken?: string
 ) {
   const hasInitialized = useRef(false);
-  const openFileBrowser = useKortixComputerStore((state) => state.openFileBrowser);
+  const openFileBrowser = useKidpenComputerStore((state) => state.openFileBrowser);
 
   useEffect(() => {
     // Only run once per thread

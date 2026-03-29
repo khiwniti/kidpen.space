@@ -44,7 +44,7 @@ import {
   Lock,
   Sparkles,
 } from 'lucide-react';
-import { KortixLoader } from '@/components/ui/kortix-loader';
+import { KidpenLoader } from '@/components/ui/kidpen-loader';
 import { toast } from '@/lib/toast';
 import { cn } from '@/lib/utils';
 import { KidpenLogo } from '@/components/sidebar/kidpen-logo';
@@ -596,7 +596,7 @@ export function AgentConfigurationDialog({
                   disabled={exportMutation.isPending}
                 >
                   {exportMutation.isPending ? (
-                    <KortixLoader customSize={16} />
+                    <KidpenLoader customSize={16} />
                   ) : (
                     <Download className="h-4 w-4" />
                   )}
@@ -606,7 +606,7 @@ export function AgentConfigurationDialog({
           </DialogHeader>
           {isLoading ? (
             <div className="flex-1 flex items-center justify-center">
-              <KortixLoader size="large" />
+              <KidpenLoader size="large" />
             </div>
           ) : (
             <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as typeof activeTab)} className="flex-1 flex flex-col min-h-0">
@@ -827,7 +827,7 @@ export function AgentConfigurationDialog({
             >
               {isSaving ? (
                 <>
-                  <KortixLoader customSize={16} className="mr-1" />
+                  <KidpenLoader customSize={16} className="mr-1" />
                   Saving...
                 </>
               ) : (

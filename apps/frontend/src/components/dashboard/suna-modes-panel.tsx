@@ -4,7 +4,7 @@ import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
-import { useSunaModesStore } from '@/stores/suna-modes-store';
+import { useKidpenModesStore } from '@/stores/kidpen-modes-store';
 import {
   Image as ImageIcon,
   Presentation,
@@ -72,7 +72,7 @@ import {
   NotebookPen,
   type LucideIcon,
 } from 'lucide-react';
-import { KortixLoader } from '@/components/ui/kortix-loader';
+import { KidpenLoader } from '@/components/ui/kidpen-loader';
 import { Button } from '@/components/ui/button';
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 import { Card } from '@/components/ui/card';
@@ -1059,14 +1059,14 @@ export function SunaModesPanel({
   };
   
   // Get atomic combined setters from Zustand store - these set mode AND selection in one call
-  const selectTemplate = useSunaModesStore((state) => state.selectTemplate);
-  const selectOutputFormat = useSunaModesStore((state) => state.selectOutputFormat);
-  const selectCharts = useSunaModesStore((state) => state.selectCharts);
-  const selectDocsType = useSunaModesStore((state) => state.selectDocsType);
-  const selectImageStyle = useSunaModesStore((state) => state.selectImageStyle);
-  const selectCanvasAction = useSunaModesStore((state) => state.selectCanvasAction);
-  const selectVideoStyle = useSunaModesStore((state) => state.selectVideoStyle);
-  const storeSetSelectedMode = useSunaModesStore((state) => state.setSelectedMode);
+  const selectTemplate = useKidpenModesStore((state) => state.selectTemplate);
+  const selectOutputFormat = useKidpenModesStore((state) => state.selectOutputFormat);
+  const selectCharts = useKidpenModesStore((state) => state.selectCharts);
+  const selectDocsType = useKidpenModesStore((state) => state.selectDocsType);
+  const selectImageStyle = useKidpenModesStore((state) => state.selectImageStyle);
+  const selectCanvasAction = useKidpenModesStore((state) => state.selectCanvasAction);
+  const selectVideoStyle = useKidpenModesStore((state) => state.selectVideoStyle);
+  const storeSetSelectedMode = useKidpenModesStore((state) => state.setSelectedMode);
 
   // Handler for chart selection toggle - uses atomic setter
   const handleChartToggle = (chartId: string) => {
@@ -2400,7 +2400,7 @@ export function SunaModesPanel({
                 {isPdfLoading && (
                   <div className="absolute inset-0 flex items-center justify-center bg-background/80 backdrop-blur-sm rounded-lg z-10">
                     <div className="flex flex-col items-center gap-3">
-                      <KortixLoader size="medium" />
+                      <KidpenLoader size="medium" />
                       <p className="text-sm text-muted-foreground">Loading preview...</p>
                     </div>
                   </div>

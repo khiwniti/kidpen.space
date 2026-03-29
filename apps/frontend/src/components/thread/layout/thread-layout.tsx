@@ -11,7 +11,7 @@ import {
   ResizablePanel,
   ResizableHandle,
 } from '@/components/ui/resizable';
-import { useKortixComputerStore } from '@/stores/kidpen-computer-store';
+import { useKidpenComputerStore } from '@/stores/kidpen-computer-store';
 
 interface ThreadLayoutProps {
   children: React.ReactNode;
@@ -86,7 +86,7 @@ export const ThreadLayout = memo(function ThreadLayout({
   const isActuallyMobile = useIsMobile();
 
   // Kortix Computer Store - for handling file open requests
-  const { shouldOpenPanel, clearShouldOpenPanel, openFileInComputer, openFileBrowser } = useKortixComputerStore();
+  const { shouldOpenPanel, clearShouldOpenPanel, openFileInComputer, openFileBrowser } = useKidpenComputerStore();
 
   // Track when panel should be visible
   const shouldShowPanel = isSidePanelOpen && initialLoadCompleted;
@@ -145,7 +145,7 @@ export const ThreadLayout = memo(function ThreadLayout({
   }, [shouldOpenPanel, isSidePanelOpen, onToggleSidePanel, clearShouldOpenPanel]);
 
   // Get selected file path from store
-  const selectedFilePath = useKortixComputerStore((state) => state.selectedFilePath);
+  const selectedFilePath = useKidpenComputerStore((state) => state.selectedFilePath);
   
   const SUITE_MODE_FILE_EXTENSIONS = [
     'kanvax', 

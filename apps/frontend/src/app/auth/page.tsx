@@ -11,7 +11,7 @@ import { useState, useEffect, Suspense, lazy, useRef } from 'react';
 import { signUp, verifyOtp } from './actions';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { Mail, MailCheck, Clock, ExternalLink } from 'lucide-react';
-import { KortixLoader } from '@/components/ui/kortix-loader';
+import { KidpenLoader } from '@/components/ui/kidpen-loader';
 import { useAuth } from '@/components/AuthProvider';
 import { useAuthMethodTracking } from '@/stores/auth-tracking';
 import { toast } from '@/lib/toast';
@@ -265,7 +265,7 @@ function LoginContent() {
   if (isLoading || user) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
-        <KortixLoader size="medium" />
+        <KidpenLoader size="medium" />
       </div>
     );
   }
@@ -332,7 +332,7 @@ function LoginContent() {
 
                 <div className="relative">
                   <div className="absolute inset-0 bg-gradient-to-r from-transparent via-foreground/5 to-transparent animate-pulse" />
-                  <KortixLoader size="medium" />
+                  <KidpenLoader size="medium" />
                 </div>
 
                 <div className="text-center space-y-2">
@@ -796,7 +796,7 @@ export default function Login() {
     <Suspense
       fallback={
         <div className="min-h-screen bg-background flex items-center justify-center">
-          <KortixLoader size="medium" />
+          <KidpenLoader size="medium" />
         </div>
       }
     >

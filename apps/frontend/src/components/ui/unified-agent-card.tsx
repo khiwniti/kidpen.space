@@ -3,7 +3,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Check, Plus, Download, CheckCircle, Globe, GlobeLock, GitBranch, Trash2, MoreVertical, User, ArrowRight } from 'lucide-react';
-import { KortixLoader } from '@/components/ui/kortix-loader';
+import { KidpenLoader } from '@/components/ui/kidpen-loader';
 import { DynamicIcon } from 'lucide-react/dynamic';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -600,7 +600,7 @@ export const UnifiedAgentCard: React.FC<UnifiedAgentCardProps> = ({
             >
               {isActioning ? (
                 <>
-                  <KortixLoader size="small" className="mr-2" />
+                  <KidpenLoader size="small" className="mr-2" />
                   Installing...
                 </>
               ) : (
@@ -648,7 +648,7 @@ export const UnifiedAgentCard: React.FC<UnifiedAgentCardProps> = ({
             >
               {isActioning ? (
                 <>
-                  <KortixLoader size="small" />
+                  <KidpenLoader size="small" />
                   {data.is_public ? 'Unpublishing...' : 'Publishing...'}
                 </>
               ) : (
@@ -725,7 +725,7 @@ export const UnifiedAgentCard: React.FC<UnifiedAgentCardProps> = ({
               >
                 {isActioning ? (
                   <>
-                    <KortixLoader size="small" />
+                    <KidpenLoader size="small" />
                     Deleting...
                   </>
                 ) : (
