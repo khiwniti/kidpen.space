@@ -1,0 +1,15 @@
+# Kidpen Robots.txt
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://kidpen.space/sitemap.xml
+
+# Disallow sensitive routes
+Disallow: /api/
+Disallow: /_next/
+Disallow: /admin/
+
+# Allow crawling of public pages
+Allow: /suna/
+

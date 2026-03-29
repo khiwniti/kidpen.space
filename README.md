@@ -1,39 +1,39 @@
 <div align="center">
 
-# Kortix
+# Kidpen
 
 **The complete platform for creating autonomous AI agents that work for you**
 
 Build, manage, and train sophisticated AI agents for any use case. Create powerful agents that act autonomously on your behalf.
 
 [![Discord Follow](https://dcbadge.limes.pink/api/server/RvFhXUdZ9H?style=flat)](https://discord.com/invite/RvFhXUdZ9H)
-[![Twitter Follow](https://img.shields.io/twitter/follow/kortix)](https://x.com/kortix)
-[![GitHub Repo stars](https://img.shields.io/github/stars/kortix-ai/suna)](https://github.com/kortix-ai/suna)
-[![Issues](https://img.shields.io/github/issues/kortix-ai/suna)](https://github.com/kortix-ai/suna/labels/bug)
+[![Twitter Follow](https://img.shields.io/twitter/follow/kidpen)](https://x.com/kidpen)
+[![GitHub Repo stars](https://img.shields.io/github/stars/kidpen-ai/suna)](https://github.com/kidpen-ai/suna)
+[![Issues](https://img.shields.io/github/issues/kidpen-ai/suna)](https://github.com/kidpen-ai/suna/labels/bug)
 
 <!-- Keep these links. Translations will automatically update with the README. -->
-[Deutsch](https://www.readme-i18n.com/kortix-ai/suna?lang=de) | 
-[Español](https://www.readme-i18n.com/kortix-ai/suna?lang=es) | 
-[français](https://www.readme-i18n.com/kortix-ai/suna?lang=fr) | 
-[日本語](https://www.readme-i18n.com/kortix-ai/suna?lang=ja) | 
-[한국어](https://www.readme-i18n.com/kortix-ai/suna?lang=ko) | 
-[Português](https://www.readme-i18n.com/kortix-ai/suna?lang=pt) | 
-[Русский](https://www.readme-i18n.com/kortix-ai/suna?lang=ru) | 
-[中文](https://www.readme-i18n.com/kortix-ai/suna?lang=zh)
+[Deutsch](https://www.readme-i18n.com/kidpen-ai/suna?lang=de) | 
+[Español](https://www.readme-i18n.com/kidpen-ai/suna?lang=es) | 
+[français](https://www.readme-i18n.com/kidpen-ai/suna?lang=fr) | 
+[日本語](https://www.readme-i18n.com/kidpen-ai/suna?lang=ja) | 
+[한국어](https://www.readme-i18n.com/kidpen-ai/suna?lang=ko) | 
+[Português](https://www.readme-i18n.com/kidpen-ai/suna?lang=pt) | 
+[Русский](https://www.readme-i18n.com/kidpen-ai/suna?lang=ru) | 
+[中文](https://www.readme-i18n.com/kidpen-ai/suna?lang=zh)
 
-![Kortix Screenshot](apps/frontend/public/banner.png)
+![Kidpen Screenshot](apps/frontend/public/banner.png)
 </div>
 
 
 
 
-## 🌟 What Makes Kortix Special
+## 🌟 What Makes Kidpen Special
 
-### 🤖 Includes Kortix Super Worker – Flagship Generalist AI Worker
-Meet Kortix Super Worker, our showcase agent that demonstrates the full power of the Kortix platform. Through natural conversation, Kortix Super Worker handles research, data analysis, browser automation, file management, and complex workflows – showing you what's possible when you build with Kortix.
+### 🤖 Includes Kidpen Super Worker – Flagship Generalist AI Worker
+Meet Kidpen Super Worker, our showcase agent that demonstrates the full power of the Kidpen platform. Through natural conversation, Kidpen Super Worker handles research, data analysis, browser automation, file management, and complex workflows – showing you what's possible when you build with Kidpen.
 
-### 🔧 Build Custom Kortix Super Worker-Type Agents
-Create your own specialized agents tailored to specific domains, workflows, or business needs. Whether you need agents for customer service, data processing, content creation, or industry-specific tasks, Kortix provides the infrastructure and tools to build, deploy, and scale them.
+### 🔧 Build Custom Kidpen Super Worker-Type Agents
+Create your own specialized agents tailored to specific domains, workflows, or business needs. Whether you need agents for customer service, data processing, content creation, or industry-specific tasks, Kidpen provides the infrastructure and tools to build, deploy, and scale them.
 
 ### 🚀 Complete Platform Capabilities
 - **Browser Automation**: Navigate websites, extract data, fill forms, automate web workflows
@@ -45,7 +45,7 @@ Create your own specialized agents tailored to specific domains, workflows, or b
 
 ## 📋 Table of Contents
 
-- [🌟 What Makes Kortix Special](#-what-makes-kortix-special)
+- [🌟 What Makes Kidpen Special](#-what-makes-kidpen-special)
 - [🎯 Agent Examples & Use Cases](#-agent-examples--use-cases)
 - [🏗️ Platform Architecture](#️-platform-architecture)
 - [🚀 Quick Start](#-quick-start)
@@ -55,9 +55,9 @@ Create your own specialized agents tailored to specific domains, workflows, or b
 
 ## 🎯 Agent Examples & Use Cases
 
-### Kortix Super Worker - Your Generalist AI Worker
+### Kidpen Super Worker - Your Generalist AI Worker
 
-Kortix Super Worker demonstrates the full capabilities of the Kortix platform as a versatile AI worker that can:
+Kidpen Super Worker demonstrates the full capabilities of the Kidpen platform as a versatile AI worker that can:
 
 **🔍 Research & Analysis**
 - Conduct comprehensive web research across multiple sources
@@ -91,7 +91,7 @@ Kortix Super Worker demonstrates the full capabilities of the Kortix platform as
 
 ### Build Your Own Specialized Agents
 
-The Kortix platform enables you to create agents tailored to specific needs:
+The Kidpen platform enables you to create agents tailored to specific needs:
 
 **🎧 Customer Service Agents**
 - Handle support tickets and FAQ responses
@@ -129,7 +129,7 @@ Each agent can be configured with custom tools, workflows, knowledge bases, and 
 
 ![Architecture Diagram](docs/images/diagram.png)
 
-Kortix consists of four main components that work together to provide a complete AI agent development platform:
+Kidpen consists of four main components that work together to provide a complete AI agent development platform:
 
 ### 🔧 Backend API
 Python/FastAPI service that powers the agent platform with REST endpoints, thread management, agent orchestration, and LLM integration with Anthropic, OpenAI, and others via LiteLLM. Includes agent builder tools, workflow management, and extensible tool system.
@@ -145,11 +145,11 @@ Supabase-powered data layer handling authentication, user management, agent conf
 
 ## 🚀 Quick Start
 
-Get your Kortix platform running in minutes with our automated setup wizard:
+Get your Kidpen platform running in minutes with our automated setup wizard:
 
 ### 1️⃣ Clone the Repository
 ```bash
-git clone https://github.com/kortix-ai/suna.git
+git clone https://github.com/kidpen-ai/suna.git
 cd suna
 ```
 
@@ -199,14 +199,14 @@ After initial setup, you can run `python setup.py` again to:
 - **Add/Update API Keys** - Configure additional LLM providers (Anthropic, OpenAI, Groq, etc.), search APIs (Tavily, Firecrawl, etc.), and other integrations
 - **Clear setup and start fresh** - Remove all configuration and start over
 
-That's it! Your Kortix platform will be running with Kortix Super Worker ready to assist you. Ty mate
+That's it! Your Kidpen platform will be running with Kidpen Super Worker ready to assist you. Ty mate
 ---
 
 <div align="center">
 
 **Ready to build your first AI agent?** 
 
-[Get Started](./docs/SELF-HOSTING.md) • [Join Discord](https://discord.com/invite/RvFhXUdZ9H) • [Follow on Twitter](https://x.com/kortix)
+[Get Started](./docs/SELF-HOSTING.md) • [Join Discord](https://discord.com/invite/RvFhXUdZ9H) • [Follow on Twitter](https://x.com/kidpen)
 
 </div>
 # kidpen.space
