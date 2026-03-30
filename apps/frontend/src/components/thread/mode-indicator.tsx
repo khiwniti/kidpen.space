@@ -61,19 +61,19 @@ export const ModeIndicator = memo(function ModeIndicator() {
   const showAllModelsOption = !isProductionMode();
 
   const basicModel = useMemo(
-    () => modelOptions.find((m) => m.id === 'kortix/basic' || m.label === 'Kidpen Basic'),
+    () => modelOptions.find((m) => m.id === 'kidpen/basic' || m.label === 'Kidpen Basic'),
     [modelOptions]
   );
   
   const powerModel = useMemo(
-    () => modelOptions.find((m) => m.id === 'kortix/power' || m.label === 'Kidpen Advanced Mode'),
+    () => modelOptions.find((m) => m.id === 'kidpen/power' || m.label === 'Kidpen Advanced Mode'),
     [modelOptions]
   );
 
   // Get other models (not basic or power) for the staging section
   const otherModels = useMemo(() => {
     return modelOptions.filter(
-      (m) => m.id !== 'kortix/basic' && m.id !== 'kortix/power' && 
+      (m) => m.id !== 'kidpen/basic' && m.id !== 'kidpen/power' && 
              m.label !== 'Kidpen Basic' && m.label !== 'Kidpen Advanced Mode'
     ).sort((a, b) => (b.priority ?? 0) - (a.priority ?? 0));
   }, [modelOptions]);

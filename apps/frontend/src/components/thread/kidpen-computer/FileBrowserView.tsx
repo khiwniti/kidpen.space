@@ -828,7 +828,7 @@ export function FileBrowserView({
             const presentationName = file.path.split('/').pop() || 'presentation';
             openPresentation(presentationName, project.sandbox.sandbox_url, 1);
           } else {
-            // In side panel view, use kortix computer store
+            // In side panel view, use kidpen computer store
             openFile(file.path);
           }
         } else {
@@ -836,7 +836,7 @@ export function FileBrowserView({
           navigateToPath(file.path);
         }
       } else {
-        // Open file using kortix computer store
+        // Open file using kidpen computer store
         // FileViewerView will detect selectedVersion from store
         openFile(file.path);
       }

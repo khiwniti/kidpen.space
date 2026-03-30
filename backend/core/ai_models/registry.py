@@ -363,7 +363,7 @@ class ModelFactory:
                 name="Kidpen Advanced Mode",
                 litellm_model_id=custom_model or default_models["kimi"],
                 provider=ModelProvider.OPENROUTER,
-                aliases=["kortix-power", "Kidpen POWER Mode", "Kidpen Power", "Kidpen Advanced Mode"],
+                aliases=["kidpen-power", "Kidpen POWER Mode", "Kidpen Power", "Kidpen Advanced Mode"],
                 context_window=262_144,
                 capabilities=[
                     ModelCapability.CHAT,
@@ -385,7 +385,7 @@ class ModelFactory:
                 name="Kidpen Advanced Mode",
                 litellm_model_id=custom_model or default_models["bedrock"],
                 provider=ModelProvider.BEDROCK,
-                aliases=["kortix-power", "Kidpen POWER Mode", "Kidpen Power", "Kidpen Advanced Mode"],
+                aliases=["kidpen-power", "Kidpen POWER Mode", "Kidpen Power", "Kidpen Advanced Mode"],
                 context_window=200_000,
                 capabilities=[
                     ModelCapability.CHAT,
@@ -407,7 +407,7 @@ class ModelFactory:
                 name="Kidpen Advanced Mode",
                 litellm_model_id=custom_model or default_models["anthropic"],
                 provider=ModelProvider.ANTHROPIC,
-                aliases=["kortix-power", "Kidpen POWER Mode", "Kidpen Power", "Kidpen Advanced Mode"],
+                aliases=["kidpen-power", "Kidpen POWER Mode", "Kidpen Power", "Kidpen Advanced Mode"],
                 context_window=200_000,
                 capabilities=[
                     ModelCapability.CHAT,
@@ -429,7 +429,7 @@ class ModelFactory:
                 name="Kidpen Advanced Mode",
                 litellm_model_id=custom_model or default_models["grok"],
                 provider=ModelProvider.OPENROUTER,
-                aliases=["kortix-power", "Kidpen POWER Mode", "Kidpen Power", "Kidpen Advanced Mode"],
+                aliases=["kidpen-power", "Kidpen POWER Mode", "Kidpen Power", "Kidpen Advanced Mode"],
                 context_window=2_000_000,
                 capabilities=[
                     ModelCapability.CHAT,
@@ -450,7 +450,7 @@ class ModelFactory:
                 name="Kidpen Advanced Mode",
                 litellm_model_id=custom_model or default_models["openai"],
                 provider=ModelProvider.OPENROUTER,
-                aliases=["kortix-power", "Kidpen POWER Mode", "Kidpen Power", "Kidpen Advanced Mode"],
+                aliases=["kidpen-power", "Kidpen POWER Mode", "Kidpen Power", "Kidpen Advanced Mode"],
                 context_window=128_000,
                 capabilities=[
                     ModelCapability.CHAT,
@@ -470,7 +470,7 @@ class ModelFactory:
                 name="Kidpen Advanced Mode",
                 litellm_model_id=custom_model or default_models["minimax"],
                 provider=ModelProvider.OPENROUTER,
-                aliases=["kortix-power", "Kidpen POWER Mode", "Kidpen Power", "Kidpen Advanced Mode"],
+                aliases=["kidpen-power", "Kidpen POWER Mode", "Kidpen Power", "Kidpen Advanced Mode"],
                 context_window=200_000,
                 capabilities=[
                     ModelCapability.CHAT,
@@ -488,7 +488,7 @@ class ModelFactory:
                 name="Kidpen Advanced Mode",
                 litellm_model_id=custom_model or default_models["minimax"],
                 provider=ModelProvider.OPENROUTER,
-                aliases=["kortix-power", "Kidpen POWER Mode", "Kidpen Power", "Kidpen Advanced Mode"],
+                aliases=["kidpen-power", "Kidpen POWER Mode", "Kidpen Power", "Kidpen Advanced Mode"],
                 context_window=200_000,
                 capabilities=[
                     ModelCapability.CHAT,

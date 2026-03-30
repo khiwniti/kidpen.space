@@ -138,9 +138,9 @@ export default function AgentsPage() {
     };
     
     if (marketplaceFilter === 'kidpen') {
-      params.is_kortix_team = true;
+      params.is_kidpen_team = true;
     } else if (marketplaceFilter === 'community') {
-      params.is_kortix_team = false;
+      params.is_kidpen_team = false;
     } else if (marketplaceFilter === 'mine') {
       params.mine = true;
     }
@@ -204,7 +204,7 @@ export default function AgentsPage() {
           icon_color: template.icon_color,
           icon_background: template.icon_background,
           template_id: template.template_id,
-          is_kortix_team: template.is_kortix_team,
+          is_kidpen_team: template.is_kidpen_team,
           mcp_requirements: template.mcp_requirements,
           metadata: template.metadata,
           usage_examples: template.usage_examples,

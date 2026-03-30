@@ -2,7 +2,7 @@
 
 **Last Updated**: 2026-03-30
 **Current Phase**: Phase 1 (Planning Complete, Ready for Execution)
-**Next Action**: Begin Phase 1 execution - Fork kortix-ai/suna
+**Next Action**: Begin Phase 1 execution - Fork kidpen-ai/suna
 
 ---
 
@@ -11,7 +11,7 @@
 | Field | Value |
 |-------|-------|
 | Project Name | kidpen.space |
-| Source Fork | Kortix AI Suna Agent |
+| Source Fork | Kidpen AI Suna Agent |
 | Target Users | 4.4M Thai ม.1-ม.6 students (ages 12-18) |
 | Mission | Free Socratic STEM tutoring for Thai secondary education |
 
@@ -103,7 +103,7 @@ Browser (IndexedDB) ←→ Google Drive (drive.appdata)
 
 ## Blocking Dependencies
 
-1. **Suna Access**: Need Kortix AI Suna repository fork access
+1. **Suna Access**: Need Kidpen AI Suna repository fork access
 2. **API Keys**: Anthropic/OpenAI for cloud tier
 3. **Supabase Project**: Singapore region setup
 4. **Google OAuth**: Cloud Console credentials

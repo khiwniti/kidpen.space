@@ -31,7 +31,7 @@ interface Tutorial {
 
 const tutorials: Tutorial[] = [
   {
-    id: 'introduction-to-kortix',
+    id: 'introduction-to-kidpen',
     title: 'Introduction to Kidpen',
     description: 'Get a comprehensive overview of Kidpen and discover the different AI-powered content generation modes available to supercharge your workflow.',
     duration: '3 min',

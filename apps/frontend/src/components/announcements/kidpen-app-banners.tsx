@@ -8,12 +8,12 @@ import { isElectron } from '@/lib/utils/is-electron';
 import { featureFlags } from '@/lib/feature-flags';
 import { AppDownloadQR, APP_DOWNLOAD_URL } from '@/components/common/app-download-qr';
 
-const MOBILE_STORAGE_KEY = 'kortix-mobile-banner-dismissed';
-const DESKTOP_STORAGE_KEY = 'kortix-desktop-banner-dismissed';
+const MOBILE_STORAGE_KEY = 'kidpen-mobile-banner-dismissed';
+const DESKTOP_STORAGE_KEY = 'kidpen-desktop-banner-dismissed';
 
 const STORE_LINKS = {
-  ios: 'https://apps.apple.com/ie/app/kortix/id6754448524',
-  android: 'https://play.google.com/store/apps/details?id=com.kortix.app',
+  ios: 'https://apps.apple.com/ie/app/kidpen/id6754448524',
+  android: 'https://play.google.com/store/apps/details?id=com.kidpen.app',
 };
 
 const DOWNLOAD_LINKS = {

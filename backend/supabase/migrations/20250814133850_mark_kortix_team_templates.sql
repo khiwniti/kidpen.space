@@ -1,14 +1,14 @@
--- Migration: Mark Kortix team templates
--- This migration marks templates created by the Kortix team as official
+-- Migration: Mark Kidpen team templates
+-- This migration marks templates created by the Kidpen team as official
 
 BEGIN;
 
--- Update templates to mark as Kortix team based on specific criteria
--- You can adjust the WHERE clause based on your actual Kortix team account IDs or template names
+-- Update templates to mark as Kidpen team based on specific criteria
+-- You can adjust the WHERE clause based on your actual Kidpen team account IDs or template names
 
--- Option 1: Mark templates by specific names that are known Kortix team templates
+-- Option 1: Mark templates by specific names that are known Kidpen team templates
 UPDATE agent_templates
-SET is_kortix_team = true
+SET is_kidpen_team = true
 WHERE name IN (
     'Sheets Agent',
     'Slides Agent', 
@@ -20,18 +20,18 @@ WHERE name IN (
     'API Testing Agent'
 ) AND is_public = true;
 
--- Option 2: Mark templates by creator_id if you know the Kortix team account IDs
--- Uncomment and modify with actual Kortix team account IDs
+-- Option 2: Mark templates by creator_id if you know the Kidpen team account IDs
+-- Uncomment and modify with actual Kidpen team account IDs
 -- UPDATE agent_templates
--- SET is_kortix_team = true
+-- SET is_kidpen_team = true
 -- WHERE creator_id IN (
---     'kortix-team-account-id-1',
---     'kortix-team-account-id-2'
+--     'kidpen-team-account-id-1',
+--     'kidpen-team-account-id-2'
 -- );
 
 -- Option 3: Mark templates that have specific metadata indicating they're official
 UPDATE agent_templates
-SET is_kortix_team = true
+SET is_kidpen_team = true
 WHERE metadata->>'is_kidpen_default' = 'true'
    OR metadata->>'is_official' = 'true';
 
@@ -41,6 +41,6 @@ DECLARE
     updated_count INTEGER;
 BEGIN
     GET DIAGNOSTICS updated_count = ROW_COUNT;
-    RAISE NOTICE 'Marked % templates as Kortix team templates', updated_count;
+    RAISE NOTICE 'Marked % templates as Kidpen team templates', updated_count;
 END $$;
 

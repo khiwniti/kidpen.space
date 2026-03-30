@@ -68,8 +68,8 @@ export default function SunaPage() {
             logo: 'https://www.kidpen.space/favicon.png',
             sameAs: [
               'https://github.com/kidpen-ai',
-              'https://x.com/kortix',
-              'https://linkedin.com/company/kortix',
+              'https://x.com/kidpen',
+              'https://linkedin.com/company/kidpen',
             ],
             description:
               'Kidpen (formerly known as Suna) is an open source generalist AI worker that helps you accomplish real-world tasks through natural conversation.',

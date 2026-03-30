@@ -318,7 +318,7 @@ export const EventBasedTriggerDialog: React.FC<EventBasedTriggerDialogProps> = (
     const [name, setName] = useState('');
     const [prompt, setPrompt] = useState('');
     const [profileId, setProfileId] = useState('');
-    const [model, setModel] = useState('kortix/basic');
+    const [model, setModel] = useState('kidpen/basic');
     const [executionType] = useState<'agent'>('agent');
     const [showComposioConnector, setShowComposioConnector] = useState(false);
 
@@ -365,7 +365,7 @@ export const EventBasedTriggerDialog: React.FC<EventBasedTriggerDialogProps> = (
             setName('');
             setPrompt('');
             setProfileId('');
-            setModel('kortix/basic');
+            setModel('kidpen/basic');
             setShowComposioConnector(false);
         }
     }, [open, isEditMode]);
@@ -395,7 +395,7 @@ export const EventBasedTriggerDialog: React.FC<EventBasedTriggerDialogProps> = (
             setName(existingTrigger.name || '');
             setPrompt(triggerConfig.agent_prompt || '');
             setProfileId(triggerConfig.profile_id || '');
-            setModel(triggerConfig.model || 'kortix/basic');
+            setModel(triggerConfig.model || 'kidpen/basic');
 
             const { agent_prompt, profile_id, provider_id, trigger_slug, qualified_name, model: _, ...triggerSpecificConfig } = triggerConfig;
             setConfig(triggerSpecificConfig);

@@ -15,7 +15,7 @@ interface Slide {
   content?: string[];
   bulletPoints?: string[];
   accent?: string;
-  diagram?: 'agent-loop' | 'kortix-stack' | 'task-types' | 'token-flow' | 'messages-array' | 'sandbox-arch' | 'tools-overview';
+  diagram?: 'agent-loop' | 'kidpen-stack' | 'task-types' | 'token-flow' | 'messages-array' | 'sandbox-arch' | 'tools-overview';
   leftColumn?: { title: string; points: string[] };
   rightColumn?: { title: string; points: string[] };
   codeSnippet?: string;
@@ -834,7 +834,7 @@ const SlideContent = ({ slide }: { slide: Slide }) => {
             transition={{ delay: 0.3 }}
           >
             {slide.diagram === 'agent-loop' && <AgentLoopDiagram />}
-            {slide.diagram === 'kortix-stack' && <KidpenStackDiagram />}
+            {slide.diagram === 'kidpen-stack' && <KidpenStackDiagram />}
             {slide.diagram === 'task-types' && <TaskTypesDiagram />}
             {slide.diagram === 'token-flow' && <TokenFlowDiagram />}
             {slide.diagram === 'messages-array' && <MessagesArrayDiagram />}

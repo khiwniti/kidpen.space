@@ -33,8 +33,8 @@ export type Agent = {
   current_version?: AgentVersion | null;
   metadata?: {
     template_name?: string;
-    kortix_template_id?: string;
-    is_kortix_team?: boolean;
+    kidpen_template_id?: string;
+    is_kidpen_team?: boolean;
     is_kidpen_default?: boolean;
     centrally_managed?: boolean;
     management_version?: string;

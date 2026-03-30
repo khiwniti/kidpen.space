@@ -10,8 +10,8 @@ import { SimpleFooter } from '@/components/home/simple-footer';
 // This page only renders for desktop users
 
 const STORE_LINKS = {
-  ios: 'https://apps.apple.com/ie/app/kortix/id6754448524',
-  android: 'https://play.google.com/store/apps/details?id=com.kortix.app',
+  ios: 'https://apps.apple.com/ie/app/kidpen/id6754448524',
+  android: 'https://play.google.com/store/apps/details?id=com.kidpen.app',
 };
 
 // Kidpen symbol SVG (inline to avoid loading issues)

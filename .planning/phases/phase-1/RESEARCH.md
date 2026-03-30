@@ -2,7 +2,7 @@
 ## Suna Codebase Analysis for kidpen.space Migration
 
 **Research Date**: 2026-03-30
-**Source Repository**: kortix-ai/suna
+**Source Repository**: kidpen-ai/suna
 **Target Phase**: Phase 1 - Fork & Foundation (Weeks 1-6)
 
 ---
@@ -11,7 +11,7 @@
 
 ### Root Layout (pnpm Monorepo)
 ```
-kortix-ai/suna/
+kidpen-ai/suna/
 ├── apps/                    # Frontend applications (TypeScript)
 ├── backend/                 # Python backend services
 ├── packages/                # Shared TypeScript packages
@@ -128,7 +128,7 @@ apps/
 
 | Deliverable | Source (Suna) | Action | Priority |
 |-------------|--------------|--------|----------|
-| Fork repository | kortix-ai/suna | Fork to kidpen/kidpen.space | P0 |
+| Fork repository | kidpen-ai/suna | Fork to kidpen/kidpen.space | P0 |
 | Rebrand assets | apps/web/public/ | Replace logos, colors | P0 |
 | Supabase project | backend/supabase/ | New Singapore project | P0 |
 | Google OAuth | backend/auth/ | Extend for Thai locale | P0 |
@@ -157,7 +157,7 @@ apps/
 ## 5. Dependencies & Prerequisites
 
 ### External Dependencies
-- [ ] Kortix AI fork permission (public repo, MIT license expected)
+- [ ] Kidpen AI fork permission (public repo, MIT license expected)
 - [ ] Supabase project creation (Singapore region)
 - [ ] Google Cloud Console credentials
 - [ ] Domain: kidpen.space DNS configuration
@@ -173,7 +173,7 @@ apps/
 ## 6. Recommended Phase 1 Task Sequence
 
 ### Week 1-2: Fork & Infrastructure
-1. Fork kortix-ai/suna → kidpen/kidpen.space
+1. Fork kidpen-ai/suna → kidpen/kidpen.space
 2. Create Supabase project (Singapore)
 3. Set up Google Cloud OAuth credentials
 4. Configure environment variables
@@ -195,7 +195,7 @@ apps/
 
 ## Sources
 
-- GitHub API: kortix-ai/suna repository structure
+- GitHub API: kidpen-ai/suna repository structure
 - REQUIREMENTS.md: REQ-ARCH-001 through REQ-FE-002
 - PDPA_COMPLIANCE.md: Consent flow requirements
 - THAI_EDTECH.md: Target user demographics

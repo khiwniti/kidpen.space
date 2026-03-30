@@ -1,5 +1,5 @@
 """
-Kortix Agent Evaluation Script.
+Kidpen Agent Evaluation Script.
 
 Usage:
     # Run with default dataset (3 complex tests)
@@ -60,7 +60,7 @@ from evals.datasets import get_dataset, list_available_datasets
 def parse_args():
     """Parse command line arguments."""
     parser = argparse.ArgumentParser(
-        description="Run Kortix Agent evaluations",
+        description="Run Kidpen Agent evaluations",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
@@ -103,8 +103,8 @@ Examples:
     parser.add_argument(
         "-m", "--model",
         type=str,
-        default=os.getenv("EVAL_MODEL", "kortix/basic"),
-        help="Model to use (default: kortix/basic)"
+        default=os.getenv("EVAL_MODEL", "kidpen/basic"),
+        help="Model to use (default: kidpen/basic)"
     )
     
     parser.add_argument(
@@ -207,7 +207,7 @@ if __name__ == "__main__" or "braintrust" in sys.argv[0].lower():
     
     print(f"""
 ╔══════════════════════════════════════════════════════════════╗
-║                  Kortix Agent Evaluation                      ║
+║                  Kidpen Agent Evaluation                      ║
 ╠══════════════════════════════════════════════════════════════╣
 ║  Dataset:     {ARGS.dataset:<45} ║
 ║  Count:       {ARGS.count:<45} ║
@@ -226,7 +226,7 @@ if __name__ == "__main__" or "braintrust" in sys.argv[0].lower():
     
     # Run evaluation
     Eval(
-        "Kortix Agent",  # Project name in Braintrust
+        "Kidpen Agent",  # Project name in Braintrust
         data=get_eval_data,
         task=create_agent_task(
             model_name=ARGS.model,

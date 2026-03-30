@@ -87,9 +87,9 @@ export function MobileAppBanner({ threadId }: MobileAppBannerProps) {
     // Fallback: If app doesn't open within 2 seconds, show app store
     setTimeout(() => {
       if (platform === 'ios') {
-        window.location.href = 'https://apps.apple.com/app/kortix/id6739583417';
+        window.location.href = 'https://apps.apple.com/app/kidpen/id6739583417';
       } else if (platform === 'android') {
-        window.location.href = 'https://play.google.com/store/apps/details?id=com.kortix.app';
+        window.location.href = 'https://play.google.com/store/apps/details?id=com.kidpen.app';
       }
     }, 2000);
   };

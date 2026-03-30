@@ -14,7 +14,7 @@ const getBackendUrl = (): string => {
   
   // Production environment
   if (vercelEnv === 'production') {
-    return 'https://api.kortix.com/v1';
+    return 'https://api.kidpen.com/v1';
   }
   
   // Preview deployments (non-main branches)
@@ -25,11 +25,11 @@ const getBackendUrl = (): string => {
       .replace(/[^a-z0-9-]/g, '-')
       .replace(/-+/g, '-')
       .replace(/^-|-$/g, '');
-    return `https://${sanitizedBranch}.staging-api.kortix.com/v1`;
+    return `https://${sanitizedBranch}.staging-api.kidpen.com/v1`;
   }
 
   // Main branch / staging (default)
-  return 'https://staging-api.kortix.com/v1';
+  return 'https://staging-api.kidpen.com/v1';
 };
 
 const nextConfig = (): NextConfig => ({

@@ -27,7 +27,7 @@
 
 | Task ID | Description | Acceptance Criteria | Dependencies | Effort |
 |---------|-------------|---------------------|--------------|--------|
-| P1-T01 | Fork kortix-ai/suna → kidpen/kidpen.space | Repository exists at kidpen/kidpen.space | None | 1h |
+| P1-T01 | Fork kidpen-ai/suna → kidpen/kidpen.space | Repository exists at kidpen/kidpen.space | None | 1h |
 | P1-T02 | Rename project references | All `suna` references → `kidpen` in package.json, configs | P1-T01 | 2h |
 | P1-T03 | Update pnpm-workspace.yaml | Workspace config validated, `pnpm install` succeeds | P1-T02 | 1h |
 | P1-T04 | Configure .env structure | `.env.example` with all required variables documented | P1-T02 | 2h |
@@ -334,7 +334,7 @@ Root:
 ## Dependencies Summary
 
 ### External Dependencies (Pre-Phase 1)
-- [x] Kortix AI fork permission (public repo, MIT license)
+- [x] Kidpen AI fork permission (public repo, MIT license)
 - [ ] Supabase account with Singapore region access
 - [ ] Google Cloud Console access
 - [ ] Vercel account

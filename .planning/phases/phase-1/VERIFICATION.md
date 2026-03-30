@@ -17,7 +17,7 @@
 
 | Phase Goal | PLAN.md Coverage | Status |
 |------------|------------------|--------|
-| Fork Kortix AI Suna → kidpen/kidpen.space | P1-T01, P1-T02, P1-T03 | ✅ |
+| Fork Kidpen AI Suna → kidpen/kidpen.space | P1-T01, P1-T02, P1-T03 | ✅ |
 | Supabase Singapore region | P1-T07, P1-T08 | ✅ |
 | Google OAuth with Thai localization | P1-T17-T24 | ✅ |
 | Thai UI shell with Sarabun typography | P1-T25-T33 | ✅ |

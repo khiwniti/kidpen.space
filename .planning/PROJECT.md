@@ -10,7 +10,7 @@
 
 ## Core Vision
 
-Transform Kortix AI's general-purpose Suna agent into a free, interactive Socratic STEM tutoring platform for Thai secondary students. Leverage edge computing (student devices + Google Drive) to minimize server costs while providing personalized learning at national scale.
+Transform Kidpen AI's general-purpose Suna agent into a free, interactive Socratic STEM tutoring platform for Thai secondary students. Leverage edge computing (student devices + Google Drive) to minimize server costs while providing personalized learning at national scale.
 
 ## Key Differentiators
 

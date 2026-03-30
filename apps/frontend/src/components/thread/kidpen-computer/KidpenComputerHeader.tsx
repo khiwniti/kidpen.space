@@ -117,4 +117,4 @@ export function KidpenComputerHeader({
 }
 
 // Backwards compatibility alias
-export const KortixComputerHeader = KidpenComputerHeader;
+export const KidpenComputerHeader = KidpenComputerHeader;

@@ -18,8 +18,8 @@ export type ModelProvider =
  */
 export function isKidpenMode(modelId: string): boolean {
   // New Kidpen registry IDs
-  if (modelId === 'kortix/basic' || modelId === 'kortix/power' || modelId === 'kortix/test' ||
-      modelId === 'kortix-basic' || modelId === 'kortix-power' || modelId === 'kortix-test') {
+  if (modelId === 'kidpen/basic' || modelId === 'kidpen/power' || modelId === 'kidpen/test' ||
+      modelId === 'kidpen-basic' || modelId === 'kidpen-power' || modelId === 'kidpen-test') {
     return true;
   }
   // Legacy: Kidpen Basic (Haiku 4.5)

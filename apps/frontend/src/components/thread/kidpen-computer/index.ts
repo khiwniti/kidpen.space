@@ -4,5 +4,5 @@ export { FileViewerView } from './FileViewerView';
 export { KidpenComputerHeader } from './KidpenComputerHeader';
 
 // Backwards compatibility aliases
-export { KidpenComputer as KortixComputer } from './KidpenComputer';
-export { KidpenComputerHeader as KortixComputerHeader } from './KidpenComputerHeader';
+export { KidpenComputer as KidpenComputer } from './KidpenComputer';
+export { KidpenComputerHeader as KidpenComputerHeader } from './KidpenComputerHeader';

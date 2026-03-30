@@ -199,4 +199,4 @@ export function KidpenLoader({
 }
 
 // Backwards compatibility alias
-export const KortixLoader = KidpenLoader;
+export const KidpenLoader = KidpenLoader;

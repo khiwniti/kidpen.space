@@ -1,5 +1,5 @@
 """
-E2E API Test Suite for Kortix Backend
+E2E API Test Suite for Kidpen Backend
 
 Functional tests covering the full API surface:
 - Authentication & accounts

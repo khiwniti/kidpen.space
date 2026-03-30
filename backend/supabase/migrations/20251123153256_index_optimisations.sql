@@ -87,8 +87,8 @@ CREATE INDEX IF NOT EXISTS idx_threads_project_account
 ON threads(project_id, account_id);
 
 -- agent_templates: Filtered marketplace (filtered marketplace)
-CREATE INDEX IF NOT EXISTS idx_agent_templates_public_kortix_created_desc 
-ON agent_templates(is_public, is_kortix_team, created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_agent_templates_public_kidpen_created_desc 
+ON agent_templates(is_public, is_kidpen_team, created_at DESC);
 
 -- agent_templates: Text search for marketplace (requires pg_trgm extension)
 CREATE INDEX IF NOT EXISTS idx_agent_templates_name_trgm 

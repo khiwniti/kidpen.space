@@ -2,7 +2,7 @@
   "project": {
     "name": "kidpen.space",
     "type": "migration",
-    "source": "kortix-suna"
+    "source": "kidpen-suna"
   },
   "workflow": {
     "research_depth": "standard",

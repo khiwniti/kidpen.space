@@ -7,7 +7,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { useAuth } from '@/components/AuthProvider';
 
-const STORAGE_KEY = 'kortix-tutorials-banner-dismissed';
+const STORAGE_KEY = 'kidpen-tutorials-banner-dismissed';
 
 export function TutorialsBanner() {
   const [isVisible, setIsVisible] = useState(false);

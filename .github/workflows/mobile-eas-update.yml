@@ -162,7 +162,7 @@ jobs:
         run: |
           BRANCH="${{ steps.branch.outputs.branch }}"
           if [ "$BRANCH" == "PRODUCTION" ]; then
-            echo "EXPO_PUBLIC_SUPABASE_URL=https://supa.kortix.com" >> $GITHUB_ENV
+            echo "EXPO_PUBLIC_SUPABASE_URL=https://supa.kidpen.com" >> $GITHUB_ENV
             echo "EXPO_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Impicml3YXNzZWJ4ZHdvaWVpa2dhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQzOTMzMjYsImV4cCI6MjA1OTk2OTMyNn0.1iYSZAYGOc0B0-64KzLKwMA3dYNn0enQteikh9_VnDc" >> $GITHUB_ENV
             echo "EXPO_PUBLIC_BACKEND_URL=https://api.kidpen.space/v1" >> $GITHUB_ENV
             echo "environment=production" >> $GITHUB_OUTPUT

@@ -58,7 +58,7 @@ export function FooterSection() {
                   </svg>
                 </a>
                 <a
-                  href="https://x.com/kortix"
+                  href="https://x.com/kidpen"
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="X (Twitter)"
@@ -75,7 +75,7 @@ export function FooterSection() {
                   </svg>
                 </a>
                 <a
-                  href="https://www.linkedin.com/company/kortix/"
+                  href="https://www.linkedin.com/company/kidpen/"
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="LinkedIn"

@@ -19,7 +19,7 @@ interface TerminalProps {
   className?: string;
 }
 
-const TERMINAL_HISTORY_KEY = 'kortix-terminal-history';
+const TERMINAL_HISTORY_KEY = 'kidpen-terminal-history';
 
 export const Terminal = memo(function Terminal({ sandboxId, className }: TerminalProps) {
   const queryClient = useQueryClient();

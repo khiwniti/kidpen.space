@@ -58,7 +58,7 @@ export interface BaseAgentData {
   // Marketplace specific
   creator_id?: string;
   creator_name?: string;
-  is_kortix_team?: boolean;
+  is_kidpen_team?: boolean;
   download_count?: number;
   marketplace_published_at?: string;
   
@@ -547,7 +547,7 @@ export const UnifiedAgentCard: React.FC<UnifiedAgentCardProps> = ({
     const renderBadge = () => {
       switch (variant) {
         case 'marketplace':
-          return <MarketplaceBadge isKidpenTeam={data.is_kortix_team} isOwner={isOwner} />;
+          return <MarketplaceBadge isKidpenTeam={data.is_kidpen_team} isOwner={isOwner} />;
         case 'template':
           return <TemplateBadge isPublic={data.is_public} />;
         case 'agent':

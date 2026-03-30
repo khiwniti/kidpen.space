@@ -237,7 +237,7 @@ export function ShowCaseSection() {
                                                 <KidpenLogo size={14} className="sm:hidden opacity-50" />
                                                 <KidpenLogo size={14} className="hidden sm:block opacity-50" />
                                                 <span className="text-base sm:text-xl font-medium" suppressHydrationWarning>
-                                                    {t('kortixComputer')}
+                                                    {t('kidpenComputer')}
                                                 </span>
                                             </div>
                                             <Badge variant="outline" className="flex items-center gap-1.5 px-2 py-0.5 border-green-200 dark:border-green-800 bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400" suppressHydrationWarning>

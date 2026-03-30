@@ -4,12 +4,12 @@ import { useState, useEffect } from 'react';
 import { X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const STORAGE_KEY = 'kortix-mobile-banner-dismissed';
+const STORAGE_KEY = 'kidpen-mobile-banner-dismissed';
 const DISMISS_EXPIRY_MS = 7 * 24 * 60 * 60 * 1000; // 7 days
 
 const STORE_LINKS = {
-  ios: 'https://apps.apple.com/ie/app/kortix/id6754448524',
-  android: 'https://play.google.com/store/apps/details?id=com.kortix.app',
+  ios: 'https://apps.apple.com/ie/app/kidpen/id6754448524',
+  android: 'https://play.google.com/store/apps/details?id=com.kidpen.app',
 } as const;
 
 type Platform = 'ios' | 'android';

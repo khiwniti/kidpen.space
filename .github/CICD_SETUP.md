@@ -8,9 +8,9 @@ main (DEV) ──promote──> staging (PRE-PROD) ──promote──> PRODUCTI
 
 | Branch | Environment | Endpoint | Auto-Deploy |
 |--------|-------------|----------|-------------|
-| `main` | DEV | dev-api.kortix.com | ✅ On push |
-| `staging` | STAGING | staging-api.kortix.com | ✅ On push |
-| `PRODUCTION` | PRODUCTION | api.kortix.com | ✅ On push |
+| `main` | DEV | dev-api.kidpen.com | ✅ On push |
+| `staging` | STAGING | staging-api.kidpen.com | ✅ On push |
+| `PRODUCTION` | PRODUCTION | api.kidpen.com | ✅ On push |
 
 ## Workflow
 
@@ -99,4 +99,4 @@ cd infra/environments/staging && pulumi stack output
 cd infra/environments/prod && pulumi stack output
 ```
 
-Pulumi Cloud: https://app.pulumi.com/kortix
+Pulumi Cloud: https://app.pulumi.com/kidpen
