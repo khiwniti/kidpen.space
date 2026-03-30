@@ -37,9 +37,6 @@ const PresentationViewerWrapper = lazy(() =>
 const OnboardingProvider = lazy(() => 
   import('@/components/onboarding/onboarding-provider').then(mod => ({ default: mod.OnboardingProvider }))
 );
-const DashboardPromoBanner = lazy(() => 
-  import('@/components/home/dashboard-promo-banner').then(mod => ({ default: mod.DashboardPromoBanner }))
-);
 
 const PresenceDebug = lazy(() => 
   import('@/components/debug/presence-debug').then(mod => ({ default: mod.PresenceDebug }))
@@ -68,7 +65,7 @@ const MaintenanceCountdownBanner = lazy(() =>
 // Skeleton shell that renders immediately for FCP
 function DashboardSkeleton() {
   return (
-    <div className="flex h-screen w-full bg-background">
+    <div className="flex h-screen w-full bg-kidpen-cream">
       {/* Sidebar skeleton */}
       <div className="hidden md:flex w-[280px] flex-col border-r border-border bg-sidebar">
         <div className="p-4 space-y-4">
@@ -239,17 +236,13 @@ export default function DashboardLayoutContent({
           </Suspense>
         )}
         
-        {/* Site-wide promo banner for free tier users */}
-        <Suspense fallback={null}>
-          <DashboardPromoBanner />
-        </Suspense>
         <Suspense fallback={null}>
           <AnnouncementDialog />
         </Suspense>
         
         <Suspense fallback={null}>
           <OnboardingProvider>
-            <div className="bg-background">{children}</div>
+            <div className="bg-kidpen-cream">{children}</div>
           </OnboardingProvider>
         </Suspense>
         <Suspense fallback={null}>

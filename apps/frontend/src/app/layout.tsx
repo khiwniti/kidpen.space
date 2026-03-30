@@ -236,7 +236,7 @@ export default function RootLayout({
         />
       </head>
 
-      <body className="antialiased font-sans bg-background">
+      <body className="antialiased font-sans bg-kidpen-cream">
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

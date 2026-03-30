@@ -14,8 +14,8 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  --color-background: #FFFCF7;  /* Kidpen cream - warm, not cold white */
+  --color-foreground: #1A1B2E;  /* Kidpen dark */
   --font-sans: var(--font-outfit), var(--font-ibm-plex-thai), system-ui, sans-serif;
   --font-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
   --font-display: var(--font-outfit), sans-serif;
