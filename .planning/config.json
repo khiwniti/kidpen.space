@@ -1,0 +1,31 @@
+{
+  "project": {
+    "name": "kidpen.space",
+    "type": "migration",
+    "source": "kortix-suna"
+  },
+  "workflow": {
+    "research_depth": "standard",
+    "commit_frequency": "per_task",
+    "validation_gates": true,
+    "checkpoint_interval_minutes": 30
+  },
+  "models": {
+    "researcher": "sonnet",
+    "synthesizer": "sonnet",
+    "roadmapper": "sonnet",
+    "planner": "sonnet",
+    "executor": "sonnet"
+  },
+  "preferences": {
+    "parallel_execution": true,
+    "auto_commit": false,
+    "require_user_approval": true,
+    "documentation_style": "concise"
+  },
+  "phase_settings": {
+    "max_tasks_per_phase": 20,
+    "subtask_granularity": "medium",
+    "verification_required": true
+  }
+}
