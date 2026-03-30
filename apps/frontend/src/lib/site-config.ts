@@ -4,45 +4,43 @@ import { pricingTiers, type PricingTier } from '@/lib/pricing-config';
 export type { PricingTier } from '@/lib/pricing-config';
 
 export const siteConfig = {
-  url: process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000',
+  url: process.env.NEXT_PUBLIC_APP_URL || 'https://kidpen.space',
   nav: {
     links: [
-      { id: 1, name: 'Home', href: '/' },
-      { id: 2, name: 'About', href: '/about' },
-      { id: 3, name: 'Pricing', href: '/pricing' },
-      { id: 4, name: 'Tutorials', href: '/tutorials' },
+      { id: 1, name: 'หน้าแรก', href: '/' },
+      { id: 2, name: 'เกี่ยวกับคิดเป็น', href: '/about' },
+      { id: 3, name: 'สำหรับโรงเรียน', href: '/schools' },
+      { id: 4, name: 'บทเรียน', href: '/lessons' },
     ],
   },
   hero: {
     description:
-      'Kidpen – open-source platform to build, manage and train your AI Workforce.',
+      'คิดเป็น (Kidpen) - แพลตฟอร์มการเรียนรู้โสคราติสสำหรับเด็กไทย (Socratic Tutoring Platform)',
   },
-  cloudPricingItems: pricingTiers,
   footerLinks: [
     {
-      title: 'Kidpen',
+      title: 'คิดเป็น (Kidpen)',
       links: [
-        { id: 1, title: 'About', url: '/about' },
-        { id: 2, title: 'Careers', url: '/careers' },
-        { id: 3, title: 'Support', url: '/support' },
-        { id: 4, title: 'Contact', url: 'mailto:info@kidpen.space' },
+        { id: 1, title: 'เกี่ยวกับเรา', url: '/about' },
+        { id: 2, title: 'สำหรับคุณครู', url: '/teachers' },
+        { id: 3, title: 'ศูนย์ช่วยเหลือ', url: '/support' },
+        { id: 4, title: 'ติดต่อเรา', url: 'mailto:info@kidpen.space' },
       ],
     },
     {
-      title: 'Resources',
+      title: 'แหล่งเรียนรู้',
       links: [
-        { id: 5, title: 'Tutorials', url: '/tutorials' },
-        { id: 6, title: 'Documentation', url: 'https://github.com/kidpen-ai/suna' },
-        { id: 7, title: 'Discord', url: 'https://discord.com/invite/RvFhXUdZ9H' },
-        { id: 8, title: 'GitHub', url: 'https://github.com/kidpen-ai/suna' },
+        { id: 5, title: 'บทเรียนทั้งหมด', url: '/lessons' },
+        { id: 6, title: 'เอกสารประกอบ', url: 'https://github.com/kidpen/kidpen-space' },
+        { id: 7, title: 'GitHub', url: 'https://github.com/kidpen/kidpen-space' },
       ],
     },
     {
-      title: 'Legal',
+      title: 'กฏหมายและนโยบาย',
       links: [
-        { id: 9, title: 'Privacy Policy', url: '/legal?tab=privacy' },
-        { id: 10, title: 'Terms of Service', url: '/legal?tab=terms' },
-        { id: 11, title: 'License', url: 'https://github.com/kidpen-ai/suna/blob/main/LICENSE' },
+        { id: 8, title: 'นโยบายความเป็นส่วนตัว (PDPA)', url: '/legal?tab=privacy' },
+        { id: 9, title: 'ข้อตกลงการใช้งาน', url: '/legal?tab=terms' },
+        { id: 10, title: 'สัญญาอนุญาต (License)', url: 'https://github.com/kidpen/kidpen-space/blob/main/LICENSE' },
       ],
     },
   ],

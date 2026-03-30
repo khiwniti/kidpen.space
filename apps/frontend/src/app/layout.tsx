@@ -19,7 +19,6 @@ const Analytics = lazy(() => import('@vercel/analytics/react').then(mod => ({ de
 const SpeedInsights = lazy(() => import('@vercel/speed-insights/next').then(mod => ({ default: mod.SpeedInsights })));
 const GoogleTagManager = lazy(() => import('@next/third-parties/google').then(mod => ({ default: mod.GoogleTagManager })));
 const PostHogIdentify = lazy(() => import('@/components/posthog-identify').then(mod => ({ default: mod.PostHogIdentify })));
-const PlanSelectionModal = lazy(() => import('@/components/billing/pricing/plan-selection-modal').then(mod => ({ default: mod.PlanSelectionModal })));
 const AnnouncementDialog = lazy(() => import('@/components/announcements/announcement-dialog').then(mod => ({ default: mod.AnnouncementDialog })));
 const RouteChangeTracker = lazy(() => import('@/components/analytics/route-change-tracker').then(mod => ({ default: mod.RouteChangeTracker })));
 const AuthEventTracker = lazy(() => import('@/components/analytics/auth-event-tracker').then(mod => ({ default: mod.AuthEventTracker })));
@@ -192,14 +191,14 @@ export default function RootLayout({
               '@context': 'https://schema.org',
               '@type': 'Organization',
               name: siteMetadata.name,
-              alternateName: ['Kidpen', 'Kidpen AI', 'Kidpen.space'],
+              alternateName: ['Kidpen', 'Kidpen AI', 'คิดเป็น', 'Kidpen.space: Socratic Tutor'],
               url: siteMetadata.url,
               logo: `${siteMetadata.url}/favicon.png`,
               description: siteMetadata.description,
               foundingDate: '2024',
               sameAs: [
-                'https://github.com/kidpenspace',
-                'https://x.com/kidpenspace',
+                'https://github.com/kidpen/kidpen-space',
+                'https://x.com/kidpen',
                 'https://linkedin.com/company/kidpen',
               ],
               contactPoint: {
@@ -250,9 +249,6 @@ export default function RootLayout({
               <ReactQueryProvider>
                 {children}
                 <Toaster />
-                <Suspense fallback={null}>
-                  <PlanSelectionModal />
-                </Suspense>
               </ReactQueryProvider>
               </PresenceProvider>
             </I18nProvider>

@@ -69,7 +69,7 @@ deps-python:
 	@echo "📦 Installing Python dependencies..."
 	@if command -v uv >/dev/null 2>&1; then \
 		echo "Using uv..."; \
-		uv pip install -r setup/requirements.txt 2>/dev/null || uv pip install --system -r setup/requirements.txt; \
+		uv pip install -r setup/requirements.txt 2>/dev/null || (uv venv && uv pip install -r setup/requirements.txt); \
 	else \
 		echo "Using pip..."; \
 		pip install -r setup/requirements.txt; \

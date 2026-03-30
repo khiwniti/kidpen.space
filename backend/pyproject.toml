@@ -103,6 +103,9 @@ dependencies = [
   "psycopg[binary]>=3.3.2",
   "sqlalchemy>=2.0.45",
   "greenlet>=3.3.0",
+  "pyBKT>=1.4",
+  "pythainlp>=5.0",
+  "sympy>=1.12",
 ]
 
 [project.urls]

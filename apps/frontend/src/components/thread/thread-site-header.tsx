@@ -83,7 +83,24 @@ export function SiteHeader({
               </span>
             </div>
           ) : (
-            <ModeIndicator />
+            <div className="flex items-center gap-4">
+              <ModeIndicator />
+              {/* Mock pyBKT Mastery Visualizer from Design System */}
+              <div className="hidden sm:flex items-center gap-2 bg-kidpen-blue/10 px-3 py-1.5 rounded-full border border-kidpen-blue/20">
+                <span className="text-lg">📐</span>
+                <div className="flex flex-col">
+                  <span className="text-[10px] uppercase font-bold text-kidpen-blue border-b border-kidpen-blue/20 pb-0.5 mb-0.5 leading-none">
+                    Current Mastery
+                  </span>
+                  <div className="flex items-center gap-2">
+                    <div className="w-16 h-1.5 bg-white rounded-full overflow-hidden">
+                      <div className="h-full bg-kidpen-blue w-[65%] rounded-full"></div>
+                    </div>
+                    <span className="text-[10px] font-bold text-kidpen-blue leading-none">65%</span>
+                  </div>
+                </div>
+              </div>
+            </div>
           )}
         </div>
 
@@ -136,7 +153,7 @@ export function SiteHeader({
                 </Button>
               </TooltipTrigger>
               <TooltipContent side="bottom" sideOffset={4}>
-                <p>{isSidePanelOpen ? 'Close' : 'Open'} Kidpen Computer</p>
+                <p>{isSidePanelOpen ? 'Close' : 'Open'} Kidpen Tools</p>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>

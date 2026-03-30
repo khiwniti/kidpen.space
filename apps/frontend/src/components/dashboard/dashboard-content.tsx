@@ -19,7 +19,9 @@ import { NotificationDropdown } from '../notifications/notification-dropdown';
 import { useAgentStartInput } from '@/hooks/dashboard';
 import { ChatInput } from '@/components/thread/chat-input/chat-input';
 import { DynamicGreeting } from '@/components/ui/dynamic-greeting';
-import { Menu } from 'lucide-react';
+import { Menu, Users, GraduationCap } from 'lucide-react';
+import { StudentDashboard } from './student-dashboard';
+import { TeacherDashboard } from './teacher-dashboard';
 
 // Lazy load heavy components that aren't immediately visible
 const UpgradeCelebration = lazy(() => 
@@ -49,6 +51,7 @@ export function DashboardContent() {
   const [configAgentId, setConfigAgentId] = useState<string | null>(null);
   const [viewMode, setViewMode] = useState<'super-worker' | 'worker-templates'>('super-worker');
   const [showUpgradeCelebration, setShowUpgradeCelebration] = useState(false);
+  const [demoRole, setDemoRole] = useState<'student' | 'teacher'>('student');
   
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -306,7 +309,6 @@ export function DashboardContent() {
           "absolute flex items-center gap-1 left-3 sm:left-4 transition-[top] duration-200 z-10",
           isWelcomeBannerVisible ? "top-12" : "top-1.5"
         )}>
-          {/* Mobile menu button */}
           {isMobile && (
             <button
               onClick={() => {
@@ -319,9 +321,28 @@ export function DashboardContent() {
               <Menu className="h-5 w-5" />
             </button>
           )}
-          <Suspense fallback={<div className="h-9 w-28 bg-muted/30 rounded-lg animate-pulse" />}>
-            <ModeIndicator />
-          </Suspense>
+          <div className="flex bg-white rounded-full border border-kidpen-dark/10 p-1 shadow-sm ml-2">
+            <button
+              onClick={() => setDemoRole('student')}
+              className={cn(
+                "flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold font-thai transition-colors",
+                demoRole === 'student' ? 'bg-kidpen-blue text-white shadow-sm' : 'text-kidpen-dark/60 hover:text-kidpen-dark'
+              )}
+            >
+              <GraduationCap className="w-4 h-4" />
+              โหมดนักเรียน
+            </button>
+            <button
+              onClick={() => setDemoRole('teacher')}
+              className={cn(
+                "flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold font-thai transition-colors",
+                demoRole === 'teacher' ? 'bg-kidpen-dark text-white shadow-sm' : 'text-kidpen-dark/60 hover:text-kidpen-dark'
+              )}
+            >
+              <Users className="w-4 h-4" />
+              โหมดคุณครู
+            </button>
+          </div>
         </div>
 
         {/* Right side - Notifications & Credits - ABSOLUTE positioned */}
@@ -335,45 +356,12 @@ export function DashboardContent() {
           </Suspense>
         </div>
 
-        {/* Main content area - greeting and modes centered */}
-        <div className="flex-1 flex flex-col relative z-[1]">
+        {/* Main content area */}
+        <div className="flex-1 flex flex-col relative z-[1] overflow-y-auto w-full pt-16">
           {viewMode === 'super-worker' && (
             <>
-              {/* Centered content: Greeting + Subtitle + Modes
-                  - Mobile: shifted up with pb-28 to account for chat input and feel more balanced
-                  - Desktop: true center with no offset */}
-              <div className="absolute inset-0 flex items-center justify-center px-4 pb-28 sm:pb-0 pointer-events-none">
-                <div className="w-full max-w-3xl mx-auto flex flex-col items-center text-center pointer-events-auto">
-                  {/* Greeting */}
-                  <div className="animate-in fade-in-0 slide-in-from-bottom-4 duration-500 fill-mode-both">
-                    <DynamicGreeting className="text-2xl sm:text-3xl md:text-4xl font-medium text-foreground tracking-tight" />
-                  </div>
-                  
-                  {/* Subtitle */}
-                  <p className="mt-2 sm:mt-3 text-sm sm:text-base text-muted-foreground/70 animate-in fade-in-0 slide-in-from-bottom-4 duration-500 delay-75 fill-mode-both">
-                    {t('modeSubtitle')}
-                  </p>
-                  
-                  {/* Modes Panel - always render regardless of agent API state */}
-                  <div className="mt-6 sm:mt-8 w-full animate-in fade-in-0 slide-in-from-bottom-4 duration-500 delay-150 fill-mode-both">
-                    <Suspense fallback={<div className="h-12 bg-muted/10 rounded-lg animate-pulse" />}>
-                      <SunaModesPanel
-                        selectedMode={selectedMode}
-                        onModeSelect={setSelectedMode}
-                        onSelectPrompt={setInputValue}
-                        isMobile={isMobile}
-                        selectedCharts={selectedCharts}
-                        onChartsChange={setSelectedCharts}
-                        selectedOutputFormat={selectedOutputFormat}
-                        onOutputFormatChange={setSelectedOutputFormat}
-                        selectedTemplate={selectedTemplate}
-                        onTemplateChange={setSelectedTemplate}
-                        isFreeTier={isFreeTier || false}
-                        onUpgradeClick={() => pricingModalStore.openPricingModal()}
-                      />
-                    </Suspense>
-                  </div>
-                </div>
+              <div className="flex-1 w-full mx-auto pb-32">
+                {demoRole === 'student' ? <StudentDashboard /> : <TeacherDashboard />}
               </div>
 
               {/* Chat Input - fixed at bottom
