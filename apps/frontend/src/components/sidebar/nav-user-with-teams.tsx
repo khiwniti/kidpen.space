@@ -11,7 +11,6 @@ import {
   ChevronsUpDown,
   ChevronRight,
   Command,
-  CreditCard,
   Key,
   LogOut,
   Plus,
@@ -34,7 +33,6 @@ import {
   AlertTriangle,
 } from 'lucide-react';
 import { useAccounts } from '@/hooks/account';
-import { useAccountState } from '@/hooks/billing';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
@@ -71,15 +69,11 @@ import { useTheme } from 'next-themes';
 import { isLocalMode, isProductionMode } from '@/lib/config';
 import { clearUserLocalStorage } from '@/lib/utils/clear-local-storage';
 import { UserSettingsModal } from '@/components/settings/user-settings-modal';
-import { PlanSelectionModal } from '@/components/billing/pricing';
-import { TierBadge } from '@/components/billing/tier-badge';
 import { useTranslations } from 'next-intl';
 import { useReferralDialog } from '@/stores/referral-dialog';
 import { ReferralDialog } from '@/components/referrals/referral-dialog';
 import { Badge } from '@/components/ui/badge';
 import { SpotlightCard } from '@/components/ui/spotlight-card';
-import { trackCtaUpgrade } from '@/lib/analytics/gtm';
-
 export function NavUserWithTeams({
   user,
 }: {
@@ -96,18 +90,11 @@ export function NavUserWithTeams({
   const router = useRouter();
   const { isMobile } = useSidebar();
   const { data: accounts } = useAccounts();
-  const { data: accountState } = useAccountState({ enabled: true });
   const [showNewTeamDialog, setShowNewTeamDialog] = React.useState(false);
   const [showSettingsModal, setShowSettingsModal] = React.useState(false);
-  const [showPlanModal, setShowPlanModal] = React.useState(false);
-  const [settingsTab, setSettingsTab] = React.useState<'general' | 'billing' | 'usage' | 'env-manager'>('general');
+  const [settingsTab, setSettingsTab] = React.useState<'general' | 'env-manager'>('general');
   const { isOpen: isReferralDialogOpen, openDialog: openReferralDialog, closeDialog: closeReferralDialog } = useReferralDialog();
   const { theme, setTheme } = useTheme();
-
-  // Check if user is on free tier
-  const isFreeTier = accountState?.subscription?.tier_key === 'free' ||
-    accountState?.tier?.name === 'free' ||
-    !accountState?.subscription?.tier_key;
 
   // Prepare personal account and team accounts
   const personalAccount = React.useMemo(
@@ -227,20 +214,6 @@ export function NavUserWithTeams({
                 </div>
               </SpotlightCard>
             )}
-            {/* Upgrade Button - Closest to user card */}
-            {isFreeTier && (
-              <Button
-                onClick={() => {
-                  trackCtaUpgrade();
-                  setShowPlanModal(true);
-                }}
-                variant="default"
-                size="lg"
-                className="w-full"
-              >
-                {t('upgrade')}
-              </Button>
-            )}
           </div>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -256,11 +229,7 @@ export function NavUserWithTeams({
                 </Avatar>
                 <div className="flex flex-col justify-between flex-1 min-w-0 h-10 group-data-[collapsible=icon]:hidden">
                   <span className="truncate font-medium text-sm leading-tight">{user.name}</span>
-                  {user.planName ? (
-                    <TierBadge planName={user.planName} size="xs" variant="default" />
-                  ) : (
-                    <span className="truncate text-xs text-muted-foreground leading-tight">{user.email}</span>
-                  )}
+                  <span className="truncate text-xs text-muted-foreground leading-tight">{user.email}</span>
                 </div>
                 <ChevronsUpDown className="ml-auto size-4 flex-shrink-0 group-data-[collapsible=icon]:hidden" />
               </SidebarMenuButton>
@@ -358,16 +327,6 @@ export function NavUserWithTeams({
                 General
               </DropdownMenuLabel>
               <DropdownMenuGroup>
-                <DropdownMenuItem
-                  onClick={() => {
-                    trackCtaUpgrade();
-                    setShowPlanModal(true);
-                  }}
-                  className="gap-2 p-2"
-                >
-                  <Zap className="h-4 w-4" />
-                  <span>Plan</span>
-                </DropdownMenuItem>
                 <DropdownMenuItem asChild>
                   <Link href="/knowledge" className="gap-2 p-2">
                     <FileText className="h-4 w-4" />
@@ -382,17 +341,7 @@ export function NavUserWithTeams({
                 </DropdownMenuItem>
                 <DropdownMenuItem
                   onClick={() => {
-                    setSettingsTab('billing');
-                    setShowSettingsModal(true);
-                  }}
-                  className="gap-2 p-2"
-                >
-                  <CreditCard className="h-4 w-4" />
-                  <span>Billing</span>
-                </DropdownMenuItem>
-                <DropdownMenuItem
-                  onClick={() => {
-                    setSettingsTab('usage');
+                    setSettingsTab('general');
                     setShowSettingsModal(true);
                   }}
                   className="gap-2 p-2"
@@ -544,13 +493,6 @@ export function NavUserWithTeams({
         open={showSettingsModal}
         onOpenChange={setShowSettingsModal}
         defaultTab={settingsTab}
-        returnUrl={typeof window !== 'undefined' ? window?.location?.href || '/' : '/'}
-      />
-
-      {/* Plan Selection Modal */}
-      <PlanSelectionModal
-        open={showPlanModal}
-        onOpenChange={setShowPlanModal}
         returnUrl={typeof window !== 'undefined' ? window?.location?.href || '/' : '/'}
       />
       
