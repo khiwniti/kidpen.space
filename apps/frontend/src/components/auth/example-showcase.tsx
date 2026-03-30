@@ -422,7 +422,7 @@ export function ExampleShowcase() {
                   {/* Right buttons */}
                   <div className="flex gap-1 items-center flex-shrink-0">
                     <button className="px-2 py-1 rounded-lg border bg-background flex items-center gap-1">
-                      <span className="text-[8px] font-medium">Kortix</span>
+                      <span className="text-[8px] font-medium">Kidpen</span>
                       <svg className="w-2 h-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                       </svg>
@@ -439,14 +439,14 @@ export function ExampleShowcase() {
             </div>
           </div>
 
-          {/* Right Side - Kortix Computer (Floating) */}
+          {/* Right Side - Kidpen Computer (Floating) */}
           <div className="flex-1 bg-background p-4">
             <Card className="w-full h-full !rounded-2xl !p-0 !gap-0 overflow-hidden flex flex-col">
               {/* Computer Header */}
               <div className="border-b px-3 py-2 flex items-center justify-between bg-card shrink-0">
                 <div className="flex items-center gap-1.5">
                   <KidpenLogo size={12} />
-                  <span className="text-xs font-medium">Kortix Computer</span>
+                  <span className="text-xs font-medium">Kidpen Computer</span>
                 </div>
                 <div className="flex items-center gap-0.5 border rounded-full bg-card p-1 relative">
                   <div className="p-1 relative z-10 pointer-events-none">

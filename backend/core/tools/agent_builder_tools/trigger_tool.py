@@ -110,7 +110,7 @@ class TriggerTool(AgentBuilderBaseTool):
                 else:
                     suna_defaults = [
                         worker for worker in workers
-                        if isinstance(worker.get('metadata'), dict) and worker['metadata'].get('is_suna_default') is True
+                        if isinstance(worker.get('metadata'), dict) and worker['metadata'].get('is_kidpen_default') is True
                     ]
                     if suna_defaults:
                         target_worker = suna_defaults[0]
@@ -237,7 +237,7 @@ class TriggerTool(AgentBuilderBaseTool):
             for worker in workers:
                 raw_metadata = worker.get('metadata')
                 metadata: Dict[str, Any] = raw_metadata if isinstance(raw_metadata, dict) else {}
-                is_kortix = bool(metadata.get('is_suna_default'))
+                is_kortix = bool(metadata.get('is_kidpen_default'))
                 name = worker.get('name') or 'Untitled Worker'
 
                 if not include_kortix and is_kortix:

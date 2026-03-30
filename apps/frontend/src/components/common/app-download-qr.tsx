@@ -20,7 +20,7 @@ function KidpenSymbol({ size = 24, className }: { size?: number; className?: str
 /**
  * Universal app download URL - middleware auto-redirects to correct store based on device
  */
-export const APP_DOWNLOAD_URL = 'https://www.kortix.com/app';
+export const APP_DOWNLOAD_URL = 'https://www.kidpen.space/app';
 
 export interface AppDownloadQRProps {
   /** Size of the QR code in pixels */
@@ -49,7 +49,7 @@ export function AppDownloadQR({
     <div className={cn("relative bg-white rounded-2xl p-4 shadow-lg", className)}>
       <img 
         src={qrUrl}
-        alt="Scan to download Kortix - redirects to App Store or Google Play based on your device"
+        alt="Scan to download Kidpen - redirects to App Store or Google Play based on your device"
         width={size}
         height={size}
         className="block"

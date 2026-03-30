@@ -192,14 +192,14 @@ export default function RootLayout({
               '@context': 'https://schema.org',
               '@type': 'Organization',
               name: siteMetadata.name,
-              alternateName: ['Kidpen', 'Kidpen AI', 'Kidpen: Your Autonomous AI Worker'],
+              alternateName: ['Kidpen', 'Kidpen AI', 'Kidpen.space'],
               url: siteMetadata.url,
               logo: `${siteMetadata.url}/favicon.png`,
               description: siteMetadata.description,
               foundingDate: '2024',
               sameAs: [
-                'https://github.com/kortix-ai/suna',
-                'https://x.com/kidpen',
+                'https://github.com/kidpenspace',
+                'https://x.com/kidpenspace',
                 'https://linkedin.com/company/kidpen',
               ],
               contactPoint: {

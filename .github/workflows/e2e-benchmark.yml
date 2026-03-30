@@ -43,20 +43,20 @@ jobs:
         run: |
           case "${{ inputs.environment }}" in
             production)
-              echo "api_url=https://api.kortix.com" >> $GITHUB_OUTPUT
+              echo "api_url=https://api.kidpen.space" >> $GITHUB_OUTPUT
               ;;
             staging)
-              echo "api_url=https://staging-api.kortix.com" >> $GITHUB_OUTPUT
+              echo "api_url=https://staging-api.kidpen.space" >> $GITHUB_OUTPUT
               ;;
             dev)
-              echo "api_url=https://dev-api.kortix.com" >> $GITHUB_OUTPUT
+              echo "api_url=https://dev-api.kidpen.space" >> $GITHUB_OUTPUT
               ;;
           esac
       
       - name: Run E2E Benchmark
         env:
           API_URL: ${{ steps.env.outputs.api_url }}
-          ADMIN_API_KEY: ${{ inputs.environment == 'production' && secrets.PRODUCTION_KORTIX_ADMIN_API_KEY || (inputs.environment == 'staging' && secrets.STAGING_KORTIX_ADMIN_API_KEY || secrets.DEV_KORTIX_ADMIN_API_KEY) }}
+          ADMIN_API_KEY: ${{ inputs.environment == 'production' && secrets.PRODUCTION_KIDPEN_ADMIN_API_KEY || (inputs.environment == 'staging' && secrets.STAGING_KIDPEN_ADMIN_API_KEY || secrets.DEV_KIDPEN_ADMIN_API_KEY) }}
           ENVIRONMENT: ${{ inputs.environment }}
         run: |
           set -e
@@ -65,13 +65,13 @@ jobs:
           if [ -z "$ADMIN_API_KEY" ]; then
             case "$ENVIRONMENT" in
               production)
-                echo "❌ Error: PRODUCTION_KORTIX_ADMIN_API_KEY is not set"
+                echo "❌ Error: PRODUCTION_KIDPEN_ADMIN_API_KEY is not set"
                 ;;
               staging)
-                echo "❌ Error: STAGING_KORTIX_ADMIN_API_KEY is not set"
+                echo "❌ Error: STAGING_KIDPEN_ADMIN_API_KEY is not set"
                 ;;
               *)
-                echo "❌ Error: DEV_KORTIX_ADMIN_API_KEY is not set"
+                echo "❌ Error: DEV_KIDPEN_ADMIN_API_KEY is not set"
                 ;;
             esac
             echo "Please add it at: https://github.com/${{ github.repository }}/settings/secrets/actions"

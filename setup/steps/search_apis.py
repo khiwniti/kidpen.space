@@ -32,10 +32,10 @@ class SearchAPIsStep(BaseStep):
             )
         else:
             self.info(
-                "Search APIs are OPTIONAL tools that enhance Kidpen Suna's capabilities."
+                "Search APIs are OPTIONAL tools that enhance Kidpen's capabilities."
             )
             self.info(
-                "Without these, Kidpen Suna will work but won't have web search or scraping functionality."
+                "Without these, Kidpen will work but won't have web search or scraping functionality."
             )
             self.console.print("\nAvailable Search Tools:")
             self.console.print("  🔍 Tavily - Web search")
@@ -153,7 +153,7 @@ class SearchAPIsStep(BaseStep):
             self.success(f"Search tools configured: {', '.join(configured)}")
         else:
             self.info(
-                "No search tools configured - Kidpen Suna will work without web search capabilities."
+                "No search tools configured - Kidpen will work without web search capabilities."
             )
 
         self.success("Search and scraping keys saved.")

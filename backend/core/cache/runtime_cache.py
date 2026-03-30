@@ -35,15 +35,15 @@ def load_static_suna_config() -> Dict[str, Any]:
     if _SUNA_STATIC_LOADED:
         return _SUNA_STATIC_CONFIG
     
-    from core.config.suna_config import SUNA_CONFIG
+    from core.config.kidpen_config import KIDPEN_CONFIG
     from core.config.config_helper import _extract_agentpress_tools_for_run
     
     _SUNA_STATIC_CONFIG = {
-        'system_prompt': SUNA_CONFIG['system_prompt'],
-        'model': SUNA_CONFIG['model'],
-        'agentpress_tools': _extract_agentpress_tools_for_run(SUNA_CONFIG['agentpress_tools']),
+        'system_prompt': KIDPEN_CONFIG['system_prompt'],
+        'model': KIDPEN_CONFIG['model'],
+        'agentpress_tools': _extract_agentpress_tools_for_run(KIDPEN_CONFIG['agentpress_tools']),
         'centrally_managed': True,
-        'is_suna_default': True,
+        'is_kidpen_default': True,
         'restrictions': {
             'system_prompt_editable': False,
             'tools_editable': False,
@@ -175,11 +175,11 @@ async def set_cached_agent_config(
     agent_id: str,
     config: Dict[str, Any],
     version_id: Optional[str] = None,
-    is_suna_default: bool = False
+    is_kidpen_default: bool = False
 ) -> None:
-    await set_cached_agent_type(agent_id, is_suna_default)
+    await set_cached_agent_type(agent_id, is_kidpen_default)
     
-    if is_suna_default:
+    if is_kidpen_default:
         await set_cached_user_mcps(
             agent_id,
             config.get('configured_mcps', []),
@@ -257,8 +257,8 @@ async def prewarm_user_agents(user_id: str) -> dict:
         
         if not agent_ids:
             try:
-                from core.utils.ensure_suna import ensure_suna_installed
-                await ensure_suna_installed(user_id)
+                from core.utils.ensure_kidpen import ensure_kidpen_installed
+                await ensure_kidpen_installed(user_id)
                 agent_ids = await agents_repo.get_user_agent_ids(user_id)
                 if agent_ids:
                     logger.info(f"[PREWARM] Installed Suna for new user {user_id[:8]}...")

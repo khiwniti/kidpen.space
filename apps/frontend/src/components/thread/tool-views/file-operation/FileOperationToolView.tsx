@@ -221,7 +221,7 @@ export function FileOperationToolView({
   // Presentation viewer store for opening fullscreen presentation
   const { openPresentation } = usePresentationViewerStore();
   
-  // Kortix Computer store for opening files in Files Manager
+  // Kidpen Computer store for opening files in Files Manager
   const { openFileInComputer } = useKidpenComputerStore();
 
   // Extract from structured metadata

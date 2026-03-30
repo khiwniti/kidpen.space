@@ -162,7 +162,7 @@ export function useAgentStartInput(options: UseAgentStartInputOptions = {}): Use
   });
   
   const agents = Array.isArray(agentsResponse?.agents) ? agentsResponse.agents : [];
-  const sunaAgent = agents.find(agent => agent.metadata?.is_suna_default === true);
+  const sunaAgent = agents.find(agent => agent.metadata?.is_kidpen_default === true);
   const selectedAgent = selectedAgentId
     ? agents.find(agent => agent.agent_id === selectedAgentId)
     : null;
@@ -172,8 +172,8 @@ export function useAgentStartInput(options: UseAgentStartInputOptions = {}): Use
   const isSunaAgent = !user 
     ? true // Unauthenticated users always see Suna modes
     : isLoadingAgents 
-      ? true // Show Kortix modes while loading
-      : (selectedAgent?.metadata?.is_suna_default || (!selectedAgentId && sunaAgent !== undefined) || false);
+      ? true // Show Kidpen modes while loading
+      : (selectedAgent?.metadata?.is_kidpen_default || (!selectedAgentId && sunaAgent !== undefined) || false);
   
   // Initialize agent selection when agents are loaded
   useEffect(() => {

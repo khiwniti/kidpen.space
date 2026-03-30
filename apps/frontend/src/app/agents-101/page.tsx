@@ -34,13 +34,13 @@ const slides: Slide[] = [
     id: 2,
     type: 'speaker',
     title: 'Marko Kraemer & Domenico Gagliardi',
-    subtitle: 'CEO & COO at Kortix',
+    subtitle: 'CEO & COO at Kidpen',
   },
   {
     id: 3,
     type: 'title',
     title: 'Demo',
-    subtitle: 'Let\'s see Kortix in action',
+    subtitle: 'Let\'s see Kidpen in action',
   },
 
   // Part 2: What Are Workers?
@@ -516,8 +516,8 @@ const InteractiveDemo = () => {
   );
 };
 
-// Kortix Stack Diagram
-const KortixStackDiagram = () => {
+// Kidpen Stack Diagram
+const KidpenStackDiagram = () => {
   const layers = [
     { label: 'User Interface', color: '#9DC2FF', width: '100%' },
     { label: 'Worker Orchestration', color: '#82DD95', width: '90%' },
@@ -834,7 +834,7 @@ const SlideContent = ({ slide }: { slide: Slide }) => {
             transition={{ delay: 0.3 }}
           >
             {slide.diagram === 'agent-loop' && <AgentLoopDiagram />}
-            {slide.diagram === 'kortix-stack' && <KortixStackDiagram />}
+            {slide.diagram === 'kortix-stack' && <KidpenStackDiagram />}
             {slide.diagram === 'task-types' && <TaskTypesDiagram />}
             {slide.diagram === 'token-flow' && <TokenFlowDiagram />}
             {slide.diagram === 'messages-array' && <MessagesArrayDiagram />}

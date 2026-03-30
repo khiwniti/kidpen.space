@@ -54,7 +54,7 @@ export const AgentAvatar: React.FC<AgentAvatarProps> = ({
   const iconName = propIconName ?? agent?.icon_name;
   const iconColor = propIconColor ?? agent?.icon_color ?? '#6B7280';
   const backgroundColor = propBackgroundColor ?? agent?.icon_background ?? '#F3F4F6';
-  const isSuna = propIsSunaDefault ?? agent?.metadata?.is_suna_default;
+  const isSuna = propIsSunaDefault ?? agent?.metadata?.is_kidpen_default;
 
   // Calculate responsive border radius - proportional to size
   // Use a ratio that prevents full rounding while maintaining nice corners
@@ -91,7 +91,7 @@ export const AgentAvatar: React.FC<AgentAvatarProps> = ({
       >
         <img
           src="/kidpen-symbol.svg"
-          alt="Kortix"
+          alt="Kidpen"
           className="flex-shrink-0 invert dark:invert-0"
           style={{ width: `${size * 0.5}px`, height: `${size * 0.5}px` }}
         />

@@ -335,7 +335,7 @@ export function WebSearchLoadingState({
                     {query}
                   </span>
 
-                  {/* Kortix loading animation */}
+                  {/* Kidpen loading animation */}
                   <KidpenLoader customSize={16} />
                 </motion.div>
               );

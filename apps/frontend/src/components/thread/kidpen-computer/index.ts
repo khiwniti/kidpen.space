@@ -1,8 +1,8 @@
-export { KidpenComputer, type ToolCallInput } from './KortixComputer';
+export { KidpenComputer, type ToolCallInput } from './KidpenComputer';
 export { FileBrowserView } from './FileBrowserView';
 export { FileViewerView } from './FileViewerView';
-export { KidpenComputerHeader } from './KortixComputerHeader';
+export { KidpenComputerHeader } from './KidpenComputerHeader';
 
 // Backwards compatibility aliases
-export { KidpenComputer as KortixComputer } from './KortixComputer';
-export { KidpenComputerHeader as KortixComputerHeader } from './KortixComputerHeader';
+export { KidpenComputer as KortixComputer } from './KidpenComputer';
+export { KidpenComputerHeader as KortixComputerHeader } from './KidpenComputerHeader';

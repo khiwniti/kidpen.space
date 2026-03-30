@@ -95,7 +95,7 @@ CREATE INDEX CONCURRENTLY IF NOT EXISTS idx_threads_account_project
 -- Fast count of non-Suna-default agents per account
 CREATE INDEX CONCURRENTLY IF NOT EXISTS idx_agents_account_non_suna 
     ON agents(account_id) 
-    WHERE (metadata->>'is_suna_default')::boolean IS NOT TRUE;
+    WHERE (metadata->>'is_kidpen_default')::boolean IS NOT TRUE;
 
 
 -- ============================================================================

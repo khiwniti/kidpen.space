@@ -19,8 +19,8 @@ import { Drawer, DrawerContent } from '@/components/ui/drawer';
 import { useDocumentModalStore } from '@/stores/use-document-modal-store';
 import { 
   useKidpenComputerStore,
-  useKortixComputerPendingToolNavIndex,
-  useKortixComputerClearPendingToolNav,
+  useKidpenComputerPendingToolNavIndex,
+  useKidpenComputerClearPendingToolNav,
 } from '@/stores/kidpen-computer-store';
 import { FileBrowserView } from './FileBrowserView';
 import { FileViewerView } from './FileViewerView';
@@ -129,8 +129,8 @@ export const KidpenComputer = memo(function KidpenComputer({
     openFile,
   } = useKidpenComputerStore();
   
-  const pendingToolNavIndex = useKortixComputerPendingToolNavIndex();
-  const clearPendingToolNav = useKortixComputerClearPendingToolNav();
+  const pendingToolNavIndex = useKidpenComputerPendingToolNavIndex();
+  const clearPendingToolNav = useKidpenComputerClearPendingToolNav();
 
   // Fetch unified sandbox status (combines Daytona state + service health)
   // Auto-starts OFFLINE sandboxes when detected
@@ -761,7 +761,7 @@ export const KidpenComputer = memo(function KidpenComputer({
   if (isMobile) {
     const handleDrawerKeyDown = (e: React.KeyboardEvent) => {
       // Vaul drawers are dismissible by Escape by default.
-      // Prevent Escape / Esc from closing the Kortix Computer.
+      // Prevent Escape / Esc from closing the Kidpen Computer.
       if (e.key === 'Escape' || e.key === 'Esc') {
         e.preventDefault();
         e.stopPropagation();
@@ -772,7 +772,7 @@ export const KidpenComputer = memo(function KidpenComputer({
       <Drawer
         open={isOpen}
         onOpenChange={(open) => !open && handleClose()}
-        // Never allow Esc/Escape to dismiss the Kortix Computer.
+        // Never allow Esc/Escape to dismiss the Kidpen Computer.
         // (Users commonly hit Escape in editors / sandbox UIs.)
         dismissible={false}
       >

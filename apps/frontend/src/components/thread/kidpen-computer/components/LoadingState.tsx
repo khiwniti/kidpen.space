@@ -24,7 +24,7 @@ export const LoadingState = memo(function LoadingState({
       <DrawerContent
         className="h-[85vh]"
         onKeyDown={(e) => {
-          // Prevent Escape / Esc from dismissing the Drawer (Kortix Computer).
+          // Prevent Escape / Esc from dismissing the Drawer (Kidpen Computer).
           if (e.key === 'Escape' || e.key === 'Esc') {
             e.preventDefault();
             e.stopPropagation();

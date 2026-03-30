@@ -191,7 +191,7 @@ DECLARE
         'update_updated_at_timestamp',
         'cleanup_stale_circuit_breakers',
         'reset_circuit_breaker',
-        'is_suna_default_agent',
+        'is_kidpen_default_agent',
         'get_agent_kb_processing_jobs',
         'is_centrally_managed_agent',
         'get_agent_restrictions',

@@ -1,6 +1,6 @@
 from core.prompts.core_prompt import CORE_SYSTEM_PROMPT
 
-SUNA_CONFIG = {
+KIDPEN_CONFIG = {
     "name": "Kidpen",
     "description": "Kidpen is your AI assistant with access to various tools and integrations to help you with tasks across domains.",
     "model": "kidpen/basic",

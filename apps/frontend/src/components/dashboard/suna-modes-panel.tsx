@@ -1142,7 +1142,7 @@ export function SunaModesPanel({
 
   return (
     <div className="w-full space-y-4">
-      {/* Mode Tabs - Kortix minimal design */}
+      {/* Mode Tabs - Kidpen minimal design */}
       <motion.div 
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -1164,7 +1164,7 @@ export function SunaModesPanel({
                 whileTap={{ scale: 0.98 }}
                 transition={{ type: "spring", stiffness: 400, damping: 25 }}
                 className={cn(
-                  // Base button styles matching Kortix design
+                  // Base button styles matching Kidpen design
                   "inline-flex items-center justify-center whitespace-nowrap text-sm font-medium",
                   "outline-none focus-visible:ring-ring/50 focus-visible:ring-[3px]",
                   "relative h-10 px-3 sm:px-4 gap-2 shrink-0 rounded-2xl cursor-pointer",

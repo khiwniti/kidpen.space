@@ -1,7 +1,7 @@
 """
-Kidpen Suna Setup Package
+Kidpen Setup Package
 
-A modular, testable, and extensible setup system for Kidpen Suna.
+A modular, testable, and extensible setup system for Kidpen.
 Supports interactive wizard mode, non-interactive config file mode,
 dry-run preview, and individual step execution.
 """

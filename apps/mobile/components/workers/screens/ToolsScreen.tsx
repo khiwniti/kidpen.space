@@ -117,7 +117,7 @@ export function ToolsScreen({ agentId, onUpdate }: ToolsScreenProps) {
     }
   }, [agent?.agentpress_tools]);
 
-  const isSunaAgent = agent?.metadata?.is_suna_default || false;
+  const isSunaAgent = agent?.metadata?.is_kidpen_default || false;
   const restrictions = agent?.metadata?.restrictions || {};
   const areToolsEditable = restrictions.tools_editable !== false && !isSunaAgent;
 
@@ -244,7 +244,7 @@ export function ToolsScreen({ agentId, onUpdate }: ToolsScreenProps) {
   const handleSave = async () => {
     if (!hasChanges) return;
 
-    const isSunaAgent = agent?.metadata?.is_suna_default || false;
+    const isSunaAgent = agent?.metadata?.is_kidpen_default || false;
     const restrictions = agent?.metadata?.restrictions || {};
     const areToolsEditable = restrictions.tools_editable !== false && !isSunaAgent;
 

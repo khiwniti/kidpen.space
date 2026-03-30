@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
-Kidpen Suna Service Manager
+Kidpen Service Manager
 
-Starts and stops Suna services based on the setup method configured
+Starts and stops Kidpen services based on the setup method configured
 during setup (Docker or Manual).
 
 Usage:
@@ -379,7 +379,7 @@ def start_manual_services(compose_cmd: list) -> int:
         print(f"  {Colors.DIM}Logs: tail -f frontend.log{Colors.ENDC}")
 
     print(f"\n{Colors.GREEN}{Colors.BOLD}All services started!{Colors.ENDC}")
-    print(f"{Colors.CYAN}Access Suna at: http://localhost:3000{Colors.ENDC}\n")
+    print(f"{Colors.CYAN}Access Kidpen at: http://localhost:3000{Colors.ENDC}\n")
 
     return 0
 
@@ -413,7 +413,7 @@ def start_docker_services(compose_cmd: list) -> int:
 
     if result.returncode == 0:
         print(f"\n{Colors.GREEN}{Colors.BOLD}All services started!{Colors.ENDC}")
-        print(f"{Colors.CYAN}Access Suna at: http://localhost:3000{Colors.ENDC}\n")
+        print(f"{Colors.CYAN}Access Kidpen at: http://localhost:3000{Colors.ENDC}\n")
     else:
         print(f"{Colors.RED}Failed to start services.{Colors.ENDC}")
 

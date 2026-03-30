@@ -36,4 +36,4 @@ export function KidpenLogo({ size = 24, variant = 'symbol', className }: KidpenL
 }
 
 // Backwards compatibility alias
-export const KortixSymbol = KidpenLogo;
+export const KidpenSymbol = KidpenLogo;

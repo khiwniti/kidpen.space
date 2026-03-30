@@ -976,3 +976,86 @@
     right: auto !important;
   }
 }
+
+/* ─── KIDPEN UTILITY CLASSES ─── */
+
+/* Kidpen brand colors as Tailwind utilities */
+.bg-kidpen-gold {
+  background-color: var(--kidpen-brand);
+}
+
+.text-kidpen-gold {
+  color: var(--kidpen-brand);
+}
+
+.border-kidpen-gold {
+  border-color: var(--kidpen-brand);
+}
+
+/* Kidpen shadows (warm, gummy feel) */
+.shadow-kidpen {
+  box-shadow: var(--kidpen-shadow-md);
+}
+
+.shadow-kidpen-sm {
+  box-shadow: var(--kidpen-shadow-sm);
+}
+
+.shadow-kidpen-lg {
+  box-shadow: var(--kidpen-shadow-lg);
+}
+
+.shadow-kidpen-xl {
+  box-shadow: var(--kidpen-shadow-xl);
+}
+
+.shadow-kidpen-button {
+  box-shadow: var(--kidpen-shadow-button);
+}
+
+.shadow-kidpen-glow {
+  box-shadow: var(--kidpen-shadow-glow);
+}
+
+/* Kidpen fonts */
+.font-outfit {
+  font-family: var(--font-outfit), 'Outfit', sans-serif;
+}
+
+.font-thai {
+  font-family: var(--font-ibm-plex-thai), 'IBM Plex Sans Thai', sans-serif;
+}
+
+/* Subject color utilities */
+.text-subject-math { color: var(--kidpen-math-500); }
+.text-subject-science { color: var(--kidpen-science-500); }
+.text-subject-coding { color: var(--kidpen-coding-500); }
+.text-subject-physics { color: var(--kidpen-physics-500); }
+.text-subject-data { color: var(--kidpen-data-500); }
+
+.bg-subject-math { background-color: var(--kidpen-math-100); }
+.bg-subject-science { background-color: var(--kidpen-science-100); }
+.bg-subject-coding { background-color: var(--kidpen-coding-100); }
+.bg-subject-physics { background-color: var(--kidpen-physics-100); }
+.bg-subject-data { background-color: var(--kidpen-data-100); }
+
+.border-subject-math { border-color: var(--kidpen-math-200); }
+.border-subject-science { border-color: var(--kidpen-science-200); }
+.border-subject-coding { border-color: var(--kidpen-coding-200); }
+.border-subject-physics { border-color: var(--kidpen-physics-200); }
+.border-subject-data { border-color: var(--kidpen-data-200); }
+
+/* Kidpen radii */
+.rounded-kidpen { border-radius: var(--kidpen-r-md); }
+.rounded-kidpen-lg { border-radius: var(--kidpen-r-lg); }
+.rounded-kidpen-xl { border-radius: var(--kidpen-r-xl); }
+.rounded-kidpen-pill { border-radius: var(--kidpen-r-pill); }
+
+/* Kidpen transitions */
+.transition-kidpen {
+  transition: all var(--kidpen-dur-normal) var(--kidpen-ease-smooth);
+}
+
+.transition-kidpen-bounce {
+  transition: all var(--kidpen-dur-normal) var(--kidpen-ease-bounce);
+}

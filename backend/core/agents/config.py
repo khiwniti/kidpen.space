@@ -40,7 +40,7 @@ async def load_agent_config_fast(
                     'model': static_config['model'],
                     'agentpress_tools': static_config['agentpress_tools'],
                     'centrally_managed': static_config['centrally_managed'],
-                    'is_suna_default': static_config['is_suna_default'],
+                    'is_kidpen_default': static_config['is_kidpen_default'],
                     'restrictions': static_config['restrictions'],
                     'configured_mcps': cached_mcps.get('configured_mcps', []) if cached_mcps else [],
                     'custom_mcps': cached_mcps.get('custom_mcps', []) if cached_mcps else [],
@@ -84,8 +84,8 @@ async def load_agent_config(
             logger.debug(f"[AGENT LOAD] Loading default agent")
             
             if is_new_thread:
-                from core.utils.ensure_suna import ensure_suna_installed
-                await ensure_suna_installed(account_id)
+                from core.utils.ensure_kidpen import ensure_kidpen_installed
+                await ensure_kidpen_installed(account_id)
             
             from core.agents.agent_loader import get_agent_loader
             loader = await get_agent_loader()

@@ -50,7 +50,7 @@ class AgentData:
     version_created_by: Optional[str] = None
     
     # Metadata flags
-    is_suna_default: bool = False
+    is_kidpen_default: bool = False
     centrally_managed: bool = False
     config_loaded: bool = False
     restrictions: Optional[Dict[str, Any]] = None
@@ -130,7 +130,7 @@ class AgentData:
                 "agentpress_tools": self.agentpress_tools,
                 "triggers": self.triggers,
                 "version_name": self.version_name,
-                "is_suna_default": self.is_suna_default,
+                "is_kidpen_default": self.is_kidpen_default,
                 "centrally_managed": self.centrally_managed,
                 "restrictions": self.restrictions,
             })
@@ -226,7 +226,7 @@ class AgentLoader:
                 agent_id,
                 agent_data.to_dict(),
                 version_id=agent_row.get('current_version_id'),
-                is_suna_default=agent_data.is_suna_default
+                is_kidpen_default=agent_data.is_kidpen_default
             )
         
         logger.debug(f"⏱️ load_agent completed in {(time.time() - t_start)*1000:.1f}ms")
@@ -317,7 +317,7 @@ class AgentLoader:
             agentpress_tools=template_row.get('agentpress_tools', {}),
             triggers=[],
             version_name='template',
-            is_suna_default=False,
+            is_kidpen_default=False,
             centrally_managed=False,
             config_loaded=True,  # Templates have config built-in
             restrictions={}
@@ -356,7 +356,7 @@ class AgentLoader:
             version_created_at=current_version.get('created_at'),
             version_updated_at=current_version.get('updated_at'),
             version_created_by=current_version.get('created_by'),
-            is_suna_default=data.get('is_suna_default', False),
+            is_kidpen_default=data.get('is_kidpen_default', False),
             centrally_managed=data.get('centrally_managed', False),
             config_loaded=True,  # Cached data always has config
             restrictions=data.get('restrictions', {})
@@ -365,17 +365,17 @@ class AgentLoader:
     def _row_to_agent_data(self, row: Dict[str, Any]) -> AgentData:
         """Convert database row to AgentData.
         
-        For Suna agents, always overrides name and description from SUNA_CONFIG
+        For Suna agents, always overrides name and description from KIDPEN_CONFIG
         regardless of what's stored in the database.
         """
         metadata = row.get('metadata', {}) or {}
-        is_suna_default = metadata.get('is_suna_default', False)
+        is_kidpen_default = metadata.get('is_kidpen_default', False)
         
-        # For Suna agents, always use name from SUNA_CONFIG (never DB value)
-        if is_suna_default:
-            from core.config.suna_config import SUNA_CONFIG
-            name = SUNA_CONFIG['name']
-            description = SUNA_CONFIG.get('description')
+        # For Suna agents, always use name from KIDPEN_CONFIG (never DB value)
+        if is_kidpen_default:
+            from core.config.kidpen_config import KIDPEN_CONFIG
+            name = KIDPEN_CONFIG['name']
+            description = KIDPEN_CONFIG.get('description')
         else:
             name = row['name']
             description = row.get('description')
@@ -396,13 +396,13 @@ class AgentLoader:
             current_version_id=row.get('current_version_id'),
             version_count=row.get('version_count', 1),
             metadata=metadata,
-            is_suna_default=is_suna_default,
+            is_kidpen_default=is_kidpen_default,
             config_loaded=False
         )
     
     async def _load_agent_config(self, agent: AgentData, user_id: str):
         """Load full configuration for a single agent."""
-        if agent.is_suna_default:
+        if agent.is_kidpen_default:
             await self._load_suna_config(agent, user_id)
         else:
             await self._load_custom_config(agent, user_id)
@@ -415,22 +415,22 @@ class AgentLoader:
         
         Static parts (prompt, model, tools) = instant from memory
         User MCPs = check cache first, then DB if miss
-        Always overrides name from SUNA_CONFIG regardless of DB value.
+        Always overrides name from KIDPEN_CONFIG regardless of DB value.
         """
         import time
         t_start = time.time()
         
         # 1. Load static config from memory (instant, no DB)
         from core.cache.runtime_cache import get_static_suna_config, load_static_suna_config
-        from core.config.suna_config import SUNA_CONFIG
+        from core.config.kidpen_config import KIDPEN_CONFIG
         
         static_config = get_static_suna_config()
         if not static_config:
             static_config = load_static_suna_config()
         
-        # Always override name from SUNA_CONFIG (never use DB value)
-        agent.name = SUNA_CONFIG['name']
-        agent.description = SUNA_CONFIG.get('description')
+        # Always override name from KIDPEN_CONFIG (never use DB value)
+        agent.name = KIDPEN_CONFIG['name']
+        agent.description = KIDPEN_CONFIG.get('description')
         agent.system_prompt = static_config['system_prompt']
         agent.model = static_config['model']
         agent.agentpress_tools = static_config['agentpress_tools']
@@ -568,12 +568,12 @@ class AgentLoader:
         """Batch load configurations for multiple agents."""
         
         # Get all version IDs for non-Suna agents
-        version_ids = [a.current_version_id for a in agents if a.current_version_id and not a.is_suna_default]
+        version_ids = [a.current_version_id for a in agents if a.current_version_id and not a.is_kidpen_default]
         
         if not version_ids:
             # Only Suna agents, load their configs
             for agent in agents:
-                if agent.is_suna_default:
+                if agent.is_kidpen_default:
                     await self._load_suna_config(agent, agent.account_id)
                     agent.config_loaded = True
             return
@@ -586,7 +586,7 @@ class AgentLoader:
             # Create version map using versioning service
             version_map = {}
             for agent in agents:
-                if agent.current_version_id and not agent.is_suna_default:
+                if agent.current_version_id and not agent.is_kidpen_default:
                     try:
                         version = await version_service.get_version(
                             agent_id=agent.agent_id,
@@ -601,7 +601,7 @@ class AgentLoader:
             
             # Apply configs
             for agent in agents:
-                if agent.is_suna_default:
+                if agent.is_kidpen_default:
                     await self._load_suna_config(agent, agent.account_id)
                     agent.config_loaded = True
                 elif agent.agent_id in version_map:
@@ -613,7 +613,7 @@ class AgentLoader:
             logger.warning(f"Failed to batch load agent configs: {e}")
             # Fallback: load Suna configs only
             for agent in agents:
-                if agent.is_suna_default:
+                if agent.is_kidpen_default:
                     await self._load_suna_config(agent, agent.account_id)
                     agent.config_loaded = True
     

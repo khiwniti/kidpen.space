@@ -123,10 +123,10 @@ class AgentConfigTool(AgentBuilderBaseTool):
             current_agent = agent_result.data[0]
 
             metadata = current_agent.get('metadata', {})
-            is_suna_default = metadata.get('is_suna_default', False)
+            is_kidpen_default = metadata.get('is_kidpen_default', False)
             
             # Enforce Suna restrictions (simplified)
-            if is_suna_default:
+            if is_kidpen_default:
                 restricted_fields = []
                 if name is not None:
                     restricted_fields.append("name")

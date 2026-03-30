@@ -297,7 +297,7 @@ class Configuration:
     ACTIVATE_MCPS_TRIG: bool = True
     MEMORY_EMBEDDING_PROVIDER: Optional[str] = "openai"
     MEMORY_EMBEDDING_MODEL: Optional[str] = "text-embedding-3-small"
-    MEMORY_EXTRACTION_MODEL: Optional[str] = "kortix/basic"
+    MEMORY_EXTRACTION_MODEL: Optional[str] = "kidpen/basic"
     VOYAGE_API_KEY: Optional[str] = None
     GROQ_API_KEY: Optional[str] = None
     OPENROUTER_API_KEY: Optional[str] = None
@@ -307,8 +307,8 @@ class Configuration:
     OPENROUTER_API_BASE: Optional[str] = "https://openrouter.ai/api/v1"
     OPENAI_COMPATIBLE_API_KEY: Optional[str] = None
     OPENAI_COMPATIBLE_API_BASE: Optional[str] = None
-    OR_SITE_URL: Optional[str] = "https://www.kortix.com"
-    OR_APP_NAME: Optional[str] = "Kortix.com"
+    OR_SITE_URL: Optional[str] = "https://kidpen.space"
+    OR_APP_NAME: Optional[str] = "Kidpen.space"
     
     # Frontend URL configuration
     FRONTEND_URL_ENV: Optional[str] = None
@@ -376,16 +376,16 @@ class Configuration:
     STRIPE_PRODUCT_ID_STAGING: Optional[str] = 'prod_SCgIj3G7yPOAWY'
     
     # Sandbox configuration
-    SANDBOX_IMAGE_NAME = "kortix/suna:0.1.3.30"
-    SANDBOX_SNAPSHOT_NAME = "kortix/suna:0.1.3.30"
+    SANDBOX_IMAGE_NAME = "kidpen/suna:0.1.3.30"
+    SANDBOX_SNAPSHOT_NAME = "kidpen/suna:0.1.3.30"
     SANDBOX_ENTRYPOINT = "/usr/bin/supervisord -n -c /etc/supervisor/conf.d/supervisord.conf"
-    
+
     # Debug configuration
     # Set to True to save LLM API call inputs and stream outputs to debug_streams/ directory
     # Always False in production, regardless of environment variable
     _DEBUG_SAVE_LLM_IO: Optional[bool] = False
-    
-    @property
+
+    KIDPEN_ADMIN_API_KEY: Optional[str] = None
     def DEBUG_SAVE_LLM_IO(self) -> bool:
         """
         Debug flag to save LLM API call inputs and stream outputs.
@@ -401,7 +401,7 @@ class Configuration:
     LANGFUSE_HOST: Optional[str] = "https://cloud.langfuse.com"
 
     # Admin API key for server-side operations
-    KORTIX_ADMIN_API_KEY: Optional[str] = None
+    KIDPEN_ADMIN_API_KEY: Optional[str] = None
 
     # API Keys system configuration
     API_KEY_SECRET: Optional[str] = "default-secret-key-change-in-production"
@@ -510,8 +510,8 @@ class Configuration:
         Get the frontend URL based on environment.
         
         Returns:
-        - Production: 'https://kortix.com' (or FRONTEND_URL_ENV if set)
-        - Staging: 'https://staging.kortix.com' (or FRONTEND_URL_ENV if set)
+        - Production: 'https://kidpen.space' (or FRONTEND_URL_ENV if set)
+        - Staging: 'https://staging.kidpen.space' (or FRONTEND_URL_ENV if set)
         - Local: FRONTEND_URL_ENV or 'http://localhost:3000'
         """
         # Check for environment variable override first
@@ -520,14 +520,14 @@ class Configuration:
         
         # Environment-based defaults
         if self.ENV_MODE == EnvMode.PRODUCTION:
-            return 'https://kortix.com'
+            return 'https://kidpen.space'
         elif self.ENV_MODE == EnvMode.STAGING:
-            return 'http://localhost:3000'
+            return 'https://staging.kidpen.space'
         else:
             return 'http://localhost:3000'
     
     def _generate_admin_api_key(self) -> str:
-        """Generate a secure admin API key for Kortix administrative functions."""
+        """Generate a secure admin API key for Kidpen administrative functions."""
         # Generate 32 random bytes and encode as hex for a readable API key
         key_bytes = secrets.token_bytes(32)
         return key_bytes.hex()
@@ -551,9 +551,9 @@ class Configuration:
         self._load_from_env()
         
         # Auto-generate admin API key if not present
-        if not self.KORTIX_ADMIN_API_KEY:
-            self.KORTIX_ADMIN_API_KEY = self._generate_admin_api_key()
-            logger.info("Auto-generated KORTIX_ADMIN_API_KEY for administrative functions")
+        if not self.KIDPEN_ADMIN_API_KEY:
+            self.KIDPEN_ADMIN_API_KEY = self._generate_admin_api_key()
+            logger.info("Auto-generated KIDPEN_ADMIN_API_KEY for administrative functions")
         
         # Perform validation
         self._validate()

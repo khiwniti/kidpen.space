@@ -54,7 +54,7 @@ BEGIN
         COALESCE(a.version_count, 1) as version_count
     FROM agents a
     WHERE a.account_id = p_account_id 
-    AND COALESCE((a.metadata->>'is_suna_default')::boolean, false) = true
+    AND COALESCE((a.metadata->>'is_kidpen_default')::boolean, false) = true
     ORDER BY a.created_at DESC
     LIMIT 1;
 END;
@@ -105,7 +105,7 @@ BEGIN
         a.metadata->>'management_version' as management_version,
         COALESCE((a.metadata->>'centrally_managed')::boolean, false) as centrally_managed
     FROM agents a
-    WHERE COALESCE((a.metadata->>'is_suna_default')::boolean, false) = true
+    WHERE COALESCE((a.metadata->>'is_kidpen_default')::boolean, false) = true
     ORDER BY a.created_at DESC;
 END;
 $$;
@@ -121,7 +121,7 @@ DECLARE
 BEGIN
     SELECT COUNT(*) INTO agent_count
     FROM agents a
-    WHERE COALESCE((a.metadata->>'is_suna_default')::boolean, false) = true
+    WHERE COALESCE((a.metadata->>'is_kidpen_default')::boolean, false) = true
     AND a.metadata->>'management_version' = p_version;
     
     RETURN COALESCE(agent_count, 0);
@@ -150,12 +150,12 @@ BEGIN
     -- Get total count
     SELECT COUNT(*) INTO total_count
     FROM agents a
-    WHERE COALESCE((a.metadata->>'is_suna_default')::boolean, false) = true;
+    WHERE COALESCE((a.metadata->>'is_kidpen_default')::boolean, false) = true;
     
     -- Get active count (all Suna agents are considered active)
     SELECT COUNT(*) INTO active_count
     FROM agents a
-    WHERE COALESCE((a.metadata->>'is_suna_default')::boolean, false) = true;
+    WHERE COALESCE((a.metadata->>'is_kidpen_default')::boolean, false) = true;
     
     -- Calculate inactive count
     inactive_count := total_count - active_count;
@@ -170,7 +170,7 @@ BEGIN
             COALESCE(a.metadata->>'management_version', 'unknown') as version,
             COUNT(*) as version_count
         FROM agents a
-        WHERE COALESCE((a.metadata->>'is_suna_default')::boolean, false) = true
+        WHERE COALESCE((a.metadata->>'is_kidpen_default')::boolean, false) = true
         GROUP BY COALESCE(a.metadata->>'management_version', 'unknown')
     ) version_data;
     
@@ -184,7 +184,7 @@ BEGIN
             TO_CHAR(a.created_at, 'YYYY-MM') as creation_month,
             COUNT(*) as month_count
         FROM agents a
-        WHERE COALESCE((a.metadata->>'is_suna_default')::boolean, false) = true
+        WHERE COALESCE((a.metadata->>'is_kidpen_default')::boolean, false) = true
         GROUP BY TO_CHAR(a.created_at, 'YYYY-MM')
         ORDER BY creation_month DESC
         LIMIT 12  -- Last 12 months
@@ -221,7 +221,7 @@ BEGIN
         COALESCE(a.metadata->>'management_version', 'unknown') as current_version,
         (a.metadata->>'last_central_update')::timestamptz as last_central_update
     FROM agents a
-    WHERE COALESCE((a.metadata->>'is_suna_default')::boolean, false) = true
+    WHERE COALESCE((a.metadata->>'is_kidpen_default')::boolean, false) = true
     AND COALESCE((a.metadata->>'centrally_managed')::boolean, false) = true
     AND (
         a.metadata->>'management_version' IS NULL 

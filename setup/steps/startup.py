@@ -13,10 +13,10 @@ from setup.utils.docker import detect_docker_compose_command, format_compose_cmd
 
 
 class StartupStep(BaseStep):
-    """Start Kidpen Suna services."""
+    """Start Kidpen services."""
 
     name = "startup"
-    display_name = "Starting Kidpen Suna"
+    display_name = "Starting Kidpen"
     order = 16
     required = True
     depends_on = ["dependencies"]
@@ -35,7 +35,7 @@ class StartupStep(BaseStep):
             compose_cmd_str = "docker compose"
 
         # Ask user how they want to start
-        self.info("\nHow would you like to start Kidpen Suna?")
+        self.info("\nHow would you like to start Kidpen?")
         self.console.print("  [1] Automatic - Start services automatically")
         self.console.print("  [2] Manual - Show commands to run manually")
 
@@ -63,7 +63,7 @@ class StartupStep(BaseStep):
                     ["Docker build may fail without a lockfile"],
                 )
 
-            self.info("Starting Kidpen Suna with Docker Compose...")
+            self.info("Starting Kidpen with Docker Compose...")
 
             try:
                 subprocess.run(
@@ -84,7 +84,7 @@ class StartupStep(BaseStep):
                 )
 
                 if "backend" in result.stdout and "frontend" in result.stdout:
-                    self.success("Kidpen Suna services are starting up!")
+                    self.success("Kidpen services are starting up!")
                 else:
                     self.warning(
                         f"Some services might not be running. Check '{compose_cmd_str} ps' for details."
@@ -112,7 +112,7 @@ class StartupStep(BaseStep):
         """Start services manually (not in Docker containers)."""
         if choice == "1":
             # Automatic manual start
-            self.info("Starting Kidpen Suna automatically (manual mode)...")
+            self.info("Starting Kidpen automatically (manual mode)...")
             self.info("This will start Redis (Docker), Backend (uv), and Frontend (pnpm).")
 
             try:
@@ -176,8 +176,8 @@ class StartupStep(BaseStep):
                 self.info("Waiting for services to initialize...")
                 time.sleep(5)
 
-                self.success("Kidpen Suna services started!")
-                self.info("Access Suna at: http://localhost:3000")
+                self.success("Kidpen services started!")
+                self.info("Access Kidpen at: http://localhost:3000")
                 self.info("\nTo view logs:")
                 self.info("  Backend:  tail -f backend.log")
                 self.info("  Frontend: tail -f frontend.log")

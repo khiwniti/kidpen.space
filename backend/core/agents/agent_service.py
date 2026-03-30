@@ -304,7 +304,7 @@ class AgentService:
         
         if version_data:
             self.loader._apply_version_config(agent, version_data)
-        elif agent.is_suna_default:
+        elif agent.is_kidpen_default:
             await self.loader._load_suna_config(agent, agent.account_id)
         else:
             # No config available, use empty defaults for filtering
@@ -355,7 +355,7 @@ class AgentService:
             
             if version_data:
                 self.loader._apply_version_config(agent, version_data)
-            elif agent.is_suna_default:
+            elif agent.is_kidpen_default:
                 await self.loader._load_suna_config(agent, agent.account_id)
             
             configured_mcps = agent.configured_mcps or []
@@ -397,7 +397,7 @@ class AgentService:
             if version_data:
                 self.loader._apply_version_config(agent, version_data)
                 agent.config_loaded = True
-            elif agent.is_suna_default:
+            elif agent.is_kidpen_default:
                 await self.loader._load_suna_config(agent, agent.account_id)
                 agent.config_loaded = True
             

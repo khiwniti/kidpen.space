@@ -48,7 +48,7 @@ async def update_agent(
         existing_data = existing_agent_data
 
         agent_metadata = existing_data.get('metadata', {})
-        is_suna_agent = agent_metadata.get('is_suna_default', False)
+        is_suna_agent = agent_metadata.get('is_kidpen_default', False)
         restrictions = agent_metadata.get('restrictions', {})
         
         if is_suna_agent:
@@ -406,7 +406,7 @@ async def delete_agent(agent_id: str, user_id: str = Depends(verify_and_get_user
         if agent['is_default']:
             raise HTTPException(status_code=400, detail="Cannot delete default agent")
         
-        if agent.get('metadata', {}).get('is_suna_default', False):
+        if agent.get('metadata', {}).get('is_kidpen_default', False):
             raise HTTPException(status_code=400, detail="Cannot delete Suna default agent")
         
         # Clean up triggers before deleting agent
@@ -596,11 +596,11 @@ async def create_agent(
         
         try:
             version_service = await _get_version_service()
-            from core.config.suna_config import SUNA_CONFIG
+            from core.config.kidpen_config import KIDPEN_CONFIG
             from core.config.config_helper import _get_default_agentpress_tools
             from core.ai_models import model_manager
             
-            system_prompt = SUNA_CONFIG["system_prompt"]
+            system_prompt = KIDPEN_CONFIG["system_prompt"]
             
             agentpress_tools = agent_data.agentpress_tools if agent_data.agentpress_tools else _get_default_agentpress_tools()
             agentpress_tools = ensure_core_tools_enabled(agentpress_tools)

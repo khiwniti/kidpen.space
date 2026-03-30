@@ -1213,7 +1213,7 @@ const AssistantGroupRow = memo(function AssistantGroupRow({
   return (
     <div key={group.key} ref={isLastGroup ? latestMessageRef : null}>
       <div className="flex flex-col gap-2">
-        {/* Reasoning section with integrated Kortix icon */}
+        {/* Reasoning section with integrated Kidpen icon */}
         {reasoningSection}
         {/* Show AgentHeader only when reasoning section is NOT displayed */}
         {!reasoningSection && (

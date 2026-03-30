@@ -75,7 +75,7 @@ export interface BaseAgentData {
     version_number: number;
   };
   metadata?: {
-    is_suna_default?: boolean;
+    is_kidpen_default?: boolean;
     centrally_managed?: boolean;
     restrictions?: Record<string, boolean>;
   };
@@ -131,7 +131,7 @@ const CardAvatar: React.FC<{
   size?: number;
   variant: AgentCardVariant;
 }> = ({ data, size = 48, variant }) => {
-  const isSunaAgent = data.metadata?.is_suna_default === true;
+  const isSunaAgent = data.metadata?.is_kidpen_default === true;
   
   if (variant === 'showcase') {
     return (
@@ -179,14 +179,14 @@ const CardAvatar: React.FC<{
 
 // Badge components
 const MarketplaceBadge: React.FC<{ 
-  isKortixTeam?: boolean; 
+  isKidpenTeam?: boolean; 
   isOwner?: boolean;
-}> = ({ isKortixTeam, isOwner }) => (
+}> = ({ isKidpenTeam, isOwner }) => (
   <div className="flex gap-1 flex-wrap">
-    {isKortixTeam && (
+    {isKidpenTeam && (
       <Badge variant="secondary" className="bg-blue-100 text-blue-700 border-0 dark:bg-blue-950 dark:text-blue-300">
         <CheckCircle className="h-3 w-3 mr-1" />
-        Kortix
+        Kidpen
       </Badge>
     )}
     {isOwner && (
@@ -399,7 +399,7 @@ export const UnifiedAgentCard: React.FC<UnifiedAgentCardProps> = ({
     isDeleting = false
   } = state;
   
-  const isSunaAgent = data.metadata?.is_suna_default === true;
+  const isSunaAgent = data.metadata?.is_kidpen_default === true;
   const isOwner = currentUserId && data.creator_id === currentUserId;
   
   // Handle delete confirmation
@@ -547,7 +547,7 @@ export const UnifiedAgentCard: React.FC<UnifiedAgentCardProps> = ({
     const renderBadge = () => {
       switch (variant) {
         case 'marketplace':
-          return <MarketplaceBadge isKortixTeam={data.is_kortix_team} isOwner={isOwner} />;
+          return <MarketplaceBadge isKidpenTeam={data.is_kortix_team} isOwner={isOwner} />;
         case 'template':
           return <TemplateBadge isPublic={data.is_public} />;
         case 'agent':

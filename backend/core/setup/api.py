@@ -11,7 +11,7 @@ from core.utils.auth_utils import verify_and_get_user_id_from_jwt
 from core.utils.logger import logger
 from core.utils.config import config
 from core.billing.subscriptions import free_tier_service
-from core.utils.suna_default_agent_service import SunaDefaultAgentService
+from core.utils.kidpen_default_agent_service import KidpenDefaultAgentService
 from core.services.supabase import DBConnection
 from core.services.email import email_service
 
@@ -97,7 +97,7 @@ async def initialize_user_account(account_id: str, email: Optional[str] = None, 
         
         logger.info(f"[SETUP] Installing Suna agent for {account_id}")
         try:
-            suna_service = SunaDefaultAgentService(db)
+            suna_service = KidpenDefaultAgentService(db)
             agent_id = await suna_service.install_suna_agent_for_user(account_id)
             if not agent_id:
                 logger.warning(f"[SETUP] Failed to install Suna agent for {account_id}")

@@ -22,7 +22,7 @@ export function InstructionsScreen({ agentId }: InstructionsScreenProps) {
         }
     }, [agent?.system_prompt]);
 
-    const isSunaAgent = agent?.metadata?.is_suna_default || false;
+    const isSunaAgent = agent?.metadata?.is_kidpen_default || false;
     const restrictions = agent?.metadata?.restrictions || {};
     const isEditable = (restrictions.system_prompt_editable !== false) && !isSunaAgent;
 
@@ -30,7 +30,7 @@ export function InstructionsScreen({ agentId }: InstructionsScreenProps) {
         if (!isEditable) {
             if (isSunaAgent) {
                 toast.error("System prompt cannot be edited", {
-                    description: "Kortix's system prompt is managed centrally.",
+                    description: "Kidpen's system prompt is managed centrally.",
                 });
             }
             return;

@@ -86,7 +86,7 @@ interface KidpenComputerState {
   // Navigate to a specific tool call (clicking tool in ThreadContent)
   navigateToToolCall: (toolIndex: number) => void;
   
-  // Clear pending tool nav after KortixComputer processes it
+  // Clear pending tool nav after KidpenComputer processes it
   clearPendingToolNav: () => void;
   
   // Panel control
@@ -402,34 +402,34 @@ export const useKidpenComputerStore = create<KidpenComputerState>()(
 // === SELECTOR HOOKS ===
 
 // Sandbox context
-export const useKortixComputerSandboxId = () =>
+export const useKidpenComputerSandboxId = () =>
   useKidpenComputerStore((state) => state.currentSandboxId);
 
 export const useSetSandboxContext = () =>
   useKidpenComputerStore((state) => state.setSandboxContext);
 
 // Main view state
-export const useKortixComputerActiveView = () => 
+export const useKidpenComputerActiveView = () => 
   useKidpenComputerStore((state) => state.activeView);
 
 // Individual selectors for files state (stable, primitive values)
-export const useKortixComputerFilesSubView = () =>
+export const useKidpenComputerFilesSubView = () =>
   useKidpenComputerStore((state) => state.filesSubView);
 
-export const useKortixComputerCurrentPath = () =>
+export const useKidpenComputerCurrentPath = () =>
   useKidpenComputerStore((state) => state.currentPath);
 
-export const useKortixComputerSelectedFilePath = () =>
+export const useKidpenComputerSelectedFilePath = () =>
   useKidpenComputerStore((state) => state.selectedFilePath);
 
-export const useKortixComputerFilePathList = () =>
+export const useKidpenComputerFilePathList = () =>
   useKidpenComputerStore((state) => state.filePathList);
 
-export const useKortixComputerCurrentFileIndex = () =>
+export const useKidpenComputerCurrentFileIndex = () =>
   useKidpenComputerStore((state) => state.currentFileIndex);
 
 // Legacy combined selector (for backward compatibility) - use individual selectors in components
-export const useKortixComputerFilesState = () => ({
+export const useKidpenComputerFilesState = () => ({
   filesSubView: useKidpenComputerStore((state) => state.filesSubView),
   currentPath: useKidpenComputerStore((state) => state.currentPath),
   selectedFilePath: useKidpenComputerStore((state) => state.selectedFilePath),
@@ -438,7 +438,7 @@ export const useKortixComputerFilesState = () => ({
 });
 
 // Actions are stable references (functions don't change)
-export const useKortixComputerActions = () =>
+export const useKidpenComputerActions = () =>
   useKidpenComputerStore((state) => ({
     setActiveView: state.setActiveView,
     openFile: state.openFile,
@@ -456,10 +456,10 @@ export const useKortixComputerActions = () =>
   }));
 
 // Individual selectors for pending tool navigation (stable primitives)
-export const useKortixComputerPendingToolNavIndex = () =>
+export const useKidpenComputerPendingToolNavIndex = () =>
   useKidpenComputerStore((state) => state.pendingToolNavIndex);
 
-export const useKortixComputerClearPendingToolNav = () =>
+export const useKidpenComputerClearPendingToolNav = () =>
   useKidpenComputerStore((state) => state.clearPendingToolNav);
 
 // Side panel state selectors

@@ -21,7 +21,7 @@ export function ToolsScreen({ agentId }: ToolsScreenProps) {
         }
     }, [agent?.agentpress_tools]);
 
-    const isSunaAgent = agent?.metadata?.is_suna_default || false;
+    const isSunaAgent = agent?.metadata?.is_kidpen_default || false;
     const restrictions = agent?.metadata?.restrictions || {};
     const areToolsEditable = (restrictions.tools_editable !== false) && !isSunaAgent;
 
@@ -29,7 +29,7 @@ export function ToolsScreen({ agentId }: ToolsScreenProps) {
         if (!areToolsEditable) {
             if (isSunaAgent) {
                 toast.error("Tools cannot be edited", {
-                    description: "Kortix's tools are managed centrally.",
+                    description: "Kidpen's tools are managed centrally.",
                 });
             }
             return;

@@ -221,7 +221,7 @@ export function useThreadToolCalls(
       setExternalNavIndex(index);
       setCurrentToolIndex(index);
       setIsSidePanelOpen(true);
-      // Use store action to ensure KortixComputer switches to tools view
+      // Use store action to ensure KidpenComputer switches to tools view
       navigateToToolCall(index);
       setTimeout(() => setExternalNavIndex(undefined), 100);
     };

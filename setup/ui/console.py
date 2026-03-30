@@ -66,7 +66,7 @@ class Console:
             print(message)
 
     def print_banner(self) -> None:
-        """Print the Kidpen Suna setup banner."""
+        """Print the Kidpen setup banner."""
         banner = """
    ███████╗██╗   ██╗███╗   ██╗ █████╗
    ██╔════╝██║   ██║████╗  ██║██╔══██╗
@@ -79,7 +79,7 @@ class Console:
 """
         if self.use_rich:
             self._console.print(
-                Panel(banner, style="bold blue", title="Kidpen Suna", border_style="blue")
+                Panel(banner, style="bold blue", title="Kidpen", border_style="blue")
             )
         else:
             print(f"{Colors.BLUE}{Colors.BOLD}{banner}{Colors.ENDC}")

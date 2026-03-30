@@ -62,7 +62,7 @@ import { useKidpenComputerStore } from '@/stores/kidpen-computer-store';
 import { usePresentationViewerStore } from '@/stores/presentation-viewer-store';
 import { Badge } from '@/components/ui/badge';
 import { VersionBanner } from './VersionBanner';
-import { KortixComputerHeader } from './KortixComputerHeader';
+import { KidpenComputerHeader } from './KidpenComputerHeader';
 import { useFileData } from '@/hooks/use-file-data';
 import { PresentationSlidePreview } from '../tool-views/presentation-tools/PresentationSlidePreview';
 import { PresentationSlideSkeleton } from '../tool-views/presentation-tools/PresentationSlideSkeleton';
@@ -638,7 +638,7 @@ interface FileBrowserViewProps {
   project?: Project;
   projectId?: string;
   /** 
-   * 'default' - Side panel view in Kortix Computer (shows all files)
+   * 'default' - Side panel view in Kidpen Computer (shows all files)
    * 'library' - Full page library view with larger cards and different layout
    * 'inline-library' - Side panel view with library filtering (main outputs only) and thumbnails
    */
@@ -662,7 +662,7 @@ export function FileBrowserView({
   const shouldFilterFiles = isLibraryView || isInlineLibrary;
   const { session } = useAuth();
   
-  // Kortix Computer Store
+  // Kidpen Computer Store
   const { 
     currentPath, 
     navigateToPath,
@@ -1978,7 +1978,7 @@ export function FileBrowserView({
   return (
     <div className="h-full flex flex-col overflow-hidden">
       {/* Header with Breadcrumb Navigation */}
-      <KortixComputerHeader
+      <KidpenComputerHeader
         icon={Home}
         onIconClick={navigateHome}
         iconTitle="Home"

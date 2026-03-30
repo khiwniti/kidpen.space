@@ -230,7 +230,7 @@ assets/brand/kidpen-*.svg → assets/brand/kidpen-*.svg
 ### Phase 6: Backend & SDK
 
 #### Task 6.1: Backend Config
-**File**: `/backend/core/config/suna_config.py`
+**File**: `/backend/core.config.kidpen_config.py`
 - Update `name`, `description`, `model` references
 
 #### Task 6.2: SDK Module Rename

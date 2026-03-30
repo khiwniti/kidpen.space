@@ -10,7 +10,7 @@ import {
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { useCreateNewAgent } from '@/hooks/agents/use-agents';
-import { useKortixTeamTemplates } from '@/hooks/secure-mcp/use-secure-mcp';
+import { useKidpenTeamTemplates } from '@/hooks/secure-mcp/use-secure-mcp';
 import { AgentCountLimitError } from '@/lib/api/errors';
 import { toast } from '@/lib/toast';
 import type { BaseAgentData } from '@/components/ui/unified-agent-card';
@@ -58,7 +58,7 @@ export function AgentCreationModal({ open, onOpenChange, onSuccess }: AgentCreat
 
   const createNewAgentMutation = useCreateNewAgent();
   // Only fetch templates when modal is open to avoid unnecessary API calls
-  const { data: templates } = useKortixTeamTemplates({ enabled: open });
+  const { data: templates } = useKidpenTeamTemplates({ enabled: open });
 
   const handleExploreTemplates = () => {
     onOpenChange(false);

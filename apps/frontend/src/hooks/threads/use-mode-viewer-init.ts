@@ -54,7 +54,7 @@ export function useModeViewerInit(
 function handleModeInit(mode: Mode, openFileBrowser: () => void) {
   switch (mode) {
     case 'slides':
-      // Open Files tab in Kortix Computer to show presentations folder
+      // Open Files tab in Kidpen Computer to show presentations folder
       openFileBrowser();
       console.log('[ModeViewerInit] Opening Files panel for presentations');
       break;

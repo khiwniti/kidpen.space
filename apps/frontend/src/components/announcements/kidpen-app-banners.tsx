@@ -17,14 +17,14 @@ const STORE_LINKS = {
 };
 
 const DOWNLOAD_LINKS = {
-  windows: 'https://download.kortix.com/desktop/latest/windows/Kortix%20Setup%201.0.0.exe',
-  macArm: 'https://download.kortix.com/desktop/latest/macos/Kortix-1.0.0-arm64.dmg',
-  macIntel: 'https://download.kortix.com/desktop/latest/macos/Kortix-1.0.0-x64.dmg',
+  windows: 'https://download.kidpen.space/desktop/latest/windows/Kidpen%20Setup%201.0.0.exe',
+  macArm: 'https://download.kidpen.space/desktop/latest/macos/Kidpen-1.0.0-arm64.dmg',
+  macIntel: 'https://download.kidpen.space/desktop/latest/macos/Kidpen-1.0.0-x64.dmg',
 };
 
 type DesktopPlatform = 'windows' | 'mac';
 
-type KortixAppBannersProps = {
+type KidpenAppBannersProps = {
   /**
    * When true, hides ONLY the mobile (App Store / Play Store) banner.
    * Desktop download banner can still show.
@@ -52,8 +52,8 @@ function GooglePlayLogo({ className }: { className?: string }) {
   );
 }
 
-// Kortix symbol SVG (inline to avoid loading issues)
-function KortixSymbol({ size = 24, className }: { size?: number; className?: string }) {
+// Kidpen symbol SVG (inline to avoid loading issues)
+function KidpenSymbol({ size = 24, className }: { size?: number; className?: string }) {
   return (
     <svg 
       width={size} 
@@ -80,7 +80,7 @@ function detectDesktopPlatform(): DesktopPlatform {
   return 'mac';
 }
 
-export function KortixAppBanners(props: KortixAppBannersProps) {
+export function KidpenAppBanners(props: KidpenAppBannersProps) {
   const disableMobileAdvertising =
     props.disableMobileAdvertising ?? featureFlags.disableMobileAdvertising;
 
@@ -100,7 +100,7 @@ export function KortixAppBanners(props: KortixAppBannersProps) {
     setDesktopPlatform(detectDesktopPlatform());
     
     if (process.env.NODE_ENV !== 'production') {
-      console.log('[KortixAppBanners] flags', { disableMobileAdvertising });
+      console.log('[KidpenAppBanners] flags', { disableMobileAdvertising });
     }
 
     const desktopDismissed = localStorage.getItem(DESKTOP_STORAGE_KEY);
@@ -189,14 +189,14 @@ export function KortixAppBanners(props: KortixAppBannersProps) {
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-foreground dark:text-white text-sm font-semibold truncate">
-                    Get Kortix Apps
+                    Get Kidpen Apps
                   </p>
                   <p className="text-muted-foreground dark:text-white/60 text-xs">
                     Mobile & Desktop
                   </p>
                 </div>
                 <div className="w-10 h-10 rounded-xl bg-foreground dark:bg-white flex items-center justify-center shadow-sm">
-                  <KortixSymbol size={20} className="text-background dark:text-black" />
+                  <KidpenSymbol size={20} className="text-background dark:text-black" />
                 </div>
               </div>
             </motion.div>
@@ -240,7 +240,7 @@ export function KortixAppBanners(props: KortixAppBannersProps) {
                     {/* Content area */}
                     <div className="p-4 bg-muted/50 dark:bg-[#161618]">
                       <h3 className="text-foreground dark:text-white text-sm font-semibold mb-1">
-                        Kortix for Mobile is here
+                        Kidpen for Mobile is here
                       </h3>
                       <p className="text-muted-foreground dark:text-white/60 text-xs leading-relaxed mb-3">
                         Scan QR or tap to download
@@ -312,7 +312,7 @@ export function KortixAppBanners(props: KortixAppBannersProps) {
                         </div>
                         
                         <div className="w-8 h-8 bg-foreground dark:bg-[#1a1a1a] rounded-lg flex items-center justify-center">
-                          <KortixSymbol size={16} className="text-background dark:text-white" />
+                          <KidpenSymbol size={16} className="text-background dark:text-white" />
                         </div>
                         
                         <div className="flex gap-1 absolute bottom-1.5 right-2">
@@ -326,10 +326,10 @@ export function KortixAppBanners(props: KortixAppBannersProps) {
                     {/* Content area */}
                     <div className="p-4 bg-muted/50 dark:bg-[#161618]">
                       <h3 className="text-foreground dark:text-white text-sm font-semibold mb-1">
-                        Kortix for Desktop is here
+                        Kidpen for Desktop is here
                       </h3>
                       <p className="text-muted-foreground dark:text-white/60 text-xs leading-relaxed mb-3">
-                        Hand it off to Kortix. From anywhere on your {desktopPlatform === 'mac' ? 'Mac' : 'Desktop'}. Download now.
+                        Hand it off to Kidpen. From anywhere on your {desktopPlatform === 'mac' ? 'Mac' : 'Desktop'}. Download now.
                       </p>
 
                       {/* Desktop download badge */}

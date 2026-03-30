@@ -53,15 +53,15 @@ jobs:
           # Manual trigger with environment selection
           if [ "${{ github.event.inputs.environment }}" = "production" ]; then
             echo "environment=production" >> $GITHUB_OUTPUT
-            echo "api_url=https://api.kortix.com/v1" >> $GITHUB_OUTPUT
+            echo "api_url=https://api.kidpen.space/v1" >> $GITHUB_OUTPUT
             exit 0
           elif [ "${{ github.event.inputs.environment }}" = "staging" ]; then
             echo "environment=staging" >> $GITHUB_OUTPUT
-            echo "api_url=https://staging-api.kortix.com/v1" >> $GITHUB_OUTPUT
+            echo "api_url=https://staging-api.kidpen.space/v1" >> $GITHUB_OUTPUT
             exit 0
           elif [ "${{ github.event.inputs.environment }}" = "dev" ]; then
             echo "environment=dev" >> $GITHUB_OUTPUT
-            echo "api_url=https://dev-api.kortix.com/v1" >> $GITHUB_OUTPUT
+            echo "api_url=https://dev-api.kidpen.space/v1" >> $GITHUB_OUTPUT
             exit 0
           fi
 
@@ -81,27 +81,27 @@ jobs:
           # PRODUCTION branch → production environment
           if [ "$BRANCH" = "PRODUCTION" ]; then
             echo "environment=production" >> $GITHUB_OUTPUT
-            echo "api_url=https://api.kortix.com/v1" >> $GITHUB_OUTPUT
+            echo "api_url=https://api.kidpen.space/v1" >> $GITHUB_OUTPUT
             exit 0
           fi
 
           # staging branch → staging environment
           if [ "$BRANCH" = "staging" ]; then
             echo "environment=staging" >> $GITHUB_OUTPUT
-            echo "api_url=https://staging-api.kortix.com/v1" >> $GITHUB_OUTPUT
+            echo "api_url=https://staging-api.kidpen.space/v1" >> $GITHUB_OUTPUT
             exit 0
           fi
 
           # main branch → dev environment
           if [ "$BRANCH" = "main" ]; then
             echo "environment=dev" >> $GITHUB_OUTPUT
-            echo "api_url=https://dev-api.kortix.com/v1" >> $GITHUB_OUTPUT
+            echo "api_url=https://dev-api.kidpen.space/v1" >> $GITHUB_OUTPUT
             exit 0
           fi
 
           # Default to dev
           echo "environment=dev" >> $GITHUB_OUTPUT
-          echo "api_url=https://dev-api.kortix.com/v1" >> $GITHUB_OUTPUT
+          echo "api_url=https://dev-api.kidpen.space/v1" >> $GITHUB_OUTPUT
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -169,7 +169,7 @@ jobs:
           SUPABASE_SERVICE_ROLE_KEY: ${{ steps.env.outputs.environment == 'production' && secrets.PRODUCTION_SUPABASE_SERVICE_ROLE_KEY || (steps.env.outputs.environment == 'staging' && secrets.STAGING_SUPABASE_SERVICE_ROLE_KEY || secrets.DEV_SUPABASE_SERVICE_ROLE_KEY) }}
           SUPABASE_JWT_SECRET: ${{ steps.env.outputs.environment == 'production' && secrets.PRODUCTION_SUPABASE_JWT_SECRET || (steps.env.outputs.environment == 'staging' && secrets.STAGING_SUPABASE_JWT_SECRET || secrets.DEV_SUPABASE_JWT_SECRET) }}
           # Environment-specific admin key
-          KORTIX_ADMIN_API_KEY: ${{ steps.env.outputs.environment == 'production' && secrets.PRODUCTION_KORTIX_ADMIN_API_KEY || (steps.env.outputs.environment == 'staging' && secrets.STAGING_KORTIX_ADMIN_API_KEY || secrets.DEV_KORTIX_ADMIN_API_KEY) }}
+          KIDPEN_ADMIN_API_KEY: ${{ steps.env.outputs.environment == 'production' && secrets.PRODUCTION_KIDPEN_ADMIN_API_KEY || (steps.env.outputs.environment == 'staging' && secrets.STAGING_KIDPEN_ADMIN_API_KEY || secrets.DEV_KIDPEN_ADMIN_API_KEY) }}
         run: |
           TEST_FILTER="${{ github.event.inputs.test_filter || '' }}"
 

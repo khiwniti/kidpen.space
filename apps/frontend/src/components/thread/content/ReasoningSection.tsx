@@ -85,7 +85,7 @@ export function ReasoningSection({
         {/* Full Kidpen logo (logomark with text) - pulses when reasoning is active */}
         <img
           src="/kidpen-logomark-white.svg"
-          alt="Kortix"
+          alt="Kidpen"
           className={cn(
             "flex-shrink-0 dark:invert-0 invert",
             shouldShimmer && "animate-pulse"

@@ -9,7 +9,7 @@ import { PanelHeader } from './PanelHeader';
 import { SandboxInfoCard } from './SandboxInfoCard';
 import { ToolView } from '../../tool-views/wrapper';
 import { getUserFriendlyToolName, getToolIcon } from '@/components/thread/utils';
-import { ToolCallInput } from '../KortixComputer';
+import { ToolCallInput } from '../KidpenComputer';
 import { Project } from '@/lib/api/threads';
 import { ApiMessageType } from '@/components/thread/types';
 import { ViewType } from '@/stores/kidpen-computer-store';

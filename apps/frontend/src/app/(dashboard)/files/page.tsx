@@ -23,7 +23,7 @@ export default function FilesPage() {
   const router = useRouter();
   const [selectedProjectId, setSelectedProjectId] = useState<string | null>(null);
   
-  // Get store state - exactly like KortixComputer
+  // Get store state - exactly like KidpenComputer
   const { navigateToPath, filesSubView, selectedFilePath } = useKidpenComputerStore();
 
   // Fetch threads to build project list
@@ -73,7 +73,7 @@ export default function FilesPage() {
   const threadId = selectedProject?.threadId;
   const project = selectedProject?.project;
 
-  // Get sandbox status - exactly like KortixComputer
+  // Get sandbox status - exactly like KidpenComputer
   const { data: sandboxStatus } = useSandboxStatusWithAutoStart(projectId || undefined);
   const isSandboxLive = sandboxStatus?.status ? isSandboxUsable(sandboxStatus.status) : false;
 
@@ -139,14 +139,14 @@ export default function FilesPage() {
     </div>
   );
 
-  // Render IDENTICAL to KortixComputer's renderFilesView
+  // Render IDENTICAL to KidpenComputer's renderFilesView
   const renderFilesView = () => {
-    // Show status view if sandbox is not LIVE - identical to KortixComputer
+    // Show status view if sandbox is not LIVE - identical to KidpenComputer
     if (!isSandboxLive) {
       return <SandboxStatusView projectId={projectId} />;
     }
 
-    // Show file viewer if viewing a specific file - identical to KortixComputer
+    // Show file viewer if viewing a specific file - identical to KidpenComputer
     if (filesSubView === 'viewer' && selectedFilePath) {
       return (
         <FileViewerView
@@ -158,7 +158,7 @@ export default function FilesPage() {
       );
     }
 
-    // Show file browser - identical to KortixComputer
+    // Show file browser - identical to KidpenComputer
     return (
       <FileBrowserView
         sandboxId={sandboxId}
@@ -171,12 +171,12 @@ export default function FilesPage() {
 
   return (
     <div className="h-[100dvh] bg-background flex flex-col">
-      {/* Project selector header - only difference from KortixComputer */}
+      {/* Project selector header - only difference from KidpenComputer */}
       <div className="px-4 py-3 border-b flex items-center justify-between flex-shrink-0">
         <h1 className="text-lg font-semibold">Files</h1>
         {projectSelector}
       </div>
-      {/* Content - IDENTICAL to KortixComputer */}
+      {/* Content - IDENTICAL to KidpenComputer */}
       <div className="flex-1 overflow-hidden">
         {renderFilesView()}
       </div>

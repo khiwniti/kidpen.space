@@ -12,7 +12,7 @@ import { Button } from '@/components/ui/button';
 
 // Lazy load heavy components
 const AnimatedBg = lazy(() => import('@/components/ui/animated-bg').then(mod => ({ default: mod.AnimatedBg })));
-const KidpenLoader = lazy(() => import('@/components/ui/kortix-loader').then(mod => ({ default: mod.KidpenLoader })));
+const KidpenLoader = lazy(() => import('@/components/ui/kidpen-loader').then(mod => ({ default: mod.KidpenLoader })));
 
 export default function SettingUpPage() {
   const router = useRouter();

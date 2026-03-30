@@ -79,7 +79,7 @@ export function MobileAppBanner({ threadId }: MobileAppBannerProps) {
 
   const handleOpenInApp = () => {
     // Use custom URL scheme to open the app
-    const appUrl = `kortix://share/${threadId}`;
+    const appUrl = `kidpen://share/${threadId}`;
 
     // Try to open the app
     window.location.href = appUrl;
@@ -114,7 +114,7 @@ export function MobileAppBanner({ threadId }: MobileAppBannerProps) {
           {/* Content */}
           <div className="flex-1 min-w-0">
             <h3 className="font-semibold text-foreground text-sm leading-tight">
-              Kortix
+              Kidpen
             </h3>
             <p className="text-xs text-muted-foreground leading-tight">
               Open this content in app

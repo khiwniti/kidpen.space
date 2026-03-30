@@ -28,8 +28,8 @@ class ComposioStep(BaseStep):
                 "Found existing Composio configuration. Press Enter to keep current values or type new ones."
             )
         else:
-            self.info("Composio is REQUIRED for Kidpen Suna. Without this key, Composio features will fail.")
-            self.info("Composio provides tools and integrations for Kidpen Suna agents.")
+            self.info("Composio is REQUIRED for Kidpen. Without this key, Composio features will fail.")
+            self.info("Composio provides tools and integrations for Kidpen agents.")
             self.info("With Composio, your agents can interact with 200+ external services including:")
             self.info("  - Email services (Gmail, Outlook, SendGrid)")
             self.info("  - Productivity tools (Slack, Discord, Notion, Trello)")

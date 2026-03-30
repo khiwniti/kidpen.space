@@ -1,7 +1,7 @@
 import type React from "react"
 import { Check, ListTodo, X, Circle, CircleCheck } from "lucide-react"
 import { cn } from "@/lib/utils"
-import { KidpenLoader } from "@/components/ui/kortix-loader"
+import { KidpenLoader } from "@/components/ui/kidpen-loader"
 import { extractTaskListData, type Task, type Section } from "./_utils"
 import { getToolTitle } from "../utils"
 import type { ToolViewProps } from "../types"

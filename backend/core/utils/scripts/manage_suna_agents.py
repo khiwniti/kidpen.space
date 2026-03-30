@@ -28,14 +28,14 @@ from pathlib import Path
 backend_dir = Path(__file__).parent.parent
 sys.path.insert(0, str(backend_dir))
 
-from core.utils.suna_default_agent_service import SunaDefaultAgentService
+from core.utils.kidpen_default_agent_service import KidpenDefaultAgentService
 from core.services.supabase import DBConnection
 from core.utils.logger import logger
 
 
 class SunaAgentManager:
     def __init__(self):
-        self.service = SunaDefaultAgentService()
+        self.service = KidpenDefaultAgentService()
     
     async def install_all_users(self):
         """Install Suna agent for all users who don't have it"""

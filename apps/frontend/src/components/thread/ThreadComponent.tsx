@@ -847,7 +847,7 @@ export function ThreadComponent({ projectId, threadId, compact = false, configur
     url.searchParams.delete('modeStarter');
     window.history.replaceState({}, '', url.pathname + url.search);
     
-    // Open the side panel to show KortixComputer
+    // Open the side panel to show KidpenComputer
     if (!isSidePanelOpen) {
       toggleSidePanel();
     }
@@ -871,7 +871,7 @@ export function ThreadComponent({ projectId, threadId, compact = false, configur
     url.searchParams.delete('modeStarter');
     window.history.replaceState({}, '', url.pathname + url.search);
     
-    // Open the side panel to show KortixComputer
+    // Open the side panel to show KidpenComputer
     if (!isSidePanelOpen) {
       toggleSidePanel();
     }
@@ -912,7 +912,7 @@ export function ThreadComponent({ projectId, threadId, compact = false, configur
       }
     }, 100);
 
-    // Keep the side panel open to show KortixComputer
+    // Keep the side panel open to show KidpenComputer
     if (!isSidePanelOpen) {
       toggleSidePanel();
     }
@@ -1531,7 +1531,7 @@ export function ThreadComponent({ projectId, threadId, compact = false, configur
   // SEO title update
   useEffect(() => {
     if (projectName) {
-      document.title = `${projectName} | Kortix`;
+      document.title = `${projectName} | Kidpen`;
 
       const metaDescription = document.querySelector(
         'meta[name="description"]',
@@ -1539,13 +1539,13 @@ export function ThreadComponent({ projectId, threadId, compact = false, configur
       if (metaDescription) {
         metaDescription.setAttribute(
           'content',
-          `${projectName} - Interactive Worker conversation powered by Kortix`,
+          `${projectName} - Interactive Worker conversation powered by Kidpen`,
         );
       }
 
       const ogTitle = document.querySelector('meta[property="og:title"]');
       if (ogTitle) {
-        ogTitle.setAttribute('content', `${projectName} | Kortix`);
+        ogTitle.setAttribute('content', `${projectName} | Kidpen`);
       }
 
       const ogDescription = document.querySelector(

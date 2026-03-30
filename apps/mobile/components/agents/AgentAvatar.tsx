@@ -23,7 +23,7 @@ interface AgentAvatarProps extends ViewProps {
  */
 export function AgentAvatar({ agent, size = 48, style, ...props }: AgentAvatarProps) {
   // Check if this is the SUNA/KIDPEN SUPER WORKER
-  const isSunaAgent = agent?.metadata?.is_suna_default || 
+  const isSunaAgent = agent?.metadata?.is_kidpen_default || 
                       agent?.name?.toLowerCase() === 'suna' ||
                       agent?.name?.toLowerCase() === 'superworker' ||
                       agent?.name?.toLowerCase() === 'kidpen super worker';

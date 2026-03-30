@@ -16,12 +16,12 @@ export { agentKeys, useAgents, useAgent, useCreateAgent, useUpdateAgent, useDele
 export const isKidpenDefaultAgent = (agent?: { 
   agent_id?: string; 
   name?: string; 
-  metadata?: { is_suna_default?: boolean } 
+  metadata?: { is_kidpen_default?: boolean } 
 } | null): boolean => {
   if (!agent) return false;
   
   // Check metadata first (most reliable)
-  if (agent.metadata?.is_suna_default) return true;
+  if (agent.metadata?.is_kidpen_default) return true;
   
   // Fallback to name checks
   const name = agent.name?.toLowerCase();
@@ -37,7 +37,7 @@ export const isKidpenDefaultAgent = (agent?: {
  */
 export const isKidpenDefaultAgentId = (
   agentId: string | null | undefined, 
-  agents: Array<{ agent_id?: string; name?: string; metadata?: { is_suna_default?: boolean } }>
+  agents: Array<{ agent_id?: string; name?: string; metadata?: { is_kidpen_default?: boolean } }>
 ): boolean => {
   if (!agentId) return true; // No agent ID = default Kidpen
   const agent = agents.find(a => a.agent_id === agentId);

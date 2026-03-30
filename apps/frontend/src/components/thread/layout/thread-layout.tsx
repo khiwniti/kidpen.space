@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, memo, useMemo } from 'react';
 import * as ResizablePrimitive from 'react-resizable-panels';
 import { SiteHeader } from '@/components/thread/thread-site-header';
-import { KortixComputer, ToolCallInput } from '@/components/thread/kidpen-computer';
+import { KidpenComputer, ToolCallInput } from '@/components/thread/kidpen-computer';
 import { Project } from '@/lib/api/threads';
 import { ApiMessageType } from '@/components/thread/types';
 import { useIsMobile } from '@/hooks/utils';
@@ -85,7 +85,7 @@ export const ThreadLayout = memo(function ThreadLayout({
 }: ThreadLayoutProps) {
   const isActuallyMobile = useIsMobile();
 
-  // Kortix Computer Store - for handling file open requests
+  // Kidpen Computer Store - for handling file open requests
   const { shouldOpenPanel, clearShouldOpenPanel, openFileInComputer, openFileBrowser } = useKidpenComputerStore();
 
   // Track when panel should be visible
@@ -115,7 +115,7 @@ export const ThreadLayout = memo(function ThreadLayout({
   const mainPanelRef = useRef<ResizablePrimitive.ImperativePanelHandle>(null);
   const sidePanelRef = useRef<ResizablePrimitive.ImperativePanelHandle>(null);
 
-  // Handle file click - now opens in Kortix Computer instead of modal
+  // Handle file click - now opens in Kidpen Computer instead of modal
   const handleFileClick = React.useCallback((filePath?: string, filePathList?: string[]) => {
     if (filePath) {
       // If a specific file is provided, open it in the file viewer
@@ -194,7 +194,7 @@ export const ThreadLayout = memo(function ThreadLayout({
           </div>
           {isSidePanelOpen && initialLoadCompleted && (
             <div className="absolute inset-0 bg-background z-40">
-              <KortixComputer
+              <KidpenComputer
                 isOpen={true}
                 onClose={onSidePanelClose}
                 toolCalls={toolCalls}
@@ -251,7 +251,7 @@ export const ThreadLayout = memo(function ThreadLayout({
           </div>
         )}
 
-        <KortixComputer
+        <KidpenComputer
           isOpen={isSidePanelOpen && initialLoadCompleted}
           onClose={onSidePanelClose}
           toolCalls={toolCalls}
@@ -335,7 +335,7 @@ export const ThreadLayout = memo(function ThreadLayout({
             !shouldShowPanel ? "hidden" : ""
           )}
         >
-          <KortixComputer
+          <KidpenComputer
             isOpen={isSidePanelOpen && initialLoadCompleted}
             onClose={onSidePanelClose}
             toolCalls={toolCalls}

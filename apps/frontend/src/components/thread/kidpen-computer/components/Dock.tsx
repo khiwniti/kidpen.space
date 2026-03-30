@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import { ChevronLeft, ChevronRight, Folder, Globe, TerminalSquare, Info, Table } from 'lucide-react';
 import { getUserFriendlyToolName, getToolIcon } from '@/components/thread/utils';
 import { cn } from '@/lib/utils';
-import { ToolCallInput } from '../KortixComputer';
+import { ToolCallInput } from '../KidpenComputer';
 import { AppIcon } from '../../tool-views/shared/AppIcon';
 import { ViewType } from '@/stores/kidpen-computer-store';
 

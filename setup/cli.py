@@ -13,7 +13,7 @@ def create_parser() -> argparse.ArgumentParser:
     """Create and configure the argument parser."""
     parser = argparse.ArgumentParser(
         prog="setup",
-        description="Kidpen Suna Setup Wizard - Configure and install Kidpen Suna",
+        description="Kidpen Setup Wizard - Configure and install Kidpen",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:

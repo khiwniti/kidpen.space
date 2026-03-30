@@ -24,7 +24,7 @@ import { ImageLoader } from './shared/ImageLoader';
 import { JsonViewer } from './shared/JsonViewer';
 import { ToolViewIconTitle } from './shared/ToolViewIconTitle';
 import { ToolViewFooter } from './shared/ToolViewFooter';
-import { KortixComputerHeader } from '../kidpen-computer/KortixComputerHeader';
+import { KidpenComputerHeader } from '../kidpen-computer/KidpenComputerHeader';
 import { useSmoothToolField } from '@/hooks/messages';
 
 interface BrowserHeaderProps {
@@ -35,7 +35,7 @@ interface BrowserHeaderProps {
 
 export const BrowserHeader: React.FC<BrowserHeaderProps> = ({ isConnected, onRefresh, viewToggle }) => {
   return (
-    <KortixComputerHeader
+    <KidpenComputerHeader
       icon={Globe}
       title="Browser"
       actions={

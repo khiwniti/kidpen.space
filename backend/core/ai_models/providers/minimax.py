@@ -66,7 +66,7 @@ class MiniMaxProvider(ProviderConfig):
 
 class OpenRouterProvider(ProviderConfig):
     
-    def __init__(self, app_name: str = "Kortix.com", site_url: str = "https://www.kortix.com"):
+    def __init__(self, app_name: str = "Kidpen.space", site_url: str = "https://kidpen.space"):
         self._app_name = app_name
         self._site_url = site_url
     
@@ -91,3 +91,4 @@ class OpenRouterProvider(ProviderConfig):
     
     def get_extra_headers(self, model_id: str) -> Dict[str, str]:
         return {}
+}

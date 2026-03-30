@@ -25,7 +25,7 @@ class SetupMethodStep(BaseStep):
             )
 
         self.info(
-            "You can start Kidpen Suna using either Docker Compose or by manually starting the services."
+            "You can start Kidpen using either Docker Compose or by manually starting the services."
         )
 
         # Important note about Supabase compatibility
@@ -41,7 +41,7 @@ class SetupMethodStep(BaseStep):
             ("2", "Docker Compose", "Cloud Supabase only - Local not supported"),
         ]
 
-        self.console.print("\nHow would you like to set up Kidpen Suna?")
+        self.console.print("\nHow would you like to set up Kidpen?")
         for key, label, desc in choices:
             self.console.print(f"  [{key}] {label} ({desc})")
 

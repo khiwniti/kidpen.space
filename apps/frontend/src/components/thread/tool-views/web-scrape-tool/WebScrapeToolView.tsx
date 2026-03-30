@@ -200,7 +200,7 @@ export function WebScrapeToolView({
                       )}
                     </span>
 
-                    {/* Kortix loading animation */}
+                    {/* Kidpen loading animation */}
                     <KidpenLoader customSize={16} />
                   </motion.div>
                 );

@@ -124,7 +124,7 @@ class LLMProvidersStep(BaseStep):
         self.console.print("\n" + "=" * 60)
         self.console.print("[bold]Main LLM Model Selection[/bold]")
         self.console.print("=" * 60)
-        self.info("Kidpen Suna requires a main LLM to power 'kidpen/basic' and 'kidpen/power'.")
+        self.info("Kidpen requires a main LLM to power 'kidpen/basic' and 'kidpen/power'.")
         self.console.print("")
 
         # Get codebase default
