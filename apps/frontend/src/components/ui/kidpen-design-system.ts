@@ -29,3 +29,22 @@ export {
   KidpenChatInput as ChatInput,
   CodeInline 
 } from './chat-bubble';
+
+// Branding & Identity
+export { 
+  KidpenAvatar, 
+  KidpenWordmark, 
+  KidpenBrandHeader 
+} from './kidpen-avatar';
+
+// Brand Guidelines
+export { 
+  VoiceToneExample, 
+  VoiceToneGuide 
+} from './voice-tone-guide';
+
+export { 
+  ColorSwatch, 
+  SubjectColorCard, 
+  ColorPalette 
+} from './color-palette';

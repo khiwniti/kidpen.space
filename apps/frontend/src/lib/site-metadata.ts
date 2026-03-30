@@ -1,53 +1,89 @@
 /**
  * Site metadata configuration for Kidpen.space
  * Thai STEM Education Platform
+ * 
+ * Uses brand identity from ./brand-identity.ts
  */
+
+import { brandIdentity, brandColors } from './brand-identity';
 
 const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://kidpen.space';
 
 export const siteMetadata = {
-  name: 'Kidpen',
-  title: 'Kidpen.space - แพลตฟอร์ม STEM สำหรับเด็กไทย',
-  description: 'Kidpen.space - แพลตฟอร์มการเรียนรู้ STEM แบบเกมมิฟิเคชันสำหรับเด็กไทย วิชาคณิตศาสตร์ วิทยาศาสตร์ โค้ดดิ้ง และฟิสิกส์ เรียนรู้อย่างสนุกสนาน ปลอดภัย และมีประสิทธิภาพ',
+  // Core identity
+  name: brandIdentity.name,
+  nameThai: brandIdentity.nameThai,
+  title: `${brandIdentity.name}.space - ${brandIdentity.tagline}`,
+  description: `${brandIdentity.name}.space - ${brandIdentity.tagline} (${brandIdentity.taglineEn}) สำหรับนักเรียน ม.1-ม.6 วิชาคณิตศาสตร์ วิทยาศาสตร์ โค้ดดิ้ง และฟิสิกส์`,
   url: baseUrl,
-  keywords: 'Kidpen, STEM Education, Thai Education, คณิตศาสตร์, วิทยาศาสตร์, โค้ดดิ้ง, ฟิสิกส์, เด็กไทย, แพลตฟอร์มการเรียนรู้, Gamification, EdTech',
+  keywords: [
+    'Kidpen',
+    'คิดเป็น',
+    'STEM Education',
+    'Thai Education',
+    'Socratic Tutoring',
+    'การเรียนรู้แบบโสคราติส',
+    'คณิตศาสตร์',
+    'วิทยาศาสตร์',
+    'โค้ดดิ้ง',
+    'ฟิสิกส์',
+    'เด็กไทย',
+    'ม.1-ม.6',
+    'สสวท.',
+    'IPST',
+    'AI Tutor',
+    'EdTech Thailand',
+  ].join(', '),
+  
   // Subject themes for dynamic content
   subjects: {
     math: {
-      name: 'คณิตศาสตร์',
-      nameEn: 'Mathematics',
-      color: '#2563EB',
-      icon: '🔢',
+      name: brandColors.subjects.math.name,
+      nameEn: brandColors.subjects.math.nameEn,
+      color: brandColors.subjects.math.primary,
+      icon: brandColors.subjects.math.icon,
     },
     science: {
-      name: 'วิทยาศาสตร์',
-      nameEn: 'Science',
-      color: '#10B981',
-      icon: '🔬',
+      name: brandColors.subjects.science.name,
+      nameEn: brandColors.subjects.science.nameEn,
+      color: brandColors.subjects.science.primary,
+      icon: brandColors.subjects.science.icon,
     },
     coding: {
-      name: 'โค้ดดิ้ง',
-      nameEn: 'Coding',
-      color: '#8B5CF6',
-      icon: '💻',
+      name: brandColors.subjects.coding.name,
+      nameEn: brandColors.subjects.coding.nameEn,
+      color: brandColors.subjects.coding.primary,
+      icon: brandColors.subjects.coding.icon,
     },
     physics: {
-      name: 'ฟิสิกส์',
-      nameEn: 'Physics',
-      color: '#F97316',
-      icon: '⚛️',
+      name: brandColors.subjects.physics.name,
+      nameEn: brandColors.subjects.physics.nameEn,
+      color: brandColors.subjects.physics.primary,
+      icon: brandColors.subjects.physics.icon,
     },
     data: {
-      name: 'ข้อมูล',
-      nameEn: 'Data Science',
-      color: '#14B8A6',
-      icon: '📊',
+      name: brandColors.subjects.data.name,
+      nameEn: brandColors.subjects.data.nameEn,
+      color: brandColors.subjects.data.primary,
+      icon: brandColors.subjects.data.icon,
     },
   },
-  // Brand colors
+  
+  // Brand colors (for external use)
   brand: {
-    primary: '#F5A623',
-    primaryLight: '#FFF0D4',
-    primaryDark: '#C47A06',
+    primary: brandColors.brand.gold,
+    primaryLight: brandColors.brand.goldLight,
+    primaryDark: brandColors.brand.goldDark,
   },
+  
+  // Social links
+  social: {
+    github: 'https://github.com/kidpen-ai/kidpen.space',
+    email: 'info@kidpen.space',
+  },
+  
+  // Target audience
+  audience: brandIdentity.audience,
 };
+
+export type SiteMetadata = typeof siteMetadata;
