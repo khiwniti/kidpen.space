@@ -41,6 +41,7 @@ import { useDocumentModalStore } from '@/stores/use-document-modal-store';
 import { Kbd } from '../ui/kbd';
 import { useTranslations } from 'next-intl';
 import { KbdGroup } from '../ui/kbd';
+import { useUserProfile, getDefaultSidebarView, canAccessTeacherFeatures } from '@/hooks/use-user-profile';
 
 
 function UserProfileSection({ user }: { user: any }) {
@@ -87,7 +88,30 @@ export function SidebarLeft({
   const isMobile = useIsMobile();
   const { theme, setTheme } = useTheme();
   const router = useRouter();
-  const [activeView, setActiveView] = useState<'chats' | 'workers' | 'starred' | 'student' | 'classroom'>('student');
+  
+  // Get user profile and role
+  const { role, isTeacher, isAdmin: isEducationAdmin } = useUserProfile();
+  const defaultView = getDefaultSidebarView(role);
+  const showTeacherView = canAccessTeacherFeatures(role);
+  
+  const [activeView, setActiveView] = useState<'chats' | 'workers' | 'starred' | 'student' | 'classroom'>(defaultView);
+  
+  // Update active view when role changes (e.g., when profile loads)
+  useEffect(() => {
+    const newDefaultView = getDefaultSidebarView(role);
+    // Only update if current view is not available for this role
+    const availableViews = {
+      student: ['student', 'teacher', 'school_admin', 'platform_admin'],
+      classroom: ['teacher', 'school_admin', 'platform_admin'],
+      chats: ['student', 'teacher', 'school_admin', 'platform_admin'],
+      workers: ['platform_admin'],
+      starred: ['teacher', 'school_admin', 'platform_admin'],
+    };
+    if (!availableViews[activeView]?.includes(role)) {
+      setActiveView(newDefaultView);
+    }
+  }, [role]);
+  
   const [showEnterpriseCard, setShowEnterpriseCard] = useState(true);
   const [user, setUser] = useState<{
     name: string;
@@ -351,13 +375,13 @@ export function SidebarLeft({
           </div>
           <div className="w-full flex flex-col items-center space-y-3">
             {[
-              { view: 'student' as const, icon: GraduationCap },
-              { view: 'classroom' as const, icon: School },
-              { view: 'chats' as const, icon: MessageCircle },
+              { view: 'student' as const, icon: GraduationCap, roles: ['student', 'teacher', 'school_admin', 'platform_admin'] },
+              { view: 'classroom' as const, icon: School, roles: ['teacher', 'school_admin', 'platform_admin'] },
+              { view: 'chats' as const, icon: MessageCircle, roles: ['student', 'teacher', 'school_admin', 'platform_admin'] },
               // { view: 'library' as const, icon: Library },
-              { view: 'workers' as const, icon: Users },
-              { view: 'starred' as const, icon: Zap },
-            ].map(({ view, icon: Icon }) => (
+              { view: 'workers' as const, icon: Users, roles: ['platform_admin'] },
+              { view: 'starred' as const, icon: Zap, roles: ['teacher', 'school_admin', 'platform_admin'] },
+            ].filter(item => item.roles.includes(role)).map(({ view, icon: Icon }) => (
               <Button
                 key={view}
                 variant="ghost"
@@ -446,13 +470,13 @@ export function SidebarLeft({
             {/* State buttons horizontally */}
             <div className="flex justify-between items-center gap-2">
               {[
-                { view: 'student' as const, icon: GraduationCap, label: 'เรียน' },
-                { view: 'classroom' as const, icon: School, label: 'ห้องเรียน' },
-                { view: 'chats' as const, icon: MessageCircle, label: t('chats') },
+                { view: 'student' as const, icon: GraduationCap, label: 'เรียน', roles: ['student', 'teacher', 'school_admin', 'platform_admin'] },
+                { view: 'classroom' as const, icon: School, label: 'ห้องเรียน', roles: ['teacher', 'school_admin', 'platform_admin'] },
+                { view: 'chats' as const, icon: MessageCircle, label: t('chats'), roles: ['student', 'teacher', 'school_admin', 'platform_admin'] },
                 // { view: 'library' as const, icon: Library, label: t('library') },
-                { view: 'workers' as const, icon: Users, label: 'Workers' },
-                { view: 'starred' as const, icon: Zap, label: t('triggers') }
-              ].map(({ view, icon: Icon, label }) => (
+                { view: 'workers' as const, icon: Users, label: 'Workers', roles: ['platform_admin'] },
+                { view: 'starred' as const, icon: Zap, label: t('triggers'), roles: ['teacher', 'school_admin', 'platform_admin'] }
+              ].filter(item => item.roles.includes(role)).map(({ view, icon: Icon, label }) => (
                 <button
                   key={view}
                   className={cn(
