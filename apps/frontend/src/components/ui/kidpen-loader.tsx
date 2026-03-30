@@ -198,5 +198,3 @@ export function KidpenLoader({
   );
 }
 
-// Backwards compatibility alias
-export const KidpenLoader = KidpenLoader;

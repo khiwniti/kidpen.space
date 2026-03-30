@@ -14,13 +14,13 @@ A Python SDK that enables you to create, manage, and interact with AI Workers on
 Install directly from the GitHub repository:
 
 ```bash
-pip install "kidpen @ git+https://github.com/kidpen-ai/suna.git@main#subdirectory=sdk"
+pip install "kidpen @ git+https://github.com/khiwniti/kidpen.space.git@main#subdirectory=sdk"
 ```
 
 Or using uv:
 
 ```bash
-uv add "kidpen @ git+https://github.com/kidpen-ai/suna.git@main#subdirectory=sdk"
+uv add "kidpen @ git+https://github.com/khiwniti/kidpen.space.git@main#subdirectory=sdk"
 ```
 
 ## 🔧 Quick Start
