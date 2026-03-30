@@ -1001,17 +1001,137 @@
 
 /* ─── KIDPEN UTILITY CLASSES ─── */
 
-/* Kidpen brand colors as Tailwind utilities */
-.bg-kidpen-gold {
-  background-color: var(--kidpen-brand);
-}
+/* 
+ * Kidpen brand colors as Tailwind utilities
+ * These match the design system HTML config:
+ * cream: #FFFCF7, dark: #1A1B2E, gold: #F5A623
+ * blue: #2563EB, green: #10B981, purple: #8B5CF6, orange: #F97316
+ */
 
-.text-kidpen-gold {
-  color: var(--kidpen-brand);
-}
+/* Cream (warm background) */
+.bg-kidpen-cream { background-color: #FFFCF7; }
+.text-kidpen-cream { color: #FFFCF7; }
+.border-kidpen-cream { border-color: #FFFCF7; }
 
-.border-kidpen-gold {
-  border-color: var(--kidpen-brand);
+/* Dark (text, dark buttons) */
+.bg-kidpen-dark { background-color: #1A1B2E; }
+.text-kidpen-dark { color: #1A1B2E; }
+.border-kidpen-dark { border-color: #1A1B2E; }
+
+/* Gold (brand primary) */
+.bg-kidpen-gold { background-color: #F5A623; }
+.text-kidpen-gold { color: #F5A623; }
+.border-kidpen-gold { border-color: #F5A623; }
+.bg-kidpen-goldHover { background-color: #E0941B; }
+.text-kidpen-goldHover { color: #E0941B; }
+.hover\:bg-kidpen-goldHover:hover { background-color: #E0941B; }
+.hover\:text-kidpen-goldHover:hover { color: #E0941B; }
+
+/* Blue (math subject) */
+.bg-kidpen-blue { background-color: #2563EB; }
+.text-kidpen-blue { color: #2563EB; }
+.border-kidpen-blue { border-color: #2563EB; }
+.bg-kidpen-blueHover { background-color: #1D4ED8; }
+.text-kidpen-blueHover { color: #1D4ED8; }
+.hover\:bg-kidpen-blueHover:hover { background-color: #1D4ED8; }
+.hover\:text-kidpen-blueHover:hover { color: #1D4ED8; }
+
+/* Green (science subject) */
+.bg-kidpen-green { background-color: #10B981; }
+.text-kidpen-green { color: #10B981; }
+.border-kidpen-green { border-color: #10B981; }
+.bg-kidpen-greenHover { background-color: #059669; }
+.hover\:bg-kidpen-greenHover:hover { background-color: #059669; }
+
+/* Purple (coding subject) */
+.bg-kidpen-purple { background-color: #8B5CF6; }
+.text-kidpen-purple { color: #8B5CF6; }
+.border-kidpen-purple { border-color: #8B5CF6; }
+.bg-kidpen-purpleHover { background-color: #7C3AED; }
+.hover\:bg-kidpen-purpleHover:hover { background-color: #7C3AED; }
+
+/* Orange (physics subject) */
+.bg-kidpen-orange { background-color: #F97316; }
+.text-kidpen-orange { color: #F97316; }
+.border-kidpen-orange { border-color: #F97316; }
+.bg-kidpen-orangeHover { background-color: #EA580C; }
+.hover\:bg-kidpen-orangeHover:hover { background-color: #EA580C; }
+
+/* Gummy border radius */
+.rounded-gummy { border-radius: 1.5rem; }
+
+/* 
+ * Opacity variants for kidpen colors
+ * Used in design system for subtle backgrounds, borders, hovers
+ */
+
+/* Dark opacity variants */
+.bg-kidpen-dark\/5 { background-color: rgba(26, 27, 46, 0.05); }
+.bg-kidpen-dark\/10 { background-color: rgba(26, 27, 46, 0.1); }
+.bg-kidpen-dark\/50 { background-color: rgba(26, 27, 46, 0.5); }
+.text-kidpen-dark\/40 { color: rgba(26, 27, 46, 0.4); }
+.text-kidpen-dark\/50 { color: rgba(26, 27, 46, 0.5); }
+.text-kidpen-dark\/60 { color: rgba(26, 27, 46, 0.6); }
+.text-kidpen-dark\/70 { color: rgba(26, 27, 46, 0.7); }
+.border-kidpen-dark\/5 { border-color: rgba(26, 27, 46, 0.05); }
+.border-kidpen-dark\/10 { border-color: rgba(26, 27, 46, 0.1); }
+.border-kidpen-dark\/20 { border-color: rgba(26, 27, 46, 0.2); }
+.hover\:text-kidpen-dark:hover { color: #1A1B2E; }
+
+/* Gold opacity variants */
+.bg-kidpen-gold\/10 { background-color: rgba(245, 166, 35, 0.1); }
+.bg-kidpen-gold\/20 { background-color: rgba(245, 166, 35, 0.2); }
+.bg-kidpen-gold\/30 { background-color: rgba(245, 166, 35, 0.3); }
+.bg-kidpen-gold\/50 { background-color: rgba(245, 166, 35, 0.5); }
+.bg-kidpen-gold\/90 { background-color: rgba(245, 166, 35, 0.9); }
+.border-kidpen-gold\/10 { border-color: rgba(245, 166, 35, 0.1); }
+.border-kidpen-gold\/20 { border-color: rgba(245, 166, 35, 0.2); }
+.border-kidpen-gold\/30 { border-color: rgba(245, 166, 35, 0.3); }
+.hover\:bg-kidpen-gold\/10:hover { background-color: rgba(245, 166, 35, 0.1); }
+.hover\:bg-kidpen-gold\/90:hover { background-color: rgba(245, 166, 35, 0.9); }
+.ring-kidpen-gold\/30 { --tw-ring-color: rgba(245, 166, 35, 0.3); }
+
+/* Blue opacity variants (math) */
+.bg-kidpen-blue\/10 { background-color: rgba(37, 99, 235, 0.1); }
+.bg-kidpen-blue\/20 { background-color: rgba(37, 99, 235, 0.2); }
+.border-kidpen-blue\/20 { border-color: rgba(37, 99, 235, 0.2); }
+.border-kidpen-blue\/50 { border-color: rgba(37, 99, 235, 0.5); }
+.hover\:border-kidpen-blue\/50:hover { border-color: rgba(37, 99, 235, 0.5); }
+
+/* Green opacity variants (science) */
+.bg-kidpen-green\/10 { background-color: rgba(16, 185, 129, 0.1); }
+.border-kidpen-green\/20 { border-color: rgba(16, 185, 129, 0.2); }
+.border-kidpen-green\/50 { border-color: rgba(16, 185, 129, 0.5); }
+.hover\:border-kidpen-green\/50:hover { border-color: rgba(16, 185, 129, 0.5); }
+
+/* Purple opacity variants (coding) */
+.bg-kidpen-purple\/10 { background-color: rgba(139, 92, 246, 0.1); }
+.bg-kidpen-purple\/20 { background-color: rgba(139, 92, 246, 0.2); }
+.border-kidpen-purple\/20 { border-color: rgba(139, 92, 246, 0.2); }
+.border-kidpen-purple\/50 { border-color: rgba(139, 92, 246, 0.5); }
+.hover\:border-kidpen-purple\/50:hover { border-color: rgba(139, 92, 246, 0.5); }
+
+/* Orange opacity variants (physics) */
+.bg-kidpen-orange\/10 { background-color: rgba(249, 115, 22, 0.1); }
+.border-kidpen-orange\/20 { border-color: rgba(249, 115, 22, 0.2); }
+.border-kidpen-orange\/50 { border-color: rgba(249, 115, 22, 0.5); }
+.hover\:border-kidpen-orange\/50:hover { border-color: rgba(249, 115, 22, 0.5); }
+
+/* 
+ * Gummy Button Effect (Duolingo-style bouncy buttons)
+ * 3D raised effect with shadow that compresses on press
+ */
+.btn-gummy {
+  transition: all 0.15s ease-in-out;
+  box-shadow: 0 4px 0 0 rgba(0, 0, 0, 0.15);
+}
+.btn-gummy:hover {
+  transform: translateY(2px);
+  box-shadow: 0 2px 0 0 rgba(0, 0, 0, 0.15);
+}
+.btn-gummy:active {
+  transform: translateY(4px);
+  box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.15);
 }
 
 /* Kidpen shadows (warm, gummy feel) */
