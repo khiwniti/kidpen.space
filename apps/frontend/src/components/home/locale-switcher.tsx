@@ -13,6 +13,7 @@ import { locales, type Locale } from '@/i18n/config';
 
 const languageNames: Record<Locale, string> = {
   en: 'English',
+  th: 'ภาษาไทย',
   de: 'Deutsch',
   it: 'Italiano',
   zh: '中文',
@@ -24,6 +25,7 @@ const languageNames: Record<Locale, string> = {
 
 const languageCodes: Record<Locale, string> = {
   en: 'EN',
+  th: 'TH',
   de: 'DE',
   it: 'IT',
   zh: 'ZH',

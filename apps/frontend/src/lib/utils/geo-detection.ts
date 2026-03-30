@@ -86,7 +86,7 @@ const TIMEZONE_TO_LOCALE_MAP: Record<string, Locale> = {
   'Asia/Dubai': 'en',
   'Asia/Mumbai': 'en',
   'Asia/Jakarta': 'en',
-  'Asia/Bangkok': 'en',
+  'Asia/Bangkok': 'th',
   'Asia/Manila': 'en',
   'Asia/Riyadh': 'en',
   'Asia/Tel_Aviv': 'en',

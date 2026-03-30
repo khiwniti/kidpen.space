@@ -94,7 +94,7 @@ Browser (IndexedDB) ←→ Google Drive (drive.appdata)
 
 | Phase | Description | Status | Target |
 |-------|-------------|--------|--------|
-| Phase 1 | Fork & Foundation | 🔜 NEXT | Weeks 1-6 |
+| Phase 1 | Fork & Foundation | 🔄 IN PROGRESS | Weeks 1-6 |
 | Phase 2 | Educational Backend | ⏳ Pending | Weeks 7-14 |
 | Phase 3 | Thai UI Transform | ⏳ Pending | Weeks 15-20 |
 | Phase 4 | PDPA & Launch | ⏳ Pending | Weeks 21-26 |
