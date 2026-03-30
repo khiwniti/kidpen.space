@@ -2,12 +2,14 @@
 
 import * as React from 'react';
 import Link from 'next/link';
-import { Library, Menu, Plus, Zap, MessageCircle, PanelLeftOpen, PanelLeftClose, Search, Users, FolderOpen } from 'lucide-react';
+import { Library, Menu, Plus, Zap, MessageCircle, PanelLeftOpen, PanelLeftClose, Search, Users, FolderOpen, GraduationCap, School } from 'lucide-react';
 
 import { NavAgents } from '@/components/sidebar/nav-agents';
 import { NavWorkers } from '@/components/sidebar/nav-workers';
 import { NavGlobalConfig } from '@/components/sidebar/nav-global-config';
 import { NavTriggerRuns } from '@/components/sidebar/nav-trigger-runs';
+import { NavStudent } from '@/components/sidebar/nav-student';
+import { NavClassroom } from '@/components/sidebar/nav-classroom';
 import { NavUserWithTeams } from '@/components/sidebar/nav-user-with-teams';
 import { KidpenLogo } from '@/components/sidebar/kidpen-logo';
 import { siteConfig } from '@/lib/site-config';
@@ -36,29 +38,13 @@ import { usePathname, useSearchParams } from 'next/navigation';
 import { useAdminRole } from '@/hooks/admin';
 import posthog from 'posthog-js';
 import { useDocumentModalStore } from '@/stores/use-document-modal-store';
-import { isLocalMode } from '@/lib/config';
-import { useAccountState, accountStateSelectors } from '@/hooks/billing';
-
-import { getPlanIcon } from '@/components/billing/plan-utils';
 import { Kbd } from '../ui/kbd';
 import { useTranslations } from 'next-intl';
 import { KbdGroup } from '../ui/kbd';
 
 
 function UserProfileSection({ user }: { user: any }) {
-  const { data: accountState } = useAccountState({ enabled: true });
-  const { state } = useSidebar();
-  const isLocal = isLocalMode();
-  const planName = accountStateSelectors.planName(accountState);
-
-  // Return the enhanced user object with plan info for NavUserWithTeams
-  const enhancedUser = {
-    ...user,
-    planName,
-    planIcon: getPlanIcon(planName, isLocal)
-  };
-
-  return <NavUserWithTeams user={enhancedUser} />;
+  return <NavUserWithTeams user={user} />;
 }
 
 function FloatingMobileMenuButton() {
@@ -101,7 +87,7 @@ export function SidebarLeft({
   const isMobile = useIsMobile();
   const { theme, setTheme } = useTheme();
   const router = useRouter();
-  const [activeView, setActiveView] = useState<'chats' | 'workers' | 'starred'>('chats');
+  const [activeView, setActiveView] = useState<'chats' | 'workers' | 'starred' | 'student' | 'classroom'>('student');
   const [showEnterpriseCard, setShowEnterpriseCard] = useState(true);
   const [user, setUser] = useState<{
     name: string;
@@ -150,7 +136,7 @@ export function SidebarLeft({
   }, [pathname, isOnThread]);
 
   // Handle view switching (Files is independent - just a link, not part of this)
-  const handleViewChange = (view: 'chats' | 'workers' | 'starred') => {
+  const handleViewChange = (view: 'chats' | 'workers' | 'starred' | 'student' | 'classroom') => {
     setActiveView(view);
   };
 
@@ -365,6 +351,8 @@ export function SidebarLeft({
           </div>
           <div className="w-full flex flex-col items-center space-y-3">
             {[
+              { view: 'student' as const, icon: GraduationCap },
+              { view: 'classroom' as const, icon: School },
               { view: 'chats' as const, icon: MessageCircle },
               // { view: 'library' as const, icon: Library },
               { view: 'workers' as const, icon: Users },
@@ -458,6 +446,8 @@ export function SidebarLeft({
             {/* State buttons horizontally */}
             <div className="flex justify-between items-center gap-2">
               {[
+                { view: 'student' as const, icon: GraduationCap, label: 'เรียน' },
+                { view: 'classroom' as const, icon: School, label: 'ห้องเรียน' },
                 { view: 'chats' as const, icon: MessageCircle, label: t('chats') },
                 // { view: 'library' as const, icon: Library, label: t('library') },
                 { view: 'workers' as const, icon: Users, label: 'Workers' },
@@ -483,6 +473,8 @@ export function SidebarLeft({
 
           {/* Content area */}
           <div className="px-6 flex-1 overflow-hidden">
+            {activeView === 'student' && <NavStudent />}
+            {activeView === 'classroom' && <NavClassroom />}
             {activeView === 'chats' && <NavAgents />}
             {activeView === 'workers' && <NavWorkers />}
             {activeView === 'starred' && (

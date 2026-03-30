@@ -13,9 +13,8 @@ import { useTranslations } from 'next-intl';
 import { NotificationDropdown } from '../notifications/notification-dropdown';
 import { useAgentStartInput } from '@/hooks/dashboard';
 import { ChatInput } from '@/components/thread/chat-input/chat-input';
-import { Menu, Users, GraduationCap, Sparkles } from 'lucide-react';
-import { StudentDashboard } from './student-dashboard';
-import { TeacherDashboard } from './teacher-dashboard';
+import { DynamicGreeting } from '@/components/ui/dynamic-greeting';
+import { Menu } from 'lucide-react';
 import { KidpenAvatar } from '@/components/ui/kidpen-avatar';
 
 const CustomAgentsSection = lazy(() => 
@@ -24,48 +23,6 @@ const CustomAgentsSection = lazy(() =>
 const AgentConfigurationDialog = lazy(() => 
   import('@/components/agents/agent-configuration-dialog').then(mod => ({ default: mod.AgentConfigurationDialog }))
 );
-
-// ═══════════════════════════════════════════════════════════════
-// MODE TOGGLE COMPONENT
-// ═══════════════════════════════════════════════════════════════
-
-interface ModeToggleProps {
-  mode: 'student' | 'teacher';
-  onChange: (mode: 'student' | 'teacher') => void;
-}
-
-function ModeToggle({ mode, onChange }: ModeToggleProps) {
-  return (
-    <div className="flex bg-white rounded-full border border-kidpen-dark/10 p-1 shadow-sm">
-      <button
-        onClick={() => onChange('student')}
-        className={cn(
-          'flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-bold font-thai transition-all',
-          mode === 'student' 
-            ? 'bg-kidpen-blue text-white shadow-sm' 
-            : 'text-kidpen-dark/60 hover:text-kidpen-dark hover:bg-gray-50'
-        )}
-      >
-        <GraduationCap className="w-4 h-4" />
-        <span className="hidden sm:inline">โหมดนักเรียน</span>
-        <span className="sm:hidden">นักเรียน</span>
-      </button>
-      <button
-        onClick={() => onChange('teacher')}
-        className={cn(
-          'flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-bold font-thai transition-all',
-          mode === 'teacher' 
-            ? 'bg-kidpen-dark text-white shadow-sm' 
-            : 'text-kidpen-dark/60 hover:text-kidpen-dark hover:bg-gray-50'
-        )}
-      >
-        <Users className="w-4 h-4" />
-        <span className="hidden sm:inline">โหมดคุณครู</span>
-        <span className="sm:hidden">คุณครู</span>
-      </button>
-    </div>
-  );
-}
 
 // ═══════════════════════════════════════════════════════════════
 // MAIN DASHBOARD CONTENT
@@ -78,7 +35,6 @@ export function DashboardContent() {
   const [showConfigDialog, setShowConfigDialog] = useState(false);
   const [configAgentId, setConfigAgentId] = useState<string | null>(null);
   const [viewMode, setViewMode] = useState<'super-worker' | 'worker-templates'>('super-worker');
-  const [demoRole, setDemoRole] = useState<'student' | 'teacher'>('student');
   
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -87,6 +43,10 @@ export function DashboardContent() {
   const { isVisible: isWelcomeBannerVisible } = useWelcomeBannerStore();
   const { setOpen: setSidebarOpenState, setOpenMobile } = useSidebar();
 
+  // Get context from URL (subject, mode, etc.)
+  const subject = searchParams.get('subject');
+  const mode = searchParams.get('mode'); // 'tutoring' | 'teacher' | null
+
   // Handle tab changes from URL
   React.useEffect(() => {
     const tab = searchParams.get('tab');
@@ -94,14 +54,6 @@ export function DashboardContent() {
       setViewMode('worker-templates');
     } else {
       setViewMode('super-worker');
-    }
-    
-    // Handle role from URL
-    const role = searchParams.get('role');
-    if (role === 'teacher') {
-      setDemoRole('teacher');
-    } else if (role === 'student') {
-      setDemoRole('student');
     }
   }, [searchParams]);
 
@@ -136,13 +88,7 @@ export function DashboardContent() {
     selectedAgentId,
     setSelectedAgent,
     selectedMode,
-    selectedCharts,
-    selectedOutputFormat,
-    selectedTemplate,
     setSelectedMode,
-    setSelectedCharts,
-    setSelectedOutputFormat,
-    setSelectedTemplate,
     handleSubmit,
   } = useAgentStartInput({
     redirectOnError: '/dashboard',
@@ -151,18 +97,24 @@ export function DashboardContent() {
     logPrefix: '[Dashboard]',
   });
 
-  // Handle role change with URL update
-  const handleRoleChange = (newRole: 'student' | 'teacher') => {
-    setDemoRole(newRole);
-    const url = new URL(window.location.href);
-    url.searchParams.set('role', newRole);
-    router.replace(url.pathname + url.search, { scroll: false });
+  // Determine placeholder based on context
+  const getPlaceholder = () => {
+    if (mode === 'tutoring' && subject) {
+      return `ถามเกี่ยวกับ ${subject}...`;
+    }
+    if (mode === 'tutoring') {
+      return 'ถามคิดเป็นได้เลย — พร้อมช่วยติวทุกเรื่อง!';
+    }
+    if (mode === 'teacher') {
+      return 'ถามเกี่ยวกับนักเรียน, สร้างแบบฝึกหัด, วิเคราะห์ผลการเรียน...';
+    }
+    return t('describeWhatYouNeed');
   };
 
   return (
     <>
       <div className="flex flex-col h-screen w-full overflow-hidden relative">
-        {/* Brandmark Background - responsive sizing for all devices */}
+        {/* Brandmark Background */}
         <div 
           className="absolute inset-0 pointer-events-none overflow-hidden"
           aria-hidden="true"
@@ -180,7 +132,7 @@ export function DashboardContent() {
           "absolute left-0 right-0 flex items-center justify-between px-3 sm:px-4 transition-[top] duration-200 z-10",
           isWelcomeBannerVisible ? "top-12" : "top-2"
         )}>
-          {/* Left: Menu + Mode Toggle */}
+          {/* Left: Menu (mobile) */}
           <div className="flex items-center gap-2">
             {isMobile && (
               <button
@@ -194,7 +146,14 @@ export function DashboardContent() {
                 <Menu className="h-5 w-5" />
               </button>
             )}
-            <ModeToggle mode={demoRole} onChange={handleRoleChange} />
+            
+            {/* Context indicator */}
+            {mode === 'tutoring' && subject && (
+              <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/80 border border-kidpen-dark/10 shadow-sm">
+                <span className="text-sm font-thai text-kidpen-dark/70">กำลังติว:</span>
+                <span className="text-sm font-bold font-thai text-kidpen-blue">{subject}</span>
+              </div>
+            )}
           </div>
 
           {/* Right: Notifications */}
@@ -204,31 +163,35 @@ export function DashboardContent() {
         </div>
 
         {/* ═══ MAIN CONTENT ═══ */}
-        <div className="flex-1 flex flex-col relative z-[1] overflow-y-auto w-full pt-16">
+        <div className="flex-1 flex flex-col relative z-[1] overflow-y-auto w-full">
           {viewMode === 'super-worker' && (
             <>
-              <div className="flex-1 w-full mx-auto pb-36">
-                {demoRole === 'student' ? <StudentDashboard /> : <TeacherDashboard />}
+              {/* Centered greeting area */}
+              <div className="flex-1 flex flex-col items-center justify-center px-4 pb-32">
+                <div className="text-center max-w-2xl mx-auto">
+                  <DynamicGreeting className="text-3xl sm:text-4xl font-bold font-thai text-kidpen-dark tracking-tight mb-3" />
+                  <p className="text-kidpen-dark/60 font-thai text-lg mb-8">
+                    {mode === 'tutoring' 
+                      ? 'มาเรียนรู้และสนุกไปกับการแก้ปัญหาด้วยกันเถอะ!' 
+                      : mode === 'teacher'
+                        ? 'ติดตามความก้าวหน้าและช่วยเหลือนักเรียนของคุณ'
+                        : 'พร้อมช่วยเหลือทุกเรื่อง'}
+                  </p>
+                  
+                  {/* Kidpen avatar */}
+                  <div className="flex justify-center mb-4">
+                    <KidpenAvatar size="xl" />
+                  </div>
+                </div>
               </div>
 
               {/* ═══ CHAT INPUT (Fixed at bottom) ═══ */}
               <div className="absolute bottom-0 left-0 right-0 px-3 sm:px-4 pb-[max(0.75rem,env(safe-area-inset-bottom))] sm:pb-4 bg-gradient-to-t from-kidpen-cream via-kidpen-cream/95 to-transparent pt-8">
                 <div className="w-full max-w-3xl mx-auto">
-                  {/* Kidpen branding above input */}
-                  <div className="flex items-center justify-center gap-2 mb-3 opacity-80">
-                    <KidpenAvatar size="sm" />
-                    <span className="text-sm font-thai text-kidpen-dark/60">
-                      {demoRole === 'student' 
-                        ? 'ถามคิดเป็นได้เลย — พร้อมช่วยติวทุกเรื่อง!' 
-                        : 'ถามคิดเป็นเกี่ยวกับนักเรียนหรือเนื้อหา'}
-                    </span>
-                  </div>
                   <ChatInput
                     ref={chatInputRef}
                     onSubmit={handleSubmit}
-                    placeholder={demoRole === 'student' 
-                      ? t('describeWhatYouNeed') 
-                      : 'ถามเกี่ยวกับความก้าวหน้าของนักเรียน, สร้างแบบฝึกหัด...'}
+                    placeholder={getPlaceholder()}
                     loading={isSubmitting || isRedirecting}
                     disabled={isSubmitting}
                     value={inputValue}
@@ -236,13 +199,13 @@ export function DashboardContent() {
                     selectedAgentId={selectedAgentId}
                     onAgentSelect={setSelectedAgent}
                     autoFocus={false}
-                    enableAdvancedConfig={false}
+                    enableAdvancedConfig={mode !== 'tutoring'} // Simpler for students
                     onConfigureAgent={handleConfigureAgent}
                     selectedMode={selectedMode}
                     onModeDeselect={() => setSelectedMode(null)}
                     animatePlaceholder={true}
-                    hideAttachments={false}
-                    hideAgentSelection={demoRole === 'student'} // Hide agent selection for students
+                    hideAttachments={mode === 'tutoring'} // Hide for students
+                    hideAgentSelection={mode === 'tutoring'} // Hide for students
                   />
                 </div>
               </div>
