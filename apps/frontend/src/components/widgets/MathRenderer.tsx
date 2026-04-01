@@ -151,6 +151,74 @@ export function MathRenderer({
     '\\ddots': '⋱',
   };
 
+  // Helper function to extract balanced brace content
+  const extractBraceContent = (str: string, startIndex: number): { content: string; endIndex: number } | null => {
+    if (str[startIndex] !== '{') return null;
+    let depth = 1;
+    let i = startIndex + 1;
+    while (i < str.length && depth > 0) {
+      if (str[i] === '{') depth++;
+      else if (str[i] === '}') depth--;
+      i++;
+    }
+    if (depth === 0) {
+      return { content: str.slice(startIndex + 1, i - 1), endIndex: i };
+    }
+    return null;
+  };
+
+  // Process \frac with balanced braces
+  const processFractions = (input: string): string => {
+    let result = input;
+    let match;
+    const fracRegex = /\\frac\{/g;
+
+    while ((match = fracRegex.exec(result)) !== null) {
+      const numStart = match.index + 6; // After '\frac{'
+      const numResult = extractBraceContent(result, numStart - 1);
+      if (!numResult) continue;
+
+      const denStart = numResult.endIndex;
+      if (result[denStart] !== '{') continue;
+      const denResult = extractBraceContent(result, denStart);
+      if (!denResult) continue;
+
+      const num = numResult.content;
+      const den = denResult.content;
+      const fullMatch = result.slice(match.index, denResult.endIndex);
+
+      // Replace with fraction representation
+      const replacement = (num.length === 1 && den.length === 1)
+        ? `${num}/${den}`
+        : `(${num})/(${den})`;
+
+      result = result.slice(0, match.index) + replacement + result.slice(denResult.endIndex);
+      fracRegex.lastIndex = match.index + replacement.length;
+    }
+    return result;
+  };
+
+  // Process \sqrt with balanced braces
+  const processSqrt = (input: string): string => {
+    let result = input;
+    let match;
+    const sqrtRegex = /\\sqrt\{/g;
+
+    while ((match = sqrtRegex.exec(result)) !== null) {
+      const contentStart = match.index + 6; // After '\sqrt{'
+      const contentResult = extractBraceContent(result, contentStart - 1);
+      if (!contentResult) continue;
+
+      const content = contentResult.content;
+      const fullMatch = result.slice(match.index, contentResult.endIndex);
+      const replacement = content.length === 1 ? `√${content}` : `√(${content})`;
+
+      result = result.slice(0, match.index) + replacement + result.slice(contentResult.endIndex);
+      sqrtRegex.lastIndex = match.index + replacement.length;
+    }
+    return result;
+  };
+
   // Simple LaTeX to HTML/Unicode converter
   useEffect(() => {
     try {
@@ -166,22 +234,11 @@ export function MathRenderer({
         result = result.replace(new RegExp(latex.replace(/\\/g, '\\\\'), 'g'), unicode);
       });
 
-      // Handle fractions: \frac{a}{b} -> a/b or (a)/(b)
-      result = result.replace(/\\frac\{([^}]+)\}\{([^}]+)\}/g, (_, num, den) => {
-        // Simple fractions
-        if (num.length === 1 && den.length === 1) {
-          return `${num}/${den}`;
-        }
-        return `(${num})/(${den})`;
-      });
+      // Handle fractions with balanced braces (supports nested content)
+      result = processFractions(result);
 
-      // Handle sqrt: \sqrt{x} -> √x or √(x)
-      result = result.replace(/\\sqrt\{([^}]+)\}/g, (_, content) => {
-        if (content.length === 1) {
-          return `√${content}`;
-        }
-        return `√(${content})`;
-      });
+      // Handle sqrt with balanced braces (supports nested content)
+      result = processSqrt(result);
 
       // Handle superscripts: x^{2} or x^2 -> x²
       const superscripts: Record<string, string> = {
@@ -233,9 +290,9 @@ export function MathRenderer({
       result = result.replace(/\\left\|/g, '|');
       result = result.replace(/\\right\|/g, '|');
 
-      // Clean up remaining backslashes for unknown commands
+      // Clean up remaining backslashes for unknown commands (silently keep them)
       result = result.replace(/\\([a-zA-Z]+)/g, (match, cmd) => {
-        console.warn(`Unknown LaTeX command: \\${cmd}`);
+        // Silently pass through unknown commands - they may be valid LaTeX not yet supported
         return match;
       });
 
