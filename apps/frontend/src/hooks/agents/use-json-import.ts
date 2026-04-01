@@ -71,18 +71,6 @@ export const useImportAgentFromJson = () => {
         const response = await backendApi.post('/agents/json/import', request);
         return response.data;
       } catch (error: any) {
-        const errorData = error.response?.data;
-        const isAgentLimitError = (error.response?.status === 402) && (
-          errorData?.error_code === 'AGENT_LIMIT_EXCEEDED' || 
-          errorData?.detail?.error_code === 'AGENT_LIMIT_EXCEEDED'
-        );
-        
-        if (isAgentLimitError) {
-          const { AgentCountLimitError } = await import('@/lib/api/errors');
-          const errorDetail = errorData?.detail || errorData;
-          throw new AgentCountLimitError(error.response.status, errorDetail);
-        }
-        
         const message = error.response?.data?.detail || error.message || 'Failed to import Worker';
         throw new Error(message);
       }
@@ -92,12 +80,7 @@ export const useImportAgentFromJson = () => {
         toast.success('Worker imported successfully!');
       }
     },
-    onError: async (error) => {
-      // Use centralized handler for billing errors
-      const { handleBillingError } = await import('@/lib/error-handler');
-      if (handleBillingError(error)) {
-        return; // Billing error was handled (pricing modal opened)
-      }
+    onError: (error) => {
       toast.error(error.message);
     },
   });

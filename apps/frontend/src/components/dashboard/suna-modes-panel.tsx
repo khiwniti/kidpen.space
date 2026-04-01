@@ -21,7 +21,6 @@ import {
   FileBarChart,
   X,
   Eye,
-  Lock,
   Sparkles,
   Pencil,
   Maximize2,
@@ -100,8 +99,6 @@ interface SunaModesPanelProps {
   onCanvasActionChange?: (action: string | null) => void;
   selectedVideoStyle?: string | null;
   onVideoStyleChange?: (style: string | null) => void;
-  isFreeTier?: boolean;
-  onUpgradeClick?: () => void;
 }
 
 type ModeType = 'image' | 'slides' | 'data' | 'docs' | 'canvas' | 'video' | 'research';
@@ -940,8 +937,6 @@ export function SunaModesPanel({
   onCanvasActionChange,
   selectedVideoStyle: controlledSelectedVideoStyle,
   onVideoStyleChange,
-  isFreeTier = false,
-  onUpgradeClick,
 }: SunaModesPanelProps) {
   const t = useTranslations('suna');
   const currentMode = selectedMode ? modes.find((m) => m.id === selectedMode) : null;
@@ -1403,15 +1398,12 @@ export function SunaModesPanel({
 
           {selectedMode === 'video' && (
             <ScrollArea className="w-full">
-              <div className={cn(
-                "grid grid-cols-2 sm:grid-cols-4 gap-3 pb-2",
-                isFreeTier && "opacity-50 pointer-events-none"
-              )}>
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pb-2">
                 {currentMode.options.items.map((item) => (
                   <Card
                     key={item.id}
                     className="flex flex-col items-center gap-2 cursor-pointer group p-2 hover:bg-muted transition-all duration-200 border border-border rounded-xl overflow-hidden relative"
-                    onClick={() => !isFreeTier && handlePromptSelect(`Generate a ${item.name.toLowerCase()} style video`)}
+                    onClick={() => handlePromptSelect(`Generate a ${item.name.toLowerCase()} style video`)}
                   >
                     <div className="w-full aspect-square rounded-lg border border-border/50 group-hover:border-primary/50 group-hover:scale-105 transition-all duration-200 flex items-center justify-center overflow-hidden relative">
                       {item.image ? (
@@ -1425,12 +1417,6 @@ export function SunaModesPanel({
                         />
                       ) : (
                         <Video className="w-8 h-8 text-muted-foreground/50 group-hover:text-primary/70 transition-colors duration-200" />
-                      )}
-                      -- Lock overlay for free users --
-                      {isFreeTier && (
-                        <div className="absolute inset-0 bg-background/60 flex items-center justify-center">
-                          <Lock className="w-5 h-5 text-muted-foreground" />
-                        </div>
                       )}
                     </div>
                     <span className="text-xs text-center text-muted-foreground group-hover:text-foreground transition-colors duration-200 font-medium">
@@ -1510,34 +1496,8 @@ export function SunaModesPanel({
             exit={{ opacity: 0, y: -4 }}
             transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
           >
-          -- Upgrade Banner for Video Mode - Free Users --
-          {selectedMode === 'video' && isFreeTier && (
-            <div className="flex items-center justify-between gap-3 p-3 mb-4 rounded-xl bg-card border border-border">
-              <div className="flex items-center gap-3">
-                <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-primary/10">
-                  <Lock className="w-4 h-4 text-primary" />
-                </div>
-                <div>
-                  <p className="text-sm font-medium text-foreground">Video Generation is a Pro Feature</p>
-                  <p className="text-xs text-muted-foreground">Upgrade your plan to create AI videos</p>
-                </div>
-              </div>
-              {onUpgradeClick && (
-                <Button 
-                  size="sm" 
-                  onClick={onUpgradeClick}
-                  className="shrink-0"
-                >
-                  Upgrade
-                </Button>
-              )}
-            </div>
-          )}
           
-          <div className={cn(
-            "space-y-3",
-            selectedMode === 'video' && isFreeTier && "opacity-50 pointer-events-none"
-          )}>
+          <div className="space-y-3">
             <div className="flex items-center justify-between">
               <p className="text-xs text-muted-foreground/60">
                 {t('samplePrompts')}
@@ -1838,15 +1798,12 @@ export function SunaModesPanel({
 
           {selectedMode === 'video' && (
             <ScrollArea className="w-full">
-              <div className={cn(
-                "grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3 pb-2",
-                isFreeTier && "opacity-50 pointer-events-none"
-              )}>
+              <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3 pb-2">
                 {currentMode.options.items.map((item) => (
                   <Card
                     key={item.id}
                     className="flex flex-col items-center gap-2 cursor-pointer group p-2 bg-transparent hover:bg-transparent transition-all duration-200 border border-border hover:border-border rounded-xl overflow-hidden shadow-none relative"
-                    onClick={() => !isFreeTier && handlePromptSelect(`Generate a ${item.name.toLowerCase()} style video`)}
+                    onClick={() => handlePromptSelect(`Generate a ${item.name.toLowerCase()} style video`)}
                   >
                     <div className="w-full aspect-square rounded-lg border border-transparent group-hover:scale-105 transition-all duration-200 flex items-center justify-center overflow-hidden relative">
                       {item.image ? (
@@ -1860,12 +1817,6 @@ export function SunaModesPanel({
                         />
                       ) : (
                         <Video className="w-8 h-8 text-muted-foreground/50 group-hover:text-primary/70 transition-colors duration-200" />
-                      )}
-                      -- Lock overlay for free users --
-                      {isFreeTier && (
-                        <div className="absolute inset-0 bg-background/60 flex items-center justify-center">
-                          <Lock className="w-5 h-5 text-muted-foreground" />
-                        </div>
                       )}
                     </div>
                     <span className="text-xs text-center text-foreground/70 group-hover:text-foreground transition-colors duration-200 font-medium">

@@ -44,7 +44,6 @@ import {
   CheckCircle2,
   XCircle,
   Trash2,
-  Lock,
 } from 'lucide-react';
 import { useComposioCredentialsProfiles, useComposioMcpUrl } from '@/hooks/composio/use-composio-profiles';
 import { useDeleteProfile, useBulkDeleteProfiles, useSetDefaultProfile } from '@/hooks/composio/use-composio-mutations';
@@ -53,9 +52,6 @@ import { cn } from '@/lib/utils';
 import { toast } from '@/lib/toast';
 import { useQueryClient } from '@tanstack/react-query';
 import type { ComposioProfileSummary, ComposioToolkitGroup } from '@/hooks/composio/utils';
-import { useAccountState } from '@/hooks/billing';
-import { usePricingModalStore } from '@/stores/pricing-modal-store';
-import { isLocalMode } from '@/lib/config';
 
 interface ComposioConnectionsSectionProps {
   className?: string;
@@ -497,13 +493,6 @@ export const ComposioConnectionsSection: React.FC<ComposioConnectionsSectionProp
   const [searchQuery, setSearchQuery] = useState('');
   const [showRegistry, setShowRegistry] = useState(false);
   const queryClient = useQueryClient();
-  const { data: accountState } = useAccountState();
-  const { openPricingModal } = usePricingModalStore();
-  
-  const isFreeTier = accountState && (
-    accountState.subscription?.tier_key === 'free' ||
-    accountState.tier?.name === 'free'
-  ) && !isLocalMode();
 
   const filteredToolkits = useMemo(() => {
     if (!toolkits || !searchQuery.trim()) return toolkits || [];
@@ -616,10 +605,10 @@ export const ComposioConnectionsSection: React.FC<ComposioConnectionsSectionProp
         <Button
           onClick={() => setShowRegistry(true)}
           size="sm"
-          variant={isFreeTier ? "outline" : "default"}
-          className={isFreeTier ? "border-primary text-primary hover:bg-primary hover:text-primary-foreground" : ""}
+          variant="default"
+          className=""
         >
-          {isFreeTier ? <Lock className="h-4 w-4" /> : <Plus className="h-4 w-4" />}
+          <Plus className="h-4 w-4" />
           Connect New App
         </Button>
       </div>
@@ -689,8 +678,6 @@ export const ComposioConnectionsSection: React.FC<ComposioConnectionsSectionProp
             mode="profile-only"
             onClose={() => setShowRegistry(false)}
             onToolsSelected={handleProfileCreated}
-            isBlocked={isFreeTier}
-            onBlockedClick={() => openPricingModal()}
           />
         </DialogContent>
       </Dialog>

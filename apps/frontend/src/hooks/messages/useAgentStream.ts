@@ -16,8 +16,6 @@ import { composioKeys } from '@/hooks/composio/keys';
 import { knowledgeBaseKeys } from '@/hooks/knowledge-base/keys';
 import { fileQueryKeys } from '@/hooks/files/use-file-queries';
 import { threadKeys, projectKeys } from '@/hooks/threads/keys';
-import { usePricingModalStore } from '@/stores/pricing-modal-store';
-import { accountStateKeys } from '@/hooks/billing';
 import { clearToolTracking } from './tool-tracking';
 
 export interface UseAgentStreamResult {
@@ -61,7 +59,6 @@ export function useAgentStream(
     const keys: (string | readonly string[])[] = [
       fileQueryKeys.all,
       ['active-agent-runs'],
-      accountStateKeys.all,
       threadKeys.messages(threadId),
       // CRITICAL: Include threads and projects list so sidebar updates after stream completion
       threadKeys.lists(),
@@ -98,31 +95,6 @@ export function useAgentStream(
     return keys;
   }, [threadId, agentId]);
 
-  const handleBillingError = useMemo(() => (errorMessage: string, balance?: string | null) => {
-    const messageLower = errorMessage.toLowerCase();
-    const isCreditsExhausted = 
-      messageLower.includes('insufficient credits') ||
-      messageLower.includes('out of credits') ||
-      messageLower.includes('no credits') ||
-      messageLower.includes('balance');
-    
-    const alertTitle = isCreditsExhausted 
-      ? 'You ran out of credits'
-      : 'Billing check failed';
-    
-    const alertSubtitle = balance 
-      ? `Your current balance is ${balance} credits. Upgrade your plan to continue.`
-      : isCreditsExhausted 
-        ? 'Upgrade your plan to get more credits and continue using the AI assistant.'
-        : 'Please upgrade to continue.';
-    
-    usePricingModalStore.getState().openPricingModal({ 
-      isAlert: true, 
-      alertTitle,
-      alertSubtitle
-    });
-  }, []);
-
   const showToast = useMemo(() => (message: string, type?: 'error' | 'success' | 'warning') => {
     if (type === 'error') {
       toast.error(message, { duration: 15000 });
@@ -140,7 +112,6 @@ export function useAgentStream(
     threadId,
     setMessages,
     {
-      handleBillingError,
       showToast,
       clearToolTracking,
       queryKeys,

@@ -116,5 +116,4 @@ export function KidpenComputerHeader({
   );
 }
 
-// Backwards compatibility alias
-export const KidpenComputerHeader = KidpenComputerHeader;
+// Backwards compatibility alias — intentionally omitted to avoid duplicate identifier

@@ -1,5 +1,5 @@
-import { BILLING_ERROR_KEYWORDS, COMPLETION_MESSAGE_PATTERNS } from './constants';
-import type { AgentStatus, BillingErrorContext } from './types';
+import { COMPLETION_MESSAGE_PATTERNS } from './constants';
+import type { AgentStatus } from './types';
 
 export function safeJsonParse<T>(json: string | null | undefined, fallback: T): T {
   if (!json) return fallback;
@@ -28,29 +28,6 @@ export function isCompletionMessage(processedData: string): boolean {
     processedData.includes(COMPLETION_MESSAGE_PATTERNS[3]) ||
     processedData === '{"type": "status", "status": "completed", "message": "Worker run completed successfully"}'
   );
-}
-
-export function isBillingError(message: string): boolean {
-  const messageLower = message.toLowerCase();
-  return BILLING_ERROR_KEYWORDS.some(keyword => messageLower.includes(keyword));
-}
-
-export function extractBillingErrorContext(errorMessage: string): BillingErrorContext {
-  const messageLower = errorMessage.toLowerCase();
-  const isCreditsExhausted = 
-    messageLower.includes('insufficient credits') ||
-    messageLower.includes('out of credits') ||
-    messageLower.includes('no credits') ||
-    messageLower.includes('balance');
-  
-  const balanceMatch = errorMessage.match(/balance is (-?\d+)\s*credits/i);
-  const balance = balanceMatch ? balanceMatch[1] : null;
-  
-  return {
-    errorMessage,
-    balance,
-    isCreditsExhausted,
-  };
 }
 
 export function mapBackendStatus(backendStatus: string): AgentStatus {

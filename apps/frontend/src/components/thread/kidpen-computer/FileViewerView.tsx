@@ -30,7 +30,6 @@ import {
   useFileContentQuery,
   FileCache
 } from '@/hooks/files';
-import { useDownloadRestriction } from '@/hooks/billing';
 import { cn } from '@/lib/utils';
 import { useKidpenComputerStore } from '@/stores/kidpen-computer-store';
 import { PresentationViewer } from '../tool-views/presentation-tools/PresentationViewer';
@@ -176,11 +175,6 @@ export function FileViewerView({
 
   // Presentation viewer store for fullscreen
   const presentationViewerStore = usePresentationViewerStore();
-
-  // Download restriction for free tier users
-  const { isRestricted: isDownloadRestricted, openUpgradeModal } = useDownloadRestriction({
-    featureName: 'files',
-  });
 
   // File content state
   const [rawContent, setRawContent] = useState<string | Blob | null>(null);
@@ -759,10 +753,6 @@ export function FileViewerView({
 
   // Handle file download
   const handleDownload = async () => {
-    if (isDownloadRestricted) {
-      openUpgradeModal();
-      return;
-    }
     if (!filePath || isDownloading) return;
 
     try {

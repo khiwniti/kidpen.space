@@ -137,12 +137,7 @@ export const useCreateAgent = () => {
       queryClient.setQueryData(agentKeys.detail(data.agent_id), data);
       toast.success('Worker created successfully');
     },
-    onError: async (error) => {
-      // Use centralized handler for billing errors
-      const { handleBillingError } = await import('@/lib/error-handler');
-      if (handleBillingError(error)) {
-        return; // Billing error was handled (pricing modal opened)
-      }
+    onError: (error) => {
       console.error('Error creating agent:', error);
       toast.error(error instanceof Error ? error.message : 'Failed to create Worker');
     },
@@ -167,10 +162,8 @@ export const useCreateNewAgent = () => {
       const newAgent = await createAgentMutation.mutateAsync(defaultAgentData);
       return newAgent;
     },
-    onError: async (error) => {
-      // Use centralized handler for billing errors
-      const { handleBillingError } = await import('@/lib/error-handler');
-      handleBillingError(error);
+    onError: (error) => {
+      toast.error(error instanceof Error ? error.message : 'Failed to create Worker');
     },
   });
 };

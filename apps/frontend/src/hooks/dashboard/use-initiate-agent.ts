@@ -3,7 +3,6 @@
 import { unifiedAgentStart, UnifiedAgentStartResponse } from "@/lib/api/agents";
 import { 
   AgentRunLimitError, 
-  BillingError, 
   ProjectLimitError, 
   ThreadLimitError,
   AgentCountLimitError,
@@ -58,10 +57,7 @@ export const useInitiateAgentMutation = () => {
       handleApiSuccess(t('agentInitiatedSuccessfully'), t('aiAssistantReady'));
     },
     onError: (error) => {
-      // Let all limit/billing errors bubble up to be handled by components
-      // This ensures a single source of truth for error handling
-      if (error instanceof BillingError || 
-          error instanceof AgentRunLimitError ||
+      if (error instanceof AgentRunLimitError ||
           error instanceof ProjectLimitError ||
           error instanceof ThreadLimitError ||
           error instanceof AgentCountLimitError ||
@@ -70,9 +66,6 @@ export const useInitiateAgentMutation = () => {
           error instanceof ModelAccessDeniedError ||
           error instanceof RequestTooLargeError) {
         throw error;
-      }
-      if (error instanceof Error && error.message.toLowerCase().includes("payment required")) {
-        return;
       }
       handleApiError(error, { operation: 'initiate agent', resource: 'AI assistant' });
     }
@@ -91,8 +84,7 @@ export const useInitiateAgentWithInvalidation = () => {
       queryClient.invalidateQueries({ queryKey: dashboardKeys.agents });
     },
     onError: (error) => {
-      if (error instanceof BillingError || 
-          error instanceof AgentRunLimitError ||
+      if (error instanceof AgentRunLimitError ||
           error instanceof ProjectLimitError ||
           error instanceof ThreadLimitError ||
           error instanceof AgentCountLimitError ||
@@ -102,12 +94,7 @@ export const useInitiateAgentWithInvalidation = () => {
           error instanceof RequestTooLargeError) {
         throw error;
       }
-      if (error instanceof Error) {
-        const errorMessage = error.message;
-        if (errorMessage.toLowerCase().includes("payment required")) {
-          throw new BillingError(402, { message: "Payment required to continue" });
-        }
-      }
+      handleApiError(error, { operation: 'initiate agent', resource: 'AI assistant' });
     }
   });
 };

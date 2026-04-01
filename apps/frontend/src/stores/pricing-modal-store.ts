@@ -1,43 +1,19 @@
 import { create } from 'zustand';
-import { trackCtaUpgrade } from '@/lib/analytics/gtm';
 
-interface PricingModalState {
+interface PricingModalStore {
   isOpen: boolean;
-  customTitle?: string;
-  isAlert?: boolean;
-  alertTitle?: string;
-  alertSubtitle?: string;
+  creditsExhausted: boolean;
   returnUrl?: string;
-  openPricingModal: (options?: { title?: string; returnUrl?: string, isAlert?: boolean, alertTitle?: string, alertSubtitle?: string }) => void;
+  openPricingModal: (options?: { creditsExhausted?: boolean; returnUrl?: string }) => void;
+  openModal: () => void;
   closePricingModal: () => void;
 }
 
-export const usePricingModalStore = create<PricingModalState>((set) => ({
+export const usePricingModalStore = create<PricingModalStore>((set) => ({
   isOpen: false,
-  isAlert: false,
-  customTitle: undefined,
-  alertSubtitle: undefined,
+  creditsExhausted: false,
   returnUrl: undefined,
-  openPricingModal: (options) => {
-    // Track cta_upgrade event for GTM/GA4
-    trackCtaUpgrade();
-    
-    set({
-      isOpen: true,
-      customTitle: options?.title,
-      isAlert: options?.isAlert || false,
-      alertTitle: options?.alertTitle,
-      alertSubtitle: options?.alertSubtitle,
-      returnUrl: options?.returnUrl,
-    });
-  },
-  closePricingModal: () =>
-    set({
-      isOpen: false,
-      customTitle: undefined,
-      isAlert: false,
-      alertTitle: undefined,
-      alertSubtitle: undefined,
-      returnUrl: undefined,
-    }),
+  openPricingModal: (_options?) => {},
+  openModal: () => {},
+  closePricingModal: () => set({ isOpen: false }),
 }));

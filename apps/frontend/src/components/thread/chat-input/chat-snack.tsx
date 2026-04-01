@@ -1,11 +1,9 @@
 'use client';
 
 import React from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
-import { UpgradePreview } from './upgrade-preview';
 import { FloatingToolPreview, ToolCallInput } from './floating-tool-preview';
-import { isLocalMode } from '@/lib/config';
 import { Volume2, Play, Pause, RotateCcw, X, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useVoicePlayerStore } from '@/stores/voice-player-store';
@@ -16,14 +14,9 @@ export interface ChatSnackProps {
     onExpandToolPreview?: () => void;
     agentName?: string;
     showToolPreview?: boolean;
-    subscriptionData?: any;
-    onOpenUpgrade?: () => void;
     isVisible?: boolean;
-    threadId?: string | null;  // Only show voice player when in a thread
+    threadId?: string | null;
 }
-
-const SNACK_LAYOUT_ID = 'chat-snack-float';
-const SNACK_CONTENT_LAYOUT_ID = 'chat-snack-content';
 
 export const ChatSnack: React.FC<ChatSnackProps> = ({
     toolCalls = [],
@@ -31,15 +24,11 @@ export const ChatSnack: React.FC<ChatSnackProps> = ({
     onExpandToolPreview,
     agentName,
     showToolPreview = false,
-    subscriptionData,
-    onOpenUpgrade,
     isVisible = false,
     threadId,
 }) => {
     const [currentView, setCurrentView] = React.useState(0);
-    const [userDismissedUpgrade, setUserDismissedUpgrade] = React.useState(false);
 
-    // Voice player state
     const {
         state: voiceState,
         text: voiceText,
@@ -54,15 +43,8 @@ export const ChatSnack: React.FC<ChatSnackProps> = ({
     const isVoiceEnded = voiceState === 'ended';
     const isVoiceError = voiceState === 'error';
 
-    const isFreeTier = subscriptionData && (
-        subscriptionData.tier_key === 'free' ||
-        subscriptionData.tier?.name === 'free' ||
-        subscriptionData.plan_name === 'free'
-    );
-
     const notifications: string[] = [];
 
-    // Voice takes priority when active (only show in thread context)
     if (isVoiceActive && threadId) {
         notifications.push('voice');
     }
@@ -71,14 +53,9 @@ export const ChatSnack: React.FC<ChatSnackProps> = ({
         notifications.push('tool');
     }
 
-    if (isFreeTier && subscriptionData && !isLocalMode() && !userDismissedUpgrade && onOpenUpgrade) {
-        notifications.push('upgrade');
-    }
-
     const totalNotifications = notifications.length;
     const hasMultiple = totalNotifications > 1;
 
-    // When voice becomes active, switch to voice view
     React.useEffect(() => {
         if (isVoiceActive && notifications[0] === 'voice') {
             setCurrentView(0);
@@ -91,12 +68,10 @@ export const ChatSnack: React.FC<ChatSnackProps> = ({
         }
     }, [totalNotifications, currentView]);
 
-    const shouldShowSnack = isVisible || (isVoiceActive && threadId) ||
-        (isFreeTier && subscriptionData && !isLocalMode() && !userDismissedUpgrade && onOpenUpgrade && totalNotifications > 0);
+    const shouldShowSnack = isVisible || (isVoiceActive && threadId);
 
     React.useEffect(() => {
         if (!hasMultiple || !shouldShowSnack) return;
-        // Don't auto-cycle when voice is active
         if (isVoiceActive) return;
 
         const interval = setInterval(() => {
@@ -263,60 +238,6 @@ export const ChatSnack: React.FC<ChatSnackProps> = ({
                     indicatorTotal={totalNotifications}
                     onIndicatorClick={(index) => setCurrentView(index)}
                 />
-            );
-        }
-
-        if (currentNotification === 'upgrade' && isFreeTier && subscriptionData && !isLocalMode() && onOpenUpgrade) {
-            return (
-                <motion.div
-                    layoutId={SNACK_LAYOUT_ID}
-                    layout
-                    transition={{
-                        layout: {
-                            type: "spring",
-                            stiffness: 300,
-                            damping: 30
-                        }
-                    }}
-                    className="-mb-4 w-full"
-                    style={{ pointerEvents: 'auto' }}
-                >
-                    <motion.div
-                        layoutId={SNACK_CONTENT_LAYOUT_ID}
-                        className={cn(
-                            "bg-card border border-border rounded-3xl p-2 w-full transition-all duration-200",
-                            "cursor-pointer hover:shadow-md"
-                        )}
-                        whileHover={{ scale: 1.02 }}
-                        whileTap={{ scale: 0.98 }}
-                        onClick={(e) => {
-                            const target = e.target as HTMLElement;
-                            const isIndicatorClick = target.closest('[data-indicator-click]');
-                            const isCloseClick = target.closest('[data-close-click]');
-
-                            if (!isIndicatorClick && !isCloseClick && onOpenUpgrade) {
-                                onOpenUpgrade();
-                            }
-                        }}
-                    >
-                        <UpgradePreview
-                            subscriptionData={subscriptionData}
-                            onClose={() => {
-                                setUserDismissedUpgrade(true);
-                                const willHaveToolNotification = showToolPreview && toolCalls.length > 0;
-                                if (willHaveToolNotification) {
-                                    setCurrentView(0);
-                                }
-                            }}
-                            hasMultiple={hasMultiple}
-                            showIndicators={hasMultiple}
-                            currentIndex={currentView}
-                            totalCount={totalNotifications}
-                            onIndicatorClick={(index) => setCurrentView(index)}
-                            onOpenUpgrade={onOpenUpgrade}
-                        />
-                    </motion.div>
-                </motion.div>
             );
         }
 

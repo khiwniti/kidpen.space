@@ -10,7 +10,6 @@ import { SyncStatusIndicator } from './SyncStatusIndicator';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/components/AuthProvider';
 import { toast } from '@/lib/toast';
-import { useDownloadRestriction } from '@/hooks/billing';
 import { SpreadsheetLoader } from './SpreadsheetLoader';
 
 import '../../../../../node_modules/@syncfusion/ej2-base/styles/material.css';
@@ -81,9 +80,6 @@ export function SpreadsheetViewer({
   const ssRef = useRef<SpreadsheetComponent>(null);
   const { session } = useAuth();
   const [isDownloading, setIsDownloading] = useState(false);
-  const { isRestricted: isDownloadRestricted, openUpgradeModal } = useDownloadRestriction({
-    featureName: 'files',
-  });
   
   useEffect(() => {
     const style = document.createElement('style');
@@ -173,11 +169,6 @@ export function SpreadsheetViewer({
   }, [actions, onActionsReady]);
 
   const handleDownload = useCallback(async () => {
-    if (isDownloadRestricted) {
-      openUpgradeModal();
-      return;
-    }
-    
     if (!resolvedSandboxId || !resolvedFilePath || !session?.access_token) {
       console.error('[SpreadsheetViewer] Download failed - missing:', {
         resolvedSandboxId,
@@ -223,7 +214,7 @@ export function SpreadsheetViewer({
     } finally {
       setIsDownloading(false);
     }
-  }, [resolvedSandboxId, resolvedFilePath, fileName, session, isDownloadRestricted, openUpgradeModal]);
+  }, [resolvedSandboxId, resolvedFilePath, fileName, session]);
 
   useEffect(() => {
     if (onDownloadReady) {

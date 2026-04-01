@@ -11,10 +11,6 @@ import { NewAgentDialog } from '@/components/agents/new-agent-dialog';
 import { KidpenLoader } from '@/components/ui/kidpen-loader';
 import { useSidebar } from '@/components/ui/sidebar';
 import { useIsMobile } from '@/hooks/utils';
-import { usePricingModalStore } from '@/stores/pricing-modal-store';
-import { useAccountState, accountStateSelectors } from '@/hooks/billing';
-import { isLocalMode } from '@/lib/config';
-import { Sparkles } from 'lucide-react';
 
 export function NavWorkers() {
   const router = useRouter();
@@ -22,14 +18,6 @@ export function NavWorkers() {
   const isMobile = useIsMobile();
   const [searchQuery, setSearchQuery] = useState('');
   const [showNewAgentDialog, setShowNewAgentDialog] = useState(false);
-  const { openPricingModal } = usePricingModalStore();
-  const { data: accountState } = useAccountState();
-  
-  const tierKey = accountStateSelectors.tierKey(accountState);
-  const isFreeTier = tierKey && (
-    tierKey === 'free' ||
-    tierKey === 'none'
-  ) && !isLocalMode();
 
   const { data: agentsResponse, isLoading } = useAgents({ limit: 50 });
   const agents = useMemo(() => {
@@ -60,11 +48,7 @@ export function NavWorkers() {
   }, [router, isMobile, setOpenMobile]);
 
   const handleCreateWorker = () => {
-    if (isFreeTier) {
-      openPricingModal();
-    } else {
-      setShowNewAgentDialog(true);
-    }
+    setShowNewAgentDialog(true);
   };
 
   return (
@@ -159,17 +143,8 @@ export function NavWorkers() {
           className="w-full justify-start gap-2 h-10"
           onClick={handleCreateWorker}
         >
-          {isFreeTier ? (
-            <>
-              <Sparkles className="h-4 w-4 text-primary" />
-              <span className="text-primary">Create Worker</span>
-            </>
-          ) : (
-            <>
-              <Plus className="h-4 w-4" />
-              <span>Create Worker</span>
-            </>
-          )}
+          <Plus className="h-4 w-4" />
+          <span>Create Worker</span>
         </Button>
       </div>
 

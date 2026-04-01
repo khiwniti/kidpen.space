@@ -54,7 +54,6 @@ import {
   useDirectoryQuery,
   FileCache
 } from '@/hooks/files';
-import { useDownloadRestriction } from '@/hooks/billing';
 import JSZip from 'jszip';
 import { normalizeFilenameToNFC } from '@agentpress/shared';
 import { cn } from '@/lib/utils';
@@ -676,11 +675,6 @@ export function FileBrowserView({
   // Presentation viewer store (for library view - opens fullscreen presentation)
   const openPresentation = usePresentationViewerStore((state) => state.openPresentation);
   
-  // Download restriction for free tier users
-  const { isRestricted: isDownloadRestricted, openUpgradeModal } = useDownloadRestriction({
-    featureName: 'files',
-  });
-
   // Get unified sandbox status with auto-start - this tells us if sandbox is actually ready
   // Auto-starts OFFLINE sandboxes automatically
   const { data: sandboxStatusData, isAutoStarting } = useSandboxStatusWithAutoStart(projectId);
@@ -879,10 +873,6 @@ export function FileBrowserView({
 
   // Function to download all files as a zip from current directory
   const handleDownloadFolder = useCallback(async () => {
-    if (isDownloadRestricted) {
-      openUpgradeModal();
-      return;
-    }
     if (!session?.access_token || isDownloadingAll) return;
 
     try {
@@ -1014,14 +1004,10 @@ export function FileBrowserView({
       setIsDownloadingAll(false);
       setDownloadProgress(null);
     }
-  }, [sandboxId, session?.access_token, isDownloadingAll, discoverAllFiles, isDownloadRestricted, openUpgradeModal, currentPath]);
+  }, [sandboxId, session?.access_token, isDownloadingAll, discoverAllFiles, currentPath]);
 
   // Handle individual file download
   const handleDownloadFile = useCallback(async (filePath: string) => {
-    if (isDownloadRestricted) {
-      openUpgradeModal();
-      return;
-    }
     if (!session?.access_token || !sandboxId) {
       toast.error('Cannot download file');
       return;
@@ -1058,7 +1044,7 @@ export function FileBrowserView({
       console.error('Download failed:', error);
       toast.error(`Failed to download ${fileName}`, { id: 'download-file' });
     }
-  }, [sandboxId, session?.access_token, isDownloadRestricted, openUpgradeModal]);
+  }, [sandboxId, session?.access_token]);
 
   // Handle file upload
   const handleUpload = useCallback(() => {

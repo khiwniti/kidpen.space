@@ -28,7 +28,6 @@ import { SpreadsheetLoader } from '../../tool-views/spreadsheet/SpreadsheetLoade
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/components/AuthProvider';
 import { toast } from '@/lib/toast';
-import { useDownloadRestriction } from '@/hooks/billing';
 
 import '../../../../../node_modules/@syncfusion/ej2-base/styles/material.css';
 import '../../../../../node_modules/@syncfusion/ej2-inputs/styles/material.css';
@@ -87,10 +86,6 @@ const SpreadsheetEditor = memo(function SpreadsheetEditor({
   const prevPendingChangesRef = useRef<boolean | null>(null);
   const prevIsActiveRef = useRef(isActive);
   const { session } = useAuth();
-  const { isRestricted: isDownloadRestricted, openUpgradeModal } = useDownloadRestriction({
-    featureName: 'files',
-  });
-
   onUnsavedChangeRef.current = onUnsavedChange;
 
   const {
@@ -149,11 +144,6 @@ const SpreadsheetEditor = memo(function SpreadsheetEditor({
   }, [filePath, actions]);
 
   const handleDownload = useCallback(async () => {
-    if (isDownloadRestricted) {
-      openUpgradeModal();
-      return;
-    }
-    
     if (!sandboxId || !filePath || !session?.access_token) {
       toast.error('Unable to download file');
       return;
@@ -188,7 +178,7 @@ const SpreadsheetEditor = memo(function SpreadsheetEditor({
     } finally {
       setIsDownloading(false);
     }
-  }, [sandboxId, filePath, fileName, session, isDownloadRestricted, openUpgradeModal]);
+  }, [sandboxId, filePath, fileName, session]);
 
   if (!isActive) return null;
 

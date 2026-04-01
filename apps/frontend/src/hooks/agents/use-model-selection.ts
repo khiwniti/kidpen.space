@@ -1,9 +1,7 @@
 'use client';
 
 import { useModelStore } from '@/stores/model-store';
-import { useCallback, useEffect, useMemo, useRef } from 'react';
-import { useAccountState } from '@/hooks/billing';
-import { useAuth } from '@/components/AuthProvider';
+import { useCallback } from 'react';
 
 export interface ModelOption {
   id: string;
@@ -16,152 +14,53 @@ export interface ModelOption {
   contextWindow?: number;
 }
 
-// Helper to check if user has a PAID subscription (not free tier)
-const isPaidTier = (tierKey: string | undefined): boolean => {
-  if (!tierKey) return false;
-  return tierKey !== 'free' && tierKey !== 'none';
-};
-
-const getDefaultModel = (accessibleModels: ModelOption[]): string => {
-  // Pick the first accessible model (sorted by priority)
-  // kidpen/basic should be first for free users since power is not accessible
-  const basicModel = accessibleModels.find(m => m.id === 'kidpen/basic');
-  if (basicModel) return basicModel.id;
-
-  const powerModel = accessibleModels.find(m => m.id === 'kidpen/power');
-  if (powerModel) return powerModel.id;
-
-  // Fallback: pick from accessible models sorted by priority
-  if (accessibleModels.length > 0) {
-    return accessibleModels[0].id;
-  }
-
-  return '';
-};
+// All models are always accessible — the platform is free
+const AVAILABLE_MODELS: ModelOption[] = [
+  {
+    id: 'kidpen/basic',
+    label: 'Basic',
+    requiresSubscription: false,
+    priority: 1,
+    recommended: false,
+    capabilities: [],
+    contextWindow: 128000,
+  },
+  {
+    id: 'kidpen/power',
+    label: 'Power',
+    requiresSubscription: false,
+    priority: 2,
+    recommended: true,
+    capabilities: [],
+    contextWindow: 128000,
+  },
+];
 
 export const useModelSelection = () => {
-  const { user, isLoading: isAuthLoading } = useAuth();
-
-  // Get account state which includes models
-  const { data: accountState, isLoading } = useAccountState({
-    enabled: !!user && !isAuthLoading
-  });
-
   const { selectedModel, setSelectedModel } = useModelStore();
 
-  // Track previous tier to detect upgrades
-  const prevTierKey = useRef<string | null>(null);
-
-  const hasPaidSubscription = useMemo(() => {
-    return isPaidTier(accountState?.subscription?.tier_key);
-  }, [accountState?.subscription?.tier_key]);
-
-  // Transform API data to ModelOption format
-  // The backend's `allowed` field is the source of truth!
-  const availableModels = useMemo<ModelOption[]>(() => {
-    if (!accountState?.models) return [];
-
-    return accountState.models.map(model => ({
-      id: model.id,
-      label: model.name,
-      requiresSubscription: !model.allowed, // Backend already computed this correctly
-      priority: model.priority || 0,
-      recommended: model.recommended || false,
-      capabilities: model.capabilities || [],
-      contextWindow: model.context_window || 128000,
-    })).sort((a, b) => {
-      // Sort accessible models first, then by priority
-      if (a.requiresSubscription !== b.requiresSubscription) {
-        return a.requiresSubscription ? 1 : -1;
-      }
-      if (a.priority !== b.priority) return b.priority - a.priority;
-      return a.label.localeCompare(b.label);
-    });
-  }, [accountState?.models]);
-
-  // Get accessible models - use the backend's `allowed` field directly!
-  const accessibleModels = useMemo(() => {
-    return availableModels.filter(model => !model.requiresSubscription);
-  }, [availableModels]);
-
-  // Initialize selected model when data loads
-  useEffect(() => {
-    if (isLoading || !accessibleModels.length) return;
-
-    // If no model selected or selected model is not accessible, set a default
-    const needsUpdate = !selectedModel ||
-                        !accessibleModels.some(m => m.id === selectedModel);
-
-    if (needsUpdate) {
-      const defaultModelId = getDefaultModel(accessibleModels);
-
-      if (defaultModelId && defaultModelId !== selectedModel) {
-        console.log('🔧 useModelSelection: Setting default model:', defaultModelId, '(tier:', accountState?.subscription?.tier_key, ')');
-        setSelectedModel(defaultModelId);
-      }
-    }
-  }, [selectedModel, accessibleModels, isLoading, setSelectedModel, accountState?.subscription?.tier_key]);
-
-  useEffect(() => {
-    if (isLoading || !availableModels.length) return;
-
-    const currentTier = accountState?.subscription?.tier_key;
-    const wasFree = prevTierKey.current === 'free' || prevTierKey.current === 'none';
-    const isNowPaid = isPaidTier(currentTier);
-
-    if (wasFree && isNowPaid && prevTierKey.current !== null) {
-      const powerModel = availableModels.find(m => m.id === 'kidpen/power' && !m.requiresSubscription);
-      if (powerModel) {
-        console.log('🚀 useModelSelection: Upgraded to paid tier! Switching to kidpen/power');
-        setSelectedModel('kidpen/power');
-      }
-    }
-
-    prevTierKey.current = currentTier || null;
-  }, [accountState?.subscription?.tier_key, availableModels, isLoading, setSelectedModel]);
-
   const handleModelChange = useCallback((modelId: string) => {
-    const model = accessibleModels.find(m => m.id === modelId);
-    if (model) {
-      console.log('🔧 useModelSelection: Changing model to:', modelId);
+    if (AVAILABLE_MODELS.some(m => m.id === modelId)) {
       setSelectedModel(modelId);
     }
-  }, [accessibleModels, setSelectedModel]);
+  }, [setSelectedModel]);
 
-  // subscriptionStatus for UI purposes - based on tier, not status
-  const subscriptionStatus = hasPaidSubscription ? 'active' as const : 'no_subscription' as const;
-
-  // Stable callback for checking model access
-  const canAccessModel = useCallback((modelId: string) => {
-    // Use the backend's `allowed` field directly - it's the source of truth
-    const model = availableModels.find(m => m.id === modelId);
-    if (!model) return false;
-    return !model.requiresSubscription; // requiresSubscription = !allowed from backend
-  }, [availableModels]);
-
-  // Stable callback for checking subscription requirement
-  const isSubscriptionRequired = useCallback((modelId: string) => {
-    const model = availableModels.find(m => m.id === modelId);
-    return model?.requiresSubscription || false;
-  }, [availableModels]);
-
-  // Stable callback for getting actual model ID
+  const canAccessModel = useCallback((_modelId: string) => true, []);
+  const isSubscriptionRequired = useCallback((_modelId: string) => false, []);
   const getActualModelId = useCallback((modelId: string) => modelId, []);
-
-  // Stable no-op callbacks for custom models (not implemented)
   const refreshCustomModels = useCallback(() => {}, []);
   const addCustomModel = useCallback((_model: any) => {}, []);
   const updateCustomModel = useCallback((_id: string, _model: any) => {}, []);
   const removeCustomModel = useCallback((_id: string) => {}, []);
 
   return {
-    selectedModel,
+    selectedModel: selectedModel || AVAILABLE_MODELS[0].id,
     setSelectedModel: handleModelChange,
-    availableModels: accessibleModels,
-    allModels: availableModels,
-    isLoading,
-    modelsData: accountState?.subscription ? { models: accountState.models, tier: accountState.subscription.tier_key } : undefined,
-    subscriptionStatus,
+    availableModels: AVAILABLE_MODELS,
+    allModels: AVAILABLE_MODELS,
+    isLoading: false,
+    modelsData: undefined,
+    subscriptionStatus: 'active' as const,
     canAccessModel,
     isSubscriptionRequired,
     handleModelChange,
@@ -173,3 +72,4 @@ export const useModelSelection = () => {
     refreshCustomModels,
   };
 };
+

@@ -1,8 +1,3 @@
-import { pricingTiers, type PricingTier } from '@/lib/pricing-config';
-
-// Re-export for backward compatibility
-export type { PricingTier } from '@/lib/pricing-config';
-
 export const siteConfig = {
   url: process.env.NEXT_PUBLIC_APP_URL || 'https://kidpen.space',
   nav: {

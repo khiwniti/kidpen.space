@@ -19,7 +19,6 @@ import { STREAM_CONFIG, TERMINAL_STATUSES } from './constants';
 import { 
   mapBackendStatus, 
   isTerminalStatus,
-  extractBillingErrorContext,
 } from './utils';
 import { 
   processStreamData, 
@@ -57,7 +56,6 @@ export interface AgentStreamCallbacks {
 }
 
 export interface UseAgentStreamOptions {
-  handleBillingError?: (errorMessage: string, balance?: string | null) => void;
   showToast?: (message: string, type?: 'error' | 'success' | 'warning') => void;
   clearToolTracking?: () => void;
   queryKeys?: (string | readonly string[])[];
@@ -275,17 +273,6 @@ export function useAgentStream(
     invalidateQueries();
   }, [agentRunId, flushPendingChunks, invalidateQueries]);
   
-  const handleBillingError = useCallback((errorMessage: string) => {
-    const context = extractBillingErrorContext(errorMessage);
-    
-    if (optionsRef.current.handleBillingError) {
-      optionsRef.current.handleBillingError(errorMessage, context.balance);
-    } else {
-      setError(errorMessage);
-      callbacksRef.current.onError?.(errorMessage);
-    }
-  }, []);
-  
   const checkAgentStatus = useCallback(async (runId: string): Promise<{ status: string; error?: string }> => {
     const response = await fetch(`${API_URL}/agent-runs/${runId}/status`, {
       headers: {
@@ -391,12 +378,6 @@ export function useAgentStream(
         }
         break;
       
-      case 'billing_error':
-        if (processed.errorMessage) {
-          handleBillingError(processed.errorMessage);
-        }
-        break;
-      
       case 'tool_output_stream':
         if (processed.toolOutputStream) {
           callbacksRef.current.onToolOutputStream?.(processed.toolOutputStream);
@@ -460,7 +441,7 @@ export function useAgentStream(
       setStatus('streaming');
       callbacksRef.current.onStatusChange?.('streaming');
     }
-  }, [threadId, addTextChunk, updateToolCall, flushPendingChunks, finalizeStream, handleBillingError]);
+  }, [threadId, addTextChunk, updateToolCall, flushPendingChunks, finalizeStream]);
   
   handleStreamMessageRef.current = handleStreamMessage;
   

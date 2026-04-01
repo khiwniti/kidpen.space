@@ -82,7 +82,7 @@ export function AdminUserDetailsDialog({
     page_size: 10,
   });
   const { data: userTransactions, isLoading: transactionsLoading } = useAdminUserTransactions({
-    userId: user?.id || '',
+    accountId: user?.id || '',
     page: transactionsPage,
     page_size: 10,
   });

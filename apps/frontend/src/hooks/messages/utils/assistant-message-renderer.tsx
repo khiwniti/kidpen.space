@@ -14,8 +14,6 @@ import { ToolCard } from '@/components/thread/content/ToolCard';
 import { ApifyApprovalInline } from '@/components/thread/content/ApifyApprovalInline';
 import { MediaGenerationInline } from '@/components/thread/content/MediaGenerationInline';
 import { constructHtmlPreviewUrl } from '@/lib/utils/url';
-import { InlineCheckout, extractInlineCheckout } from '@/components/thread/content/InlineCheckout';
-import { UpgradeButtonCTA, extractUpgradeButton } from '@/components/thread/content/UpgradeButtonCTA';
 
 export interface AssistantMessageRendererProps {
   message: UnifiedMessage;
@@ -51,19 +49,12 @@ function renderAskToolCall(
   const attachments = normalizeAttachments(toolCall.arguments?.attachments);
   const followUpAnswers = normalizeArrayValue(toolCall.arguments?.follow_up_answers);
 
-  // Extract inline checkout if present
-  const { cleanContent: contentAfterCheckout, hasCheckout, options: checkoutOptions } = extractInlineCheckout(askText);
-  // Extract upgrade button if present
-  const { cleanContent, hasUpgradeButton } = extractUpgradeButton(contentAfterCheckout);
-
   return (
     <div key={`ask-${index}`} className="space-y-3 my-1.5">
       <ComposioUrlDetector
-        content={cleanContent}
+        content={askText}
         className="text-sm prose prose-sm dark:prose-invert chat-markdown max-w-none break-words [&>:first-child]:mt-0 prose-headings:mt-3"
       />
-      {hasUpgradeButton && <UpgradeButtonCTA />}
-      {hasCheckout && <InlineCheckout options={checkoutOptions} />}
       {attachments.length > 0 && (
         <div className="mt-3">
           <FileAttachmentGrid
@@ -111,20 +102,13 @@ function renderCompleteToolCall(
   const attachments = normalizeAttachments(toolCall.arguments?.attachments);
   const followUpPrompts = normalizeArrayValue(toolCall.arguments?.follow_up_prompts);
 
-  // Extract inline checkout if present
-  const { cleanContent: contentAfterCheckout, hasCheckout, options: checkoutOptions } = extractInlineCheckout(completeText);
-  // Extract upgrade button if present
-  const { cleanContent, hasUpgradeButton } = extractUpgradeButton(contentAfterCheckout);
-
   return (
     <div key={`complete-${index}`} className="space-y-3 my-1.5">
       {/* Main content */}
       <ComposioUrlDetector
-        content={cleanContent}
+        content={completeText}
         className="text-sm prose prose-sm dark:prose-invert chat-markdown max-w-none break-words [&>:first-child]:mt-0 prose-headings:mt-3"
       />
-      {hasUpgradeButton && <UpgradeButtonCTA />}
-      {hasCheckout && <InlineCheckout options={checkoutOptions} />}
 
       {/* Attachments underneath the text */}
       {attachments.length > 0 && (
@@ -676,19 +660,12 @@ export function renderAssistantMessage(props: AssistantMessageRendererProps): Re
   const shouldRenderTextContent = textContent.trim() && textContent.trim() !== askCompleteText.trim();
 
   if (shouldRenderTextContent) {
-    // Extract inline checkout if present
-    const { cleanContent: contentAfterCheckout, hasCheckout, options: checkoutOptions } = extractInlineCheckout(textContent);
-    // Extract upgrade button if present
-    const { cleanContent, hasUpgradeButton } = extractUpgradeButton(contentAfterCheckout);
-
     contentParts.push(
       <div key="text-content" className="my-1.5">
         <ComposioUrlDetector
-          content={cleanContent}
+          content={textContent}
           className="text-sm prose prose-sm dark:prose-invert chat-markdown max-w-none break-words"
         />
-        {hasUpgradeButton && <UpgradeButtonCTA />}
-        {hasCheckout && <InlineCheckout options={checkoutOptions} />}
       </div>
     );
   }

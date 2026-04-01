@@ -12,7 +12,6 @@ import { Button } from '@/components/ui/button';
 import { ToolViewIconTitle } from '../shared/ToolViewIconTitle';
 import { LoadingState } from '../shared/LoadingState';
 import { useAuth } from '@/components/AuthProvider';
-import { useDownloadRestriction } from '@/hooks/billing';
 
 interface ExportToolViewProps extends ToolViewProps {
   onFileClick?: (filePath: string) => void;
@@ -29,10 +28,6 @@ export function ExportToolView({
   project,
 }: ExportToolViewProps) {
   const { session } = useAuth();
-  const { isRestricted: isDownloadRestricted, openUpgradeModal } = useDownloadRestriction({
-    featureName: 'exports',
-  });
-  
   const [downloadingFormat, setDownloadingFormat] = useState<ExportFormat | null>(null);
 
   const name = toolCall?.function_name?.replace(/_/g, '-').toLowerCase() || 'export-presentation';
@@ -83,11 +78,6 @@ export function ExportToolView({
   if (!toolCall) return null;
 
   const handleDownload = async (format: ExportFormat) => {
-    if (isDownloadRestricted) {
-      openUpgradeModal();
-      return;
-    }
-
     const exportData = exports?.[format];
     
     // Try direct download first if we have download_url

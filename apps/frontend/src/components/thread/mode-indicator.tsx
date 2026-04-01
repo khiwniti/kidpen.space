@@ -6,10 +6,9 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Check, Lock, ChevronDown } from 'lucide-react';
+import { Check, ChevronDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useModelSelection } from '@/hooks/agents';
-import { usePricingModalStore } from '@/stores/pricing-modal-store';
 import { isProductionMode } from '@/lib/config';
 import { ModelProviderIcon } from '@/lib/model-provider-icons';
 import { Separator } from '@/components/ui/separator';
@@ -53,7 +52,6 @@ export const ModeIndicator = memo(function ModeIndicator() {
   const {
     selectedModel,
     allModels: modelOptions,
-    canAccessModel,
     handleModelChange,
   } = useModelSelection();
 
@@ -90,7 +88,6 @@ export const ModeIndicator = memo(function ModeIndicator() {
     return modelOptions.find((m) => m.id === selectedModel);
   }, [isOtherModelSelected, modelOptions, selectedModel]);
 
-  const canAccessPower = powerModel ? canAccessModel(powerModel.id) : false;
   const isPowerSelected = powerModel && selectedModel === powerModel.id;
   const isBasicSelected = basicModel && selectedModel === basicModel.id;
 
@@ -103,18 +100,10 @@ export const ModeIndicator = memo(function ModeIndicator() {
 
   const handleAdvancedClick = useCallback(() => {
     if (powerModel) {
-      if (canAccessPower) {
-        handleModelChange(powerModel.id);
-        setIsOpen(false);
-      } else {
-        setIsOpen(false);
-        usePricingModalStore.getState().openPricingModal({
-          isAlert: true,
-          alertTitle: 'Upgrade to access Kidpen Advanced mode',
-        });
-      }
+      handleModelChange(powerModel.id);
+      setIsOpen(false);
     }
-  }, [powerModel, canAccessPower, handleModelChange]);
+  }, [powerModel, handleModelChange]);
 
   const handleOtherModelClick = useCallback((modelId: string) => {
     handleModelChange(modelId);
@@ -182,8 +171,6 @@ export const ModeIndicator = memo(function ModeIndicator() {
           </div>
           {isPowerSelected ? (
             <Check className="h-4 w-4 text-foreground flex-shrink-0 mt-0.5" strokeWidth={2} />
-          ) : !canAccessPower ? (
-            <Lock className="h-4 w-4 text-muted-foreground flex-shrink-0 mt-0.5" strokeWidth={2} />
           ) : null}
         </div>
 

@@ -124,8 +124,6 @@ export function HeroSection() {
                     onOutputFormatChange={setSelectedOutputFormat}
                     selectedTemplate={selectedTemplate}
                     onTemplateChange={setSelectedTemplate}
-                    isFreeTier={true}
-                    onUpgradeClick={() => {}}
                   />
                 </Suspense>
               </div>

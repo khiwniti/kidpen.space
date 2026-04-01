@@ -4,19 +4,12 @@ import React, { Suspense, lazy } from 'react';
 import { ChatInput } from '@/components/thread/chat-input/chat-input';
 import { useAgentStartInput, UseAgentStartInputOptions } from '@/hooks/dashboard';
 import { useTranslations } from 'next-intl';
-import { usePricingModalStore } from '@/stores/pricing-modal-store';
-import { useAccountState, accountStateSelectors } from '@/hooks/billing';
 import { useAuth } from '@/components/AuthProvider';
-import { Button } from '@/components/ui/button';
-import { ChevronRight } from 'lucide-react';
 import { DynamicGreeting } from '@/components/ui/dynamic-greeting';
 
 // Lazy load heavy components
 const SunaModesPanel = lazy(() => 
   import('@/components/dashboard/suna-modes-panel').then(mod => ({ default: mod.SunaModesPanel }))
-);
-const AgentRunLimitBanner = lazy(() => 
-  import('@/components/thread/agent-run-limit-banner').then(mod => ({ default: mod.AgentRunLimitBanner }))
 );
 
 export interface AgentStartInputProps {
@@ -89,41 +82,8 @@ export function AgentStartInput({
 }: AgentStartInputProps) {
   const t = useTranslations('dashboard');
   const tSuna = useTranslations('suna');
-  const tCommon = useTranslations('common');
-  const tBilling = useTranslations('billing');
   
   const { user } = useAuth();
-  const pricingModalStore = usePricingModalStore();
-  const { data: accountState, isLoading: isAccountStateLoading } = useAccountState({ enabled: !!user });
-  
-  const isFreeTier = accountState?.subscription && (
-    accountState.subscription.tier_key === 'free' ||
-    accountState.subscription.tier_key === 'none' ||
-    !accountState.subscription.tier_key
-  );
-  
-  const canCreateThread = accountState?.limits?.threads?.can_create || false;
-  const isDismissed = typeof window !== 'undefined' && sessionStorage.getItem('threadLimitAlertDismissed') === 'true';
-  const threadLimitExceeded = !isAccountStateLoading && !canCreateThread && !isDismissed;
-  
-  const dailyCreditsInfo = accountState?.credits.daily_refresh;
-  const hasLowCredits = accountStateSelectors.totalCredits(accountState) <= 10;
-  const hasDailyRefresh = dailyCreditsInfo?.enabled && dailyCreditsInfo?.seconds_until_refresh;
-  
-  const alertType = hasLowCredits && hasDailyRefresh 
-    ? 'daily_refresh' 
-    : threadLimitExceeded 
-    ? 'thread_limit' 
-    : null;
-  
-  const formatTimeUntilRefresh = (seconds: number) => {
-    const hours = Math.floor(seconds / 3600);
-    const minutes = Math.floor((seconds % 3600) / 60);
-    if (hours > 0) {
-      return `${hours}h ${minutes}m`;
-    }
-    return `${minutes}m`;
-  };
   
   const {
     inputValue,
@@ -150,10 +110,6 @@ export function AgentStartInput({
     setSelectedImageStyle,
     setSelectedCanvasAction,
     setSelectedVideoStyle,
-    agentLimitData,
-    showAgentLimitBanner,
-    setShowAgentLimitBanner,
-    clearAgentLimitData,
     handleSubmit,
   } = useAgentStartInput({
     redirectOnError: redirectOnError || (variant === 'hero' ? '/' : '/dashboard'),
@@ -204,52 +160,6 @@ export function AgentStartInput({
           animatePlaceholder={animatePlaceholder}
           hideAttachments={hideAttachments}
         />
-        
-        {/* Alert Banners */}
-        {showAlertBanners && alertType === 'daily_refresh' && (
-          <div 
-            className='w-full h-16 p-2 px-4 dark:bg-blue-500/5 bg-blue-500/10 dark:border-blue-500/10 border-blue-700/10 border rounded-b-3xl flex items-center justify-between overflow-hidden'
-            style={{
-              marginTop: '-40px',
-              transition: 'margin-top 300ms ease-in-out, opacity 300ms ease-in-out',
-            }}
-          >
-            <span className='-mb-3.5 dark:text-blue-400 text-blue-700 text-sm'>
-              {tBilling('creditsExhausted', { time: formatTimeUntilRefresh(dailyCreditsInfo!.seconds_until_refresh!) })}
-            </span>
-            <div className='flex items-center -mb-3.5'>
-              <Button 
-                size='sm' 
-                className='h-6 text-xs'
-                onClick={() => pricingModalStore.openPricingModal({
-                  isAlert: true,
-                  alertTitle: tBilling('creditsExhaustedTitle'),
-                })}
-              >
-                {tCommon('upgrade')}
-              </Button>
-            </div>
-          </div>
-        )}
-
-        {showAlertBanners && alertType === 'thread_limit' && (
-          <div 
-            className='w-full h-16 p-2 px-4 dark:bg-amber-500/5 bg-amber-500/10 dark:border-amber-500/10 border-amber-700/10 border text-white rounded-b-3xl flex items-center justify-center overflow-hidden cursor-pointer hover:bg-amber-500/15 transition-colors'
-            style={{
-              marginTop: '-40px',
-              transition: 'margin-top 300ms ease-in-out, opacity 300ms ease-in-out',
-            }}
-            onClick={() => pricingModalStore.openPricingModal({
-              isAlert: true,
-              alertTitle: tBilling('chatLimitReached'),
-            })}
-          >
-            <span className='-mb-3.5 dark:text-amber-500 text-amber-700 text-sm flex items-center gap-1'>
-              {t('limitsExceeded')}
-              <ChevronRight className='h-4 w-4' />
-            </span>
-          </div>
-        )}
       </div>
       
       {/* Suna Modes Panel - Always show for hero variant (LP), otherwise check isSunaAgent */}
@@ -275,28 +185,9 @@ export function AgentStartInput({
               onCanvasActionChange={setSelectedCanvasAction}
               selectedVideoStyle={selectedVideoStyle}
               onVideoStyleChange={setSelectedVideoStyle}
-              isFreeTier={isFreeTier || false}
-              onUpgradeClick={() => pricingModalStore.openPricingModal()}
             />
           </Suspense>
         </div>
-      )}
-      
-      {/* Agent Run Limit Banner */}
-      {agentLimitData && (
-        <Suspense fallback={null}>
-          <AgentRunLimitBanner
-            open={showAgentLimitBanner && !!agentLimitData}
-            onOpenChange={(open) => {
-              setShowAgentLimitBanner(open);
-              if (!open) {
-                clearAgentLimitData();
-              }
-            }}
-            runningCount={agentLimitData.runningCount}
-            runningThreadIds={agentLimitData.runningThreadIds}
-          />
-        </Suspense>
       )}
     </>
   );

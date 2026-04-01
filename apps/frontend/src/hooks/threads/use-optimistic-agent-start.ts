@@ -4,19 +4,9 @@ import { useCallback, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useQueryClient } from '@tanstack/react-query';
 import { toast } from '@/lib/toast';
-import { useTranslations } from 'next-intl';
 
 import { optimisticAgentStart } from '@/lib/api/agents';
-import { 
-  BillingError, 
-  AgentRunLimitError, 
-  ProjectLimitError, 
-  ThreadLimitError,
-  formatTierErrorForUI
-} from '@/lib/api/errors';
-import { isTierRestrictionError } from '@agentpress/shared/errors';
 import { useOptimisticFilesStore } from '@/stores/optimistic-files-store';
-import { usePricingModalStore } from '@/stores/pricing-modal-store';
 import { normalizeFilenameToNFC } from '@agentpress/shared';
 import { 
   getStreamPreconnectService, 
@@ -49,7 +39,7 @@ export interface AgentLimitInfo {
 export interface UseOptimisticAgentStartOptions {
   /** Path to redirect to on error (e.g., '/dashboard' or '/') */
   redirectOnError?: string;
-  /** Callback when a background error occurs (e.g., billing limit) - useful for resetting parent loading states */
+  /** Callback when a background error occurs — useful for resetting parent loading states */
   onBackgroundError?: () => void;
 }
 
@@ -70,7 +60,7 @@ export interface UseOptimisticAgentStartReturn {
  * - Storing optimistic data in sessionStorage
  * - Navigating to the new thread page
  * - Calling the backend API
- * - Handling errors uniformly (billing, limits, etc.)
+ * - Handling errors uniformly (limits, network, etc.)
  * 
  * @param options - Configuration options for the hook
  */
@@ -84,48 +74,17 @@ export function useOptimisticAgentStart(
   const { redirectOnError = '/dashboard', onBackgroundError } = normalizedOptions;
   const router = useRouter();
   const queryClient = useQueryClient();
-  const tBilling = useTranslations('billing');
   
   const [isStarting, setIsStarting] = useState(false);
   const [agentLimitData, setAgentLimitData] = useState<AgentLimitInfo | null>(null);
   const [showAgentLimitBanner, setShowAgentLimitBanner] = useState(false);
   
   const addOptimisticFiles = useOptimisticFilesStore((state) => state.addFiles);
-  const pricingModalStore = usePricingModalStore();
 
   const clearAgentLimitData = useCallback(() => {
     setAgentLimitData(null);
     setShowAgentLimitBanner(false);
   }, []);
-
-  // Unified handler for all tier restriction errors using shared formatting
-  const handleTierError = useCallback((error: any) => {
-    const errorUI = formatTierErrorForUI(error);
-    if (errorUI) {
-      router.replace(redirectOnError);
-      pricingModalStore.openPricingModal({
-        isAlert: true,
-        alertTitle: errorUI.alertTitle,
-        alertSubtitle: errorUI.alertSubtitle
-      });
-      // Notify parent to reset loading states
-      onBackgroundError?.();
-    }
-  }, [router, redirectOnError, pricingModalStore, onBackgroundError]);
-
-  // Special handler for AgentRunLimitError (needs banner, not just modal)
-  const handleAgentRunLimitError = useCallback((error: AgentRunLimitError) => {
-    console.log('[OptimisticAgentStart] Caught AgentRunLimitError');
-    const { running_thread_ids, running_count } = error.detail;
-    // Notify parent to reset loading states
-    onBackgroundError?.();
-    setAgentLimitData({
-      runningCount: running_count,
-      runningThreadIds: running_thread_ids,
-    });
-    setShowAgentLimitBanner(true);
-    router.replace(redirectOnError);
-  }, [router, redirectOnError, onBackgroundError]);
 
   const startAgent = useCallback(async (
     options: OptimisticAgentStartOptions
@@ -235,42 +194,6 @@ export function useOptimisticAgentStart(
       }).catch((error) => {
         console.error('[OptimisticAgentStart] Background agent start failed:', error);
         setIsStarting(false);
-        
-        // Clear pending intent on billing/limit errors (user action required)
-        // Keep it for network errors so retry can happen
-        if (isTierRestrictionError(error)) {
-          localStorage.removeItem('pending_thread_intent');
-        }
-        
-        // Handle AgentRunLimitError first (needs special banner handling)
-        if (error instanceof AgentRunLimitError) {
-          handleAgentRunLimitError(error);
-          return;
-        }
-        
-        // Check for error code in case instanceof check fails (fallback for AgentRunLimitError)
-        if (error?.detail?.error_code === 'AGENT_RUN_LIMIT_EXCEEDED' || 
-            error?.code === 'AGENT_RUN_LIMIT_EXCEEDED' ||
-            (error?.status === 402 && error?.detail?.running_count !== undefined)) {
-          const running_thread_ids = error.detail?.running_thread_ids || [];
-          const running_count = error.detail?.running_count || 0;
-          // Notify parent to reset loading states
-          onBackgroundError?.();
-          setAgentLimitData({
-            runningCount: running_count,
-            runningThreadIds: running_thread_ids,
-          });
-          setShowAgentLimitBanner(true);
-          router.replace(redirectOnError);
-          return;
-        }
-        
-        // Handle all other tier restriction errors using shared formatting
-        if (isTierRestrictionError(error)) {
-          handleTierError(error);
-          return;
-        }
-        
         toast.error('Failed to start conversation');
       });
 
@@ -284,16 +207,7 @@ export function useOptimisticAgentStart(
       sessionStorage.removeItem('optimistic_files');
       sessionStorage.removeItem('optimistic_file_previews');
       
-      // Handle AgentRunLimitError first (needs special banner handling)
-      if (error instanceof AgentRunLimitError) {
-        handleAgentRunLimitError(error);
-      } else if (isTierRestrictionError(error)) {
-        // Handle all other tier restriction errors using shared formatting
-        handleTierError(error);
-      } else {
-        toast.error(error.message || 'Failed to create Worker. Please try again.');
-      }
-      
+      toast.error(error.message || 'Failed to create Worker. Please try again.');
       setIsStarting(false);
       return null;
     }
@@ -301,8 +215,6 @@ export function useOptimisticAgentStart(
     router,
     queryClient,
     redirectOnError,
-    handleTierError,
-    handleAgentRunLimitError,
     onBackgroundError,
   ]);
 

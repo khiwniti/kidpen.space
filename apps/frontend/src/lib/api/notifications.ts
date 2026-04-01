@@ -9,7 +9,6 @@ export interface NotificationSettings {
   in_app_enabled: boolean;
   sms_enabled: boolean;
   task_notifications: boolean;
-  billing_notifications: boolean;
   promotional_notifications: boolean;
   system_notifications: boolean;
   quiet_hours_enabled: boolean;

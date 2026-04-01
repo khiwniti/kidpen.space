@@ -8,11 +8,6 @@ import React, {
   useState,
 } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
-import { 
-  AgentRunLimitError, 
-  ProjectLimitError, 
-  BillingError 
-} from '@/lib/api/errors';
 import { optimisticAgentStart } from '@/lib/api/agents';
 import { toast } from '@/lib/toast';
 import { ChatInput, ChatInputHandles } from '@/components/thread/chat-input/chat-input';
@@ -31,9 +26,7 @@ import {
   useStartAgentMutation,
   useStopAgentMutation,
 } from '@/hooks/threads/use-agent-run';
-import { useSharedSubscription } from '@/stores/subscription-store';
 import { useAuth } from '@/components/AuthProvider';
-export type SubscriptionStatus = 'no_subscription' | 'active';
 
 import {
   UnifiedMessage,
@@ -42,18 +35,14 @@ import {
 import { extractUserMessageText, extractUserMessageTextForDedup, extractAttachmentFingerprint } from '@/components/thread/utils';
 import {
   useThreadData,
-  useThreadBilling,
   useThreadKeyboardShortcuts,
 } from '@/hooks/threads/page';
 import { useThreadToolCalls } from '@/hooks/messages';
 import { ThreadError, ThreadLayout } from '@/components/thread/layout';
-import { PlanSelectionModal } from '@/components/billing/pricing';
-import { useBillingModal } from '@/hooks/billing/use-billing-modal';
 
 import {
   useAgents,
 } from '@/hooks/agents/use-agents';
-import { AgentRunLimitBanner } from '@/components/thread/agent-run-limit-banner';
 import { 
   useSelectedAgentId, 
   useSetSelectedAgent, 
@@ -130,8 +119,8 @@ export function ThreadComponent({ projectId, threadId, compact = false, configur
   const [isSending, setIsSending] = useState(false);
   const [initialPanelOpenAttempted, setInitialPanelOpenAttempted] =
     useState(false);
-  const storeSelectedAgentId = useSelectedAgentId();
   const storeSetSelectedAgent = useSetSelectedAgent();
+  const storeSelectedAgentId = useSelectedAgentId();
   const storeInitializeFromAgents = useInitializeFromAgents();
   const storeGetCurrentAgent = useGetCurrentAgent();
   const storeIsSunaAgentFn = useIsSunaAgentFn();
@@ -152,12 +141,6 @@ export function ThreadComponent({ projectId, threadId, compact = false, configur
   const [isSidePanelAnimating, setIsSidePanelAnimating] = useState(false);
   const [userInitiatedRun, setUserInitiatedRun] = useState(false);
   const [showScrollToBottom, setShowScrollToBottom] = useState(false);
-  const [showAgentLimitDialog, setShowAgentLimitDialog] = useState(false);
-  const [showAgentLimitBanner, setShowAgentLimitBanner] = useState(false);
-  const [agentLimitData, setAgentLimitData] = useState<{
-    runningCount: number;
-    runningThreadIds: string[];
-  } | null>(null);
 
   const latestMessageRef = useRef<HTMLDivElement>(null);
   const initialLayoutAppliedRef = useRef(false);
@@ -348,35 +331,6 @@ export function ThreadComponent({ projectId, threadId, compact = false, configur
   const openFileInComputer = useKidpenComputerStore((state) => state.openFileInComputer);
   const openFileBrowser = useKidpenComputerStore((state) => state.openFileBrowser);
   const setSandboxContext = useKidpenComputerStore((state) => state.setSandboxContext);
-
-  const billingModal = useBillingModal();
-  const threadBilling = useThreadBilling(
-    null,
-    agentStatus,
-    initialLoadCompleted,
-    () => {
-      billingModal.openModal();
-    },
-    isAuthenticated && !isShared
-  );
-
-  const {
-    showModal: showBillingModal,
-    creditsExhausted,
-    openModal: openBillingModal,
-    closeModal: closeBillingModal,
-  } = isShared ? {
-    showModal: false,
-    creditsExhausted: false,
-    openModal: () => { },
-    closeModal: () => { },
-  } : billingModal;
-
-  const {
-    checkBillingLimits,
-  } = isShared ? {
-    checkBillingLimits: async () => false,
-  } : threadBilling;
 
   useProjectRealtime(projectId);
   useThreadKeyboardShortcuts({
@@ -731,14 +685,6 @@ export function ThreadComponent({ projectId, threadId, compact = false, configur
     }
   }, [derivedAgentId, agents, initializeFromAgents, configuredAgentId, selectedAgentId, setSelectedAgent]);
 
-  const sharedSubscription = useSharedSubscription();
-  const { data: subscriptionData } = isShared ? { data: undefined } : sharedSubscription;
-  const subscriptionStatus: SubscriptionStatus =
-    subscriptionData?.status === 'active' ||
-      subscriptionData?.status === 'trialing'
-      ? 'active'
-      : 'no_subscription';
-
   const handleProjectRenamed = useCallback((newName: string) => { }, []);
 
   const handleAgentSelect = useCallback((agentId: string | undefined) => {
@@ -1078,23 +1024,6 @@ export function ThreadComponent({ projectId, threadId, compact = false, configur
     const isExpected =
       lower.includes('not found') || lower.includes('agent run is not running');
 
-    const isBillingError =
-      lower.includes('insufficient credits') ||
-      lower.includes('credit') ||
-      lower.includes('balance') ||
-      lower.includes('out of credits') ||
-      lower.includes('no credits');
-
-    if (isBillingError) {
-      console.error(`[PAGE] Agent stopped due to billing error: ${errorMessage}`);
-      const billingError = new BillingError(402, {
-        message: errorMessage,
-      });
-      openBillingModal(billingError);
-      pendingMessageRef.current = null;
-      return;
-    }
-
     if (isExpected) {
       return;
     }
@@ -1103,7 +1032,7 @@ export function ThreadComponent({ projectId, threadId, compact = false, configur
     toast.error(`Stream Error: ${errorMessage}`);
 
     pendingMessageRef.current = null;
-  }, [openBillingModal]);
+  }, []);
 
   const handleStreamClose = useCallback(() => { }, []);
 
@@ -1290,26 +1219,6 @@ export function ThreadComponent({ projectId, threadId, compact = false, configur
         console.error('Failed to start agent:', error);
         pendingMessageRef.current = null;
 
-        if (error instanceof BillingError) {
-          openBillingModal(error);
-          return;
-        }
-
-        if (error instanceof AgentRunLimitError) {
-          const { running_thread_ids, running_count } = error.detail;
-          setAgentLimitData({
-            runningCount: running_count,
-            runningThreadIds: running_thread_ids,
-          });
-          setShowAgentLimitBanner(true);
-          return;
-        }
-
-        if (error instanceof ProjectLimitError) {
-          openBillingModal(error);
-          return;
-        }
-
         toast.error(error instanceof Error ? error.message : 'Failed to start agent');
       } finally {
         setIsSending(false);
@@ -1320,7 +1229,6 @@ export function ThreadComponent({ projectId, threadId, compact = false, configur
       project?.account_id,
       startAgentMutation,
       setMessages,
-      openBillingModal,
       setAgentRunId,
       isShared,
       selectedAgentId,
@@ -2026,25 +1934,6 @@ export function ThreadComponent({ projectId, threadId, compact = false, configur
             />
           )}
         </ThreadLayout>
-        <PlanSelectionModal
-          open={showBillingModal}
-          onOpenChange={closeBillingModal}
-          creditsExhausted={creditsExhausted}
-        />
-
-      {agentLimitData && (
-        <AgentRunLimitBanner
-          open={showAgentLimitBanner}
-          onOpenChange={(open) => {
-            setShowAgentLimitBanner(open);
-            if (!open) {
-              setAgentLimitData(null);
-            }
-          }}
-          runningCount={agentLimitData.runningCount}
-          runningThreadIds={agentLimitData.runningThreadIds}
-        />
-      )}
       </>
     );
   }
@@ -2161,26 +2050,6 @@ export function ThreadComponent({ projectId, threadId, compact = false, configur
           />
         )}
       </ThreadLayout>
-
-      <PlanSelectionModal
-        open={showBillingModal}
-        onOpenChange={closeBillingModal}
-        creditsExhausted={creditsExhausted}
-      />
-
-      {agentLimitData && (
-        <AgentRunLimitBanner
-          open={showAgentLimitBanner}
-          onOpenChange={(open) => {
-            setShowAgentLimitBanner(open);
-            if (!open) {
-              setAgentLimitData(null);
-            }
-          }}
-          runningCount={agentLimitData.runningCount}
-          runningThreadIds={agentLimitData.runningThreadIds}
-        />
-      )}
     </>
   );
 }

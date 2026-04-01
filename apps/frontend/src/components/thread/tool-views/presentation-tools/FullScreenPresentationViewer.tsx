@@ -22,7 +22,6 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { constructHtmlPreviewUrl } from '@/lib/utils/url';
 import { downloadPresentation, DownloadFormat, handleGoogleSlidesUpload } from '../utils/presentation-utils';
-import { useDownloadRestriction } from '@/hooks/billing';
 
 interface SlideMetadata {
   title: string;
@@ -71,11 +70,6 @@ export function FullScreenPresentationViewer({
   
   // Track the previous isOpen state to detect when modal opens
   const wasOpenRef = useRef(false);
-  
-  // Download restriction for free tier users
-  const { isRestricted: isDownloadRestricted, openUpgradeModal } = useDownloadRestriction({
-    featureName: 'presentations',
-  });
   
   // Create a stable refresh timestamp when metadata changes (like PresentationViewer)
   const refreshTimestamp = useMemo(() => metadata?.updated_at || Date.now(), [metadata?.updated_at]);
@@ -294,10 +288,6 @@ export function FullScreenPresentationViewer({
 
   // Download handlers
   const handleDownload = async (format: DownloadFormat) => {
-    if (isDownloadRestricted) {
-      openUpgradeModal();
-      return;
-    }
     if (!sandboxUrl || !presentationName) return;
 
     // Use sanitized name for the path (matching backend directory structure)

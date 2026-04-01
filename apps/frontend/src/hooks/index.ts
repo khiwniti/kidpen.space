@@ -19,7 +19,7 @@ export * from './files/use-sandbox-mutations';
 export { useCachedFile, FileCache, getCachedFile, fetchFileContent, useVncPreloader } from './files';
 
 // Account State - unified billing hook
-export { useAccountState, useAccountStateWithStreaming, useCreatePortalSession, accountStateSelectors } from './billing';
+export { useAccountState, accountStateSelectors } from './billing';
 
 // Dashboard
 export * from './dashboard/use-initiate-agent';

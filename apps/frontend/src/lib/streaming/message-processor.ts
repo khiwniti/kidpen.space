@@ -18,7 +18,6 @@ import {
   safeJsonParse, 
   preprocessStreamData, 
   isCompletionMessage, 
-  isBillingError 
 } from './utils';
 import {
   accumulateToolCallDeltas,
@@ -35,7 +34,6 @@ export interface ProcessedMessage {
         'message_complete' |
         'status' |
         'error' |
-        'billing_error' |
         'ping' |
         'tool_output_stream' |
         'ux_ack' |
@@ -102,19 +100,12 @@ export function processStreamData(
   
   if (jsonData.status === 'error') {
     const errorMessage = (jsonData.message as string) || 'Unknown error occurred';
-    if (isBillingError(errorMessage)) {
-      return { type: 'billing_error', errorMessage };
-    }
     return { type: 'error', errorMessage };
   }
   
   if (jsonData.type === 'status') {
     const status = jsonData.status as string;
     if (status === 'stopped') {
-      const message = jsonData.message as string | undefined;
-      if (message && isBillingError(message)) {
-        return { type: 'billing_error', errorMessage: message };
-      }
       return { type: 'status', status: 'stopped' };
     }
     if (status === 'completed') {

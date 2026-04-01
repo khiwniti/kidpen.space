@@ -24,7 +24,6 @@ interface OnboardingState {
   currentStep: number;
   steps: OnboardingStep[];
   hasCompletedOnboarding: boolean;
-  hasTriggeredPostSubscription: boolean;
   userTypeData: UserTypeData;
   
   // Actions
@@ -37,7 +36,6 @@ interface OnboardingState {
   completeOnboarding: () => void;
   startOnboarding: (steps?: OnboardingStep[]) => void;
   resetOnboarding: () => void;
-  setTriggeredPostSubscription: (triggered: boolean) => void;
   setUserTypeData: (data: UserTypeData) => void;
 }
 
@@ -48,7 +46,6 @@ const useOnboardingStore = create<OnboardingState>()(
       currentStep: 0,
       steps: [],
       hasCompletedOnboarding: false,
-      hasTriggeredPostSubscription: false,
       userTypeData: {},
       
       setIsOpen: (open) => set({ isOpen: open }),
@@ -102,14 +99,9 @@ const useOnboardingStore = create<OnboardingState>()(
           isOpen: false,
           currentStep: 0,
           hasCompletedOnboarding: false,
-          hasTriggeredPostSubscription: false,
           steps: [],
           userTypeData: {}
         });
-      },
-      
-      setTriggeredPostSubscription: (triggered) => {
-        set({ hasTriggeredPostSubscription: triggered });
       },
       
       setUserTypeData: (data) => {
@@ -120,7 +112,6 @@ const useOnboardingStore = create<OnboardingState>()(
       name: 'onboarding-storage-v1',
       partialize: (state) => ({
         hasCompletedOnboarding: state.hasCompletedOnboarding,
-        hasTriggeredPostSubscription: state.hasTriggeredPostSubscription,
         userTypeData: state.userTypeData,
       }),
     }
@@ -143,44 +134,5 @@ export const useOnboarding = () => {
     currentStepData,
     progress,
     isCompleted: store.hasCompletedOnboarding,
-  };
-};
-
-// Hook for checking if onboarding should trigger after subscription
-export const usePostSubscriptionOnboarding = () => {
-  const onboarding = useOnboarding();
-  
-  const shouldTriggerOnboarding = (subscriptionData: any) => {
-    // Don't trigger if already completed or already triggered
-    if (onboarding.hasCompletedOnboarding || onboarding.hasTriggeredPostSubscription) {
-      return false;
-    }
-    
-    // Check if user has active subscription or trial
-    const hasActiveSubscription = subscriptionData?.subscription && 
-                                 subscriptionData.subscription.status === 'active' &&
-                                 !subscriptionData.subscription.cancel_at_period_end;
-    
-    const hasActiveTrial = subscriptionData?.trial_status === 'active';
-    
-    // ✅ Use tier_key and only trigger onboarding for PAID tiers (not free)
-    const tierKey = subscriptionData?.tier_key || subscriptionData?.tier?.name;
-    const hasPaidTier = tierKey && tierKey !== 'none' && tierKey !== 'free';
-    
-    return (hasActiveSubscription && hasPaidTier) || (hasActiveTrial && hasPaidTier);
-  };
-  
-  const triggerPostSubscriptionOnboarding = () => {
-    if (!onboarding.hasTriggeredPostSubscription) {
-      onboarding.setTriggeredPostSubscription(true);
-      // The actual steps will be set by the component that uses this
-      return true;
-    }
-    return false;
-  };
-  
-  return {
-    shouldTriggerOnboarding,
-    triggerPostSubscriptionOnboarding,
   };
 };

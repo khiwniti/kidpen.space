@@ -1,5 +1,5 @@
 {
-  "name": "agentpress",
+  "name": "kidpen",
   "private": true,
   "scripts": {
     "dev:frontend": "pnpm --filter Kidpen dev",

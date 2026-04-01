@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useRef, useEffect, useMemo } from 'react';
-import { Check, Search, AlertTriangle, Crown, Cpu, Plus, Edit, Trash, KeyRound, Lock } from 'lucide-react';
+import { Check, Search, AlertTriangle, Crown, Cpu, Plus, Edit, Trash, KeyRound } from 'lucide-react';
 import { KidpenLogo } from '@/components/sidebar/kidpen-logo';
 import { ModelProviderIcon } from '@/lib/model-provider-icons';
 import { Button } from '@/components/ui/button';
@@ -22,10 +22,7 @@ import { useModelSelection } from '@/hooks/agents';
 import { formatModelName } from '@/stores/model-store';
 import { isLocalMode } from '@/lib/config';
 import { CustomModelDialog, CustomModelFormData } from '@/components/thread/chat-input/custom-model-dialog';
-import { usePricingModalStore } from '@/stores/pricing-modal-store';
 import Link from 'next/link';
-
-// Helper to render model labels with special styling for Kidpen modes
 const ModelLabel = ({ label, className }: { label: string; className?: string }) => {
     if (label === 'Kidpen Advanced Mode') {
         return (
@@ -86,7 +83,6 @@ export function AgentModelSelector({
   const {
     allModels,
     canAccessModel,
-    subscriptionStatus,
     selectedModel: storeSelectedModel,
     handleModelChange: storeHandleModelChange,
     customModels: storeCustomModels,
@@ -99,9 +95,6 @@ export function AgentModelSelector({
   const [searchQuery, setSearchQuery] = useState('');
   const [highlightedIndex, setHighlightedIndex] = useState<number>(-1);
   const searchInputRef = useRef<HTMLInputElement>(null);
-
-  const openPricingModal = usePricingModalStore((state) => state.openPricingModal);
-  const isFreeTier = subscriptionStatus !== 'active';
 
   const [isCustomModelDialogOpen, setIsCustomModelDialogOpen] = useState(false);
   const [dialogInitialData, setDialogInitialData] = useState<CustomModelFormData>({ id: '', label: '' });
@@ -212,19 +205,10 @@ export function AgentModelSelector({
       return;
     }
 
-    const hasAccess = isLocalMode() || canAccessModel(modelId);
+    const hasAccess = true;
     if (hasAccess) {
       onChange(modelId);
       setIsOpen(false);
-    } else {
-      // If user doesn't have access, open pricing modal
-      setIsOpen(false);
-      const model = enhancedModelOptions.find(m => m.id === modelId);
-      const isPowerModel = modelId === 'kidpen/power';
-      openPricingModal({
-        isAlert: true,
-        alertTitle: isPowerModel ? 'Upgrade to access Kidpen Advanced mode' : 'Upgrade to access this model',
-      });
     }
   };
 
@@ -318,12 +302,8 @@ export function AgentModelSelector({
   const renderModelOption = (model: any, index: number) => {
     const isCustom = Boolean(model.isCustom) ||
       (isLocalMode() && customModels.some(m => m.id === model.id));
-    const accessible = isCustom ? true : (isLocalMode() || canAccessModel(model.id));
     const isHighlighted = index === highlightedIndex;
-    const isPremium = model.requiresSubscription;
     const isLowQuality = false; // API models are quality controlled
-    const isRecommended = false; // Remove recommended badges
-    const isPowerModel = model.id === 'kidpen/power';
 
     // Format cost display
     const formatCost = (cost: number | null | undefined) => {
@@ -340,35 +320,28 @@ export function AgentModelSelector({
             <div className='w-full'>
               <DropdownMenuItem
                 className={cn(
-                  "text-sm px-2 py-2 mx-2 my-0.5 flex items-center gap-0 rounded-lg transition-all duration-200",
-                  accessible ? "cursor-pointer" : "cursor-not-allowed",
-                  isHighlighted && accessible && "bg-accent",
-                  selectedModel === model.id && accessible && "bg-muted border border-border",
-                  !accessible && !disabled && "opacity-60 hover:opacity-70"
+                  "text-sm px-2 py-2 mx-2 my-0.5 flex items-center gap-0 rounded-lg transition-all duration-200 cursor-pointer",
+                  isHighlighted && "bg-accent",
+                  selectedModel === model.id && "bg-muted border border-border",
                 )}
                 onClick={() => !disabled && handleSelect(model.id)}
                 onMouseEnter={() => setHighlightedIndex(index)}
               >
                 <div className="flex items-center gap-3 min-w-0 flex-1">
-                  <div className={cn("relative", !accessible && "opacity-60")}>
                   <ModelProviderIcon modelId={model.id} size={24} />
-                  </div>
-                  <div className={cn("flex-1", !accessible && "opacity-60")}>
-                    <ModelLabel label={model.label} className={!accessible ? "opacity-60" : ""} />
+                  <div className="flex-1">
+                    <ModelLabel label={model.label} />
                   </div>
                 </div>
-                <div className={cn("w-16 text-right text-xs text-muted-foreground", !accessible && "opacity-60")}>
+                <div className="w-16 text-right text-xs text-muted-foreground">
                   {inputCost || '—'}
                 </div>
-                <div className={cn("w-16 text-right text-xs text-muted-foreground", !accessible && "opacity-60")}>
+                <div className="w-16 text-right text-xs text-muted-foreground">
                   {outputCost || '—'}
                 </div>
                 <div className="w-8 flex items-center justify-center">
                   {isLowQuality && (
                     <AlertTriangle className="h-3.5 w-3.5 text-amber-500" />
-                  )}
-                  {!accessible && !isLocalMode() && (
-                    <Lock className="h-3.5 w-3.5 text-muted-foreground" />
                   )}
                   {isLocalMode() && isCustom && (
                     <div className="flex items-center gap-1">
@@ -396,11 +369,7 @@ export function AgentModelSelector({
               </DropdownMenuItem>
             </div>
           </TooltipTrigger>
-          {!accessible && !isLocalMode() ? (
-            <TooltipContent side="left" className="text-xs max-w-xs">
-              <p>{isPowerModel ? 'Upgrade to access Kidpen Advanced mode' : 'Upgrade to access this model'}</p>
-            </TooltipContent>
-          ) : isLowQuality ? (
+          {isLowQuality ? (
             <TooltipContent side="left" className="text-xs max-w-xs">
               <p>Not recommended for complex tasks</p>
             </TooltipContent>
@@ -537,7 +506,7 @@ export function AgentModelSelector({
                       <div className="mt-4 border-t border-border pt-2">
                         <div className="px-3 py-1.5 text-xs font-medium text-muted-foreground flex items-center">
                           <Crown className="h-3.5 w-3.5 mr-1.5" />
-                          {subscriptionStatus === 'active' ? 'Premium Models' : 'Additional Models'}
+                          {'Premium Models'}
                         </div>
                         {/* Pricing Header for Premium Models */}
                         <div className="px-2 py-2">
@@ -548,12 +517,8 @@ export function AgentModelSelector({
                             <div className="w-8"></div>
                           </div>
                         </div>
-                        <div className="relative overflow-hidden" style={{ maxHeight: subscriptionStatus === 'active' ? 'none' : '160px' }}>
-                          {(subscriptionStatus === 'active' ? premiumModels : premiumModels.slice(0, 3)).map((model, index) => {
-                            const canAccess = isLocalMode() || canAccessModel(model.id);
-                            const isRecommended = false; // Remove recommended badges
-
-                            // Format cost display
+                        <div className="relative overflow-hidden">
+                          {premiumModels.map((model, index) => {
                             const formatCost = (cost: number | null | undefined) => {
                               if (cost === null || cost === undefined) return null;
                               return `$${cost.toFixed(2)}`;
@@ -570,7 +535,6 @@ export function AgentModelSelector({
                                         className={cn(
                                           "text-sm px-2 py-2 mx-2 my-0.5 flex items-center gap-0 cursor-pointer rounded-lg transition-all duration-200",
                                           selectedModel === model.id && "bg-muted border border-border",
-                                          !canAccess && "opacity-70"
                                         )}
                                         onClick={() => handleSelect(model.id)}
                                       >
@@ -584,52 +548,16 @@ export function AgentModelSelector({
                                         <div className="w-16 text-right text-xs text-muted-foreground pr-2">
                                           {outputCost || '—'}
                                         </div>
-                                        <div className="w-8 flex items-center justify-center">
-                                          {!canAccess && <Crown className="h-3.5 w-3.5 text-muted-foreground" />}
-                                        </div>
+                                        <div className="w-8"></div>
                                       </DropdownMenuItem>
                                     </div>
                                   </TooltipTrigger>
                                   <TooltipContent side="left" className="text-xs max-w-xs">
-                                    <p>
-                                      {canAccess
-                                        ? 'Premium model'
-                                        : 'Requires subscription to access premium model'
-                                      }
-                                    </p>
+                                    <p>Premium model</p>
                                   </TooltipContent>
                                 </Tooltip>
                             );
                           })}
-                          {isFreeTier && premiumModels.length > 0 && (
-                            <div className="absolute inset-0 bg-gradient-to-t from-background via-background/95 to-transparent flex items-end justify-center pointer-events-none">
-                              <div className="w-full p-3 pointer-events-auto">
-                                <div className="rounded-xl bg-gradient-to-br from-muted/80 to-muted/70 dark:from-muted/40 dark:to-muted/30 shadow-sm border border-border p-3">
-                                  <div className="flex flex-col space-y-2">
-                                    <div className="flex items-center">
-                                      <Crown className="h-4 w-4 text-muted-foreground mr-2 flex-shrink-0" />
-                                      <div>
-                                        <p className="text-sm font-medium">Unlock all models + higher limits</p>
-                                      </div>
-                                    </div>
-                                    <Button
-                                      size="sm"
-                                      className="w-full h-8 font-medium"
-                                      onClick={() => {
-                                        setIsOpen(false);
-                                        openPricingModal({
-                                          isAlert: true,
-                                          alertTitle: 'Upgrade to access premium models',
-                                        });
-                                      }}
-                                    >
-                                      Upgrade now
-                                    </Button>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          )}
                         </div>
                       </div>
                     </>

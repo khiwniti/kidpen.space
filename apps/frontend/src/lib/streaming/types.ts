@@ -141,11 +141,6 @@ export interface UseAgentStreamResult {
 }
 
 
-export interface BillingErrorContext {
-  errorMessage: string;
-  balance?: string | null;
-  isCreditsExhausted: boolean;
-}
 
 export interface AckEvent {
   message: string;

@@ -3,7 +3,6 @@
 import React, { Suspense, lazy } from 'react';
 import { SidebarProvider, SidebarInset } from '@/components/ui/sidebar';
 import { useDeleteOperationEffects } from '@/stores/delete-operation-store';
-import { SubscriptionStoreSync } from '@/stores/subscription-store';
 
 // Lazy load the heavy sidebar component
 const SidebarLeft = lazy(() => 
@@ -46,7 +45,6 @@ interface AppProvidersProps {
 /**
  * Shared wrapper component that provides common app-level providers:
  * - DeleteOperationEffectsWrapper
- * - SubscriptionStoreSync
  * - SidebarProvider + SidebarLeft + SidebarInset (if showSidebar is true)
  */
 export function AppProviders({ 
@@ -57,9 +55,7 @@ export function AppProviders({
 }: AppProvidersProps) {
   const content = (
     <DeleteOperationEffectsWrapper>
-      <SubscriptionStoreSync>
-        {children}
-      </SubscriptionStoreSync>
+      {children}
     </DeleteOperationEffectsWrapper>
   );
 

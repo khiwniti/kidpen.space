@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Coins, HelpCircle } from 'lucide-react';
+import { HelpCircle } from 'lucide-react';
 import {
     Command,
     CommandEmpty,
@@ -29,16 +29,7 @@ interface HelpPage {
     keywords?: string[];
 }
 
-const helpPages: HelpPage[] = [
-    {
-        title: 'What are Credits?',
-        description: 'Learn about credit types, how they are consumed, and pricing',
-        url: '/credits-explained',
-        category: 'Billing & Usage',
-        icon: Coins,
-        keywords: ['credits', 'billing', 'pricing', 'costs', 'usage', 'expiring', 'non-expiring', 'subscription'],
-    }
-];
+const helpPages: HelpPage[] = [];
 
 export function HelpSearchModal({ open, onOpenChange }: HelpSearchModalProps) {
     const [search, setSearch] = useState('');

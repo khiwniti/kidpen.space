@@ -6,7 +6,6 @@ import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
 import { Download, X, AlertCircle, CheckCircle2 } from 'lucide-react';
 import { PresentationSlidePreview } from '../tool-views/presentation-tools/PresentationSlidePreview';
 import { PresentationSlideSkeleton } from '../tool-views/presentation-tools/PresentationSlideSkeleton';
-import { ToolUpgradeCTA, parseToolAccessError } from './ToolUpgradeCTA';
 import type { Project } from '@/lib/api/threads';
 
 export interface SlideInfo {
@@ -86,20 +85,7 @@ export const ToolCard: React.FC<ToolCardProps> = ({
   const visibleImages = imageUrls?.slice(0, MAX_VISIBLE_IMAGES) || [];
   const remainingCount = (imageUrls?.length || 0) - MAX_VISIBLE_IMAGES;
 
-  // Check if this is a tool access denied error
-  // Check multiple sources: tool_result, the whole toolCall object
-  const accessError = useMemo(() => {
-    // Try tool_result first
-    if (toolCall?.tool_result) {
-      const result = parseToolAccessError(toolCall.tool_result);
-      if (result.isAccessDenied) return result;
-    }
-    // Try the whole toolCall object (may have content/metadata)
-    return parseToolAccessError(toolCall);
-  }, [toolCall]);
-
-  const showUpgradeCTA = accessError.isAccessDenied && accessError.upgradeRequired;
-  const effectiveIsError = isError || showUpgradeCTA;
+  const effectiveIsError = isError;
 
   return (
     <div className={cn("flex flex-col gap-2", className)}>
@@ -109,16 +95,12 @@ export const ToolCard: React.FC<ToolCardProps> = ({
           'inline-flex items-center gap-1.5 mt-2 cursor-pointer',
           'text-xs text-muted-foreground hover:opacity-80 transition-opacity duration-200',
           'max-w-full',
-          isError && !showUpgradeCTA && 'text-red-500 dark:text-red-400',
-          showUpgradeCTA && 'text-amber-600 dark:text-amber-400'
+          isError && 'text-red-500 dark:text-red-400',
         )}
       >
         <div className="flex items-center justify-center flex-shrink-0">
           {effectiveIsError ? (
-            <AlertCircle className={cn(
-              "h-3.5 w-3.5 flex-shrink-0",
-              showUpgradeCTA ? "text-amber-500 dark:text-amber-400" : "text-red-500 dark:text-red-400"
-            )} />
+            <AlertCircle className="h-3.5 w-3.5 flex-shrink-0 text-red-500 dark:text-red-400" />
           ) : !isStreaming ? (
             <CheckCircle2 className="h-3.5 w-3.5 text-muted-foreground/70 flex-shrink-0" />
           ) : (
@@ -134,12 +116,11 @@ export const ToolCard: React.FC<ToolCardProps> = ({
         <span
           className={cn(
             "font-medium text-sm truncate",
-            isError && !showUpgradeCTA ? "text-red-500 dark:text-red-400" :
-            showUpgradeCTA ? "text-amber-600 dark:text-amber-400" : "text-muted-foreground/90",
+            isError ? "text-red-500 dark:text-red-400" : "text-muted-foreground/90",
             isStreaming && !effectiveIsError && "shimmer-text-fancy"
           )}
         >
-          {showUpgradeCTA ? `Tool unavailable` : isError ? `${displayName} failed` : displayName}
+          {isError ? `${displayName} failed` : displayName}
           {isStreaming && !isError && (
             <style>{`
               .shimmer-text-fancy {
@@ -209,14 +190,6 @@ export const ToolCard: React.FC<ToolCardProps> = ({
           </div>
         )}
       </button>
-      {showUpgradeCTA && (
-        <ToolUpgradeCTA
-          toolName={displayName}
-          currentTier={accessError.currentTier}
-          currentTierDisplay={accessError.currentTierDisplay}
-          className="mt-2"
-        />
-      )}
       {visibleImages.length > 0 && (
         <div className="flex items-center gap-2 mt-1">
           {visibleImages.map((url, idx) => (

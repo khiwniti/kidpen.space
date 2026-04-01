@@ -11,7 +11,6 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { exportDocument, type ExportFormat } from '@/lib/utils/document-export';
-import { useDownloadRestriction } from '@/hooks/billing';
 import { toast } from '@/lib/toast';
 import { marked } from 'marked';
 
@@ -48,11 +47,6 @@ export function FileDownloadButton({
 }: FileDownloadButtonProps) {
   const [isExporting, setIsExporting] = useState(false);
   
-  // Download restriction for free tier users
-  const { isRestricted: isDownloadRestricted, openUpgradeModal } = useDownloadRestriction({
-    featureName: 'files',
-  });
-
   // Check if file is markdown or HTML
   const fileExtension = fileName.split('.').pop()?.toLowerCase() || '';
   const isMarkdown = fileExtension === 'md' || fileExtension === 'markdown';
@@ -60,10 +54,6 @@ export function FileDownloadButton({
 
   // Handle direct file download (for non-markdown or markdown "raw" download)
   const handleDirectDownload = useCallback(async () => {
-    if (isDownloadRestricted) {
-      openUpgradeModal();
-      return;
-    }
     if (!content || isExporting) return;
 
     try {
@@ -84,20 +74,15 @@ export function FileDownloadButton({
     } finally {
       setIsExporting(false);
     }
-  }, [content, fileName, isExporting, isDownloadRestricted, openUpgradeModal]);
+  }, [content, fileName, isExporting]);
 
   // Handle markdown export to various formats (PDF, Word, HTML, Markdown)
   const handleMarkdownExport = useCallback(async (format: ExportFormat) => {
-    if (isDownloadRestricted) {
-      openUpgradeModal();
-      return;
-    }
     if (!content) return;
 
     setIsExporting(true);
+    const baseFileName = fileName.replace(/\.(md|markdown)$/i, '');
     try {
-      const baseFileName = fileName.replace(/\.(md|markdown)$/i, '');
-
       if (format === 'markdown') {
         // For markdown format, just download the raw content
         const blob = new Blob([content], { type: 'text/markdown;charset=utf-8' });
@@ -127,14 +112,10 @@ export function FileDownloadButton({
     } finally {
       setIsExporting(false);
     }
-  }, [content, fileName, isDownloadRestricted, openUpgradeModal, getHtmlContent]);
+  }, [content, fileName, getHtmlContent]);
 
   // Handle HTML file export to various formats (PDF, Word, HTML)
   const handleHtmlExport = useCallback(async (format: ExportFormat) => {
-    if (isDownloadRestricted) {
-      openUpgradeModal();
-      return;
-    }
     if (!content) return;
 
     setIsExporting(true);
@@ -201,7 +182,7 @@ export function FileDownloadButton({
     } finally {
       setIsExporting(false);
     }
-  }, [content, fileName, isDownloadRestricted, openUpgradeModal, sandboxUrl]);
+  }, [content, fileName, sandboxUrl]);
 
   // For markdown files, show dropdown with export options
   if (isMarkdown) {

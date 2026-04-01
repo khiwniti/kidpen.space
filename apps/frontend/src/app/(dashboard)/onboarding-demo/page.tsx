@@ -11,11 +11,9 @@ export default function OnboardingDemoPage() {
   const { 
     isOpen, 
     hasCompletedOnboarding, 
-    hasTriggeredPostSubscription,
     userTypeData,
     startOnboarding, 
     resetOnboarding,
-    setTriggeredPostSubscription
   } = useOnboarding();
 
   const handleStartDemo = () => {
@@ -27,13 +25,7 @@ export default function OnboardingDemoPage() {
   };
 
   const handleTriggerPostSubscription = () => {
-    setTriggeredPostSubscription(false);
-    // Simulate subscription success by adding query param
-    const url = new URL(window.location.href);
-    url.searchParams.set('trial', 'started');
-    window.history.pushState({}, '', url.toString());
-    // Refresh the page to trigger the effect
-    window.location.reload();
+    // Subscription-based onboarding has been removed
   };
 
   return (
@@ -67,9 +59,7 @@ export default function OnboardingDemoPage() {
               </div>
               <div className="p-4 rounded-lg border">
                 <div className="text-sm font-medium text-muted-foreground">Post-Subscription Triggered</div>
-                <div className="text-lg font-semibold">
-                  {hasTriggeredPostSubscription ? '✅ Yes' : '❌ No'}
-                </div>
+                <div className="text-lg font-semibold">N/A</div>
               </div>
               <div className="p-4 rounded-lg border">
                 <div className="text-sm font-medium text-muted-foreground">User Type</div>

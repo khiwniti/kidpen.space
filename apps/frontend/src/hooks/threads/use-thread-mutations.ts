@@ -9,7 +9,6 @@ import { toast } from '@/lib/toast';
 import { handleApiError } from '@/lib/error-handler';
 import { deleteThread } from './utils';
 import { threadKeys } from './keys';
-import { invalidateAccountState } from '@/hooks/billing/use-account-state';
 
 export const useCreateThread = () => {
   return useMutation({
@@ -54,7 +53,6 @@ export const useDeleteThread = () => {
     },
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: threadKeys.lists() });
-      invalidateAccountState(queryClient, true, true);
     },
   });
 };
@@ -92,7 +90,6 @@ export const useDeleteMultipleThreads = () => {
     },
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: threadKeys.lists() });
-      invalidateAccountState(queryClient, true, true);
     },
   });
 };

@@ -18,7 +18,7 @@ import {
 } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import { Search, Check, ChevronDown, Plus, Plug, Brain, LibraryBig, Zap, Sparkles, ChevronLeft } from 'lucide-react';
+import { Search, Check, ChevronDown, Plus, Plug, Brain, LibraryBig, Zap, ChevronLeft } from 'lucide-react';
 import { KidpenLoader } from '@/components/ui/kidpen-loader';
 import { useAgents } from '@/hooks/agents/use-agents';
 import { KidpenLogo } from '@/components/sidebar/kidpen-logo';
@@ -30,8 +30,6 @@ import { useTranslations } from 'next-intl';
 import { NewAgentDialog } from '@/components/agents/new-agent-dialog';
 import { AgentAvatar } from '@/components/thread/content/agent-avatar';
 import { AgentConfigurationDialog } from '@/components/agents/agent-configuration-dialog';
-import { usePricingModalStore } from '@/stores/pricing-modal-store';
-import { useAccountState, accountStateSelectors } from '@/hooks/billing';
 import { isLocalMode } from '@/lib/config';
 import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
 
@@ -60,16 +58,8 @@ const LoggedInMenu: React.FC<UnifiedConfigMenuProps> = memo(function LoggedInMen
     const [showNewAgentDialog, setShowNewAgentDialog] = useState(false);
     const searchInputRef = useRef<HTMLInputElement>(null);
     const [agentConfigDialog, setAgentConfigDialog] = useState<{ open: boolean; tab: 'instructions' | 'knowledge' | 'triggers' | 'tools' | 'integrations' }>({ open: false, tab: 'instructions' });
-    const { data: accountState } = useAccountState();
-    const { openPricingModal } = usePricingModalStore();
     const [isMobile, setIsMobile] = useState(false);
     const [mobileSection, setMobileSection] = useState<'main' | 'agents'>('main');
-
-    const tierKey = accountStateSelectors.tierKey(accountState);
-    const isFreeTier = tierKey && (
-      tierKey === 'free' ||
-      tierKey === 'none'
-    ) && !isLocalMode();
 
     // Detect mobile view
     useEffect(() => {
@@ -286,52 +276,29 @@ const LoggedInMenu: React.FC<UnifiedConfigMenuProps> = memo(function LoggedInMen
                 )}
                 onClick={() => {
                     setIsOpen(false);
-                    if (isFreeTier) {
-                        openPricingModal();
-                    } else {
-                        setShowNewAgentDialog(true);
-                    }
+                    setShowNewAgentDialog(true);
                 }}
             >
                 <div className={cn(
-                    "flex items-center justify-center border-[1.5px] flex-shrink-0 transition-colors",
+                    "flex items-center justify-center border-[1.5px] flex-shrink-0 transition-colors bg-card border-border",
                     compact ? "w-8 h-8" : "w-10 h-10 sm:w-8 sm:h-8",
-                    isFreeTier
-                        ? "bg-primary/10 border-primary/30"
-                        : "bg-card border-border"
                 )} style={{ borderRadius: '10.4px' }}>
-                    {isFreeTier ? (
-                        <Sparkles className={cn(
-                            "text-primary",
-                            compact ? "h-4 w-4" : "h-5 w-5 sm:h-4 sm:w-4"
-                        )} />
-                    ) : (
-                        <Plus className={cn(
-                            "text-muted-foreground",
-                            compact ? "h-4 w-4" : "h-5 w-5 sm:h-4 sm:w-4"
-                        )} />
-                    )}
+                    <Plus className={cn(
+                        "text-muted-foreground",
+                        compact ? "h-4 w-4" : "h-5 w-5 sm:h-4 sm:w-4"
+                    )} />
                 </div>
                 <div className="flex-1 min-w-0">
                     <span className={cn(
-                        "font-medium",
+                        "font-medium text-foreground",
                         compact ? "text-sm" : "text-base sm:text-sm",
-                        isFreeTier ? "text-primary" : "text-foreground"
                     )}>
                         Create AI Worker
                     </span>
-                    {isFreeTier && (
-                        <p className={cn(
-                            "text-muted-foreground leading-tight mt-0.5",
-                            compact ? "text-[10px]" : "text-xs sm:text-[10px]"
-                        )}>
-                            Upgrade to create custom workers
-                        </p>
-                    )}
                 </div>
             </div>
         </div>
-    ), [isFreeTier, openPricingModal]);
+    ), []);
 
     const WorkerSettingsButtons = useCallback(({ compact = false }: { compact?: boolean }) => (
         onAgentSelect && (selectedAgentId || displayAgent?.agent_id) ? (
@@ -607,8 +574,6 @@ const LoggedInMenu: React.FC<UnifiedConfigMenuProps> = memo(function LoggedInMen
                         selectedAgentId={selectedAgentId}
                         onAgentChange={onAgentSelect}
                         onClose={() => setIntegrationsOpen(false)}
-                        isBlocked={isFreeTier}
-                        onBlockedClick={() => openPricingModal()}
                     />
                 </DialogContent>
             </Dialog>

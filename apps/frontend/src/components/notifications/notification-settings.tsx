@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Bell, Mail, Smartphone, MessageSquare, CreditCard, Star, Settings as SettingsIcon } from 'lucide-react';
+import { Bell, Mail, Smartphone, MessageSquare, Star, Settings as SettingsIcon } from 'lucide-react';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
@@ -197,28 +197,6 @@ export function NotificationSettingsPanel() {
               id="task-notifications"
               checked={settings.task_notifications}
               onCheckedChange={(checked) => updateSetting('task_notifications', checked)}
-              disabled={saving}
-            />
-          </div>
-
-          <Separator />
-
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <CreditCard className="h-5 w-5 text-muted-foreground" />
-              <div>
-                <Label htmlFor="billing-notifications" className="font-medium">
-                  Billing Notifications
-                </Label>
-                <p className="text-sm text-muted-foreground">
-                  Payments, subscriptions, and credits
-                </p>
-              </div>
-            </div>
-            <Switch
-              id="billing-notifications"
-              checked={settings.billing_notifications}
-              onCheckedChange={(checked) => updateSetting('billing_notifications', checked)}
               disabled={saving}
             />
           </div>

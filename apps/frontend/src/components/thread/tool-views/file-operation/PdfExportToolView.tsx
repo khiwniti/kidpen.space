@@ -11,7 +11,6 @@ import { Button } from '@/components/ui/button';
 import { ToolViewIconTitle } from '../shared/ToolViewIconTitle';
 import { LoadingState } from '../shared/LoadingState';
 import { useAuth } from '@/components/AuthProvider';
-import { useDownloadRestriction } from '@/hooks/billing';
 
 export function PdfExportToolView({
   toolCall,
@@ -22,10 +21,6 @@ export function PdfExportToolView({
   project,
 }: ToolViewProps) {
   const { session } = useAuth();
-  const { isRestricted: isDownloadRestricted, openUpgradeModal } = useDownloadRestriction({
-    featureName: 'exports',
-  });
-
   const [isDownloading, setIsDownloading] = useState(false);
 
   // Parse the tool result
@@ -58,11 +53,6 @@ export function PdfExportToolView({
   if (!toolCall) return null;
 
   const handleDownload = async () => {
-    if (isDownloadRestricted) {
-      openUpgradeModal();
-      return;
-    }
-
     if (!outputFile || !project?.sandbox?.id) {
       toast.error('Unable to download - missing file or sandbox info');
       return;

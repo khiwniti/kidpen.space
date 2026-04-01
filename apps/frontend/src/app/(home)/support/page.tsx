@@ -240,14 +240,6 @@ function SupportPageContent() {
                     </>
                   }
                 />
-                <FAQItem
-                  question="What if I don't get credits after paying?"
-                  answer={
-                    <>
-                      If your credits don't appear after payment, contact <a href="mailto:support@kidpen.space" className="text-primary hover:underline font-medium">support@kidpen.space</a> immediately. We prioritize billing and credit issues for all users regardless of tier and will resolve this as quickly as possible, typically within a few hours during business days.
-                    </>
-                  }
-                />
               </div>
             </div>
           </div>
