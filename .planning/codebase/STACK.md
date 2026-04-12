@@ -1,67 +1,223 @@
-# Technology stack
+# Kidpen Space Technology Stack
 
-This document reflects the **kidpen** monorepo at the repository root. Paths are relative to the repo root unless noted.
+## Overview
+Kidpen Space is an educational platform forked from Kidpen AI Suna agent, featuring a monorepo architecture with Python backend, React/TypeScript frontend, and infrastructure managed via Pulumi and Docker.
 
-## Monorepo and package management
+## Languages & Runtimes
+- **Python 3.11+** - Backend services and AI/ML components
+- **Node.js** - Frontend development and tooling
+- **TypeScript** - Frontend application logic (React)
+- **JavaScript/TSX** - React components
 
-- **Workspace tool:** `pnpm` with workspaces defined in `pnpm-workspace.yaml` (`apps/*`, `packages/*`).
-- **Root manifest:** `package.json` — private meta-package named `kidpen` with convenience scripts:
-  - `dev:frontend` → `pnpm --filter Kidpen dev`
-  - `dev:mobile` → `pnpm --filter kidpen dev`
-  - `build:frontend` → `pnpm --filter Kidpen build`
-- **Root dependency:** `next` is listed at the root (`^16.1.4`) alongside the frontend app’s own Next version; prefer **`apps/frontend/package.json`** as the source of truth for the web app runtime.
+## Package Managers
+- **pnpm** - Primary package manager for frontend/workspace packages
+- **pip/uv** - Python package management (backend)
+- **npm** - Referenced in frontend package.json scripts
 
-## Web frontend (`apps/frontend`)
+## Backend Technologies
+- **Framework**: FastAPI 0.115.12
+- **ASGI Server**: Uvicorn 0.27.1
+- **WSGI Server**: Gunicorn (for production)
+- **Database**: 
+  - PostgreSQL (via Supabase)
+  - Redis 7-alpine (caching and session storage)
+  - Upstash Redis (serverless Redis option)
+- **ORM/Query Builders**:
+  - Prisma 0.15.0
+  - SQLAlchemy 2.0.45+
+  - psycopg[binary] (PostgreSQL adapter)
+- **AI/ML Frameworks & Libraries**:
+  - LiteLLM (unified LLM interface)
+  - OpenAI Python SDK
+  - Anthropic SDK
+  - Google AI Python Client
+  - Hugging Face Hub
+  - Transformers/Datasets
+  - PyBKT (Bayesian Knowledge Tracing)
+  - PyThaiNLP (Thai language processing)
+  - WebLLM (browser-based LLM inference)
+- **Other Key Dependencies**:
+  - Supabase Python client
+  - Stripe Python SDK
+  - Tavily Python (search API)
+  - Daytona SDK (sandbox execution)
+  - Boto3 (AWS services)
+  - Composio (tool integrations)
+  - Langfuse (observability)
+  - Structured logging (structlog)
+  - APScheduler (task scheduling)
+  - Prometheus client (metrics)
+  - Novu (notification infrastructure)
+  - MCP (Model Context Protocol)
+  - E2B Code Interpreter
+  - Various document processing libraries (PyPDF2, python-docx, etc.)
 
-- **Framework:** Next.js (App Router) with **Turbopack** in dev (`next dev --turbopack` in `apps/frontend/package.json`).
-- **Language:** TypeScript.
-- **UI:** React 19 (via pnpm overrides in root `package.json`), **Radix UI** primitives, **Tailwind CSS** (incl. `@tailwindcss/typography`), **TipTap** editor ecosystem, **CodeMirror 6**, **Syncfusion** spreadsheet React components, **Framer Motion** (typical stack from `apps/frontend/package.json`).
-- **Data / auth:** `@supabase/supabase-js`, `@supabase/ssr`, **TanStack Query** (`@tanstack/react-query`).
-- **Payments / comms:** Stripe (`@stripe/stripe-js`, `@stripe/react-stripe-js`), **Novu** (`@novu/nextjs`, `@novu/notification-center`), **Cal.com** embed.
-- **Tooling:** ESLint via `next lint` (`apps/frontend/eslint.config.mjs`), Prettier scripts in `apps/frontend/package.json`.
+## Frontend Technologies
+- **Framework**: React 18 with Next.js 15.3.8
+- **Styling**: 
+  - Tailwind CSS v4
+  - Tailwind CSS Typography plugin
+  - Tailwind CSS Animate plugin
+  - Class Variance Authority
+  - clsx
+- **UI Component Libraries**:
+  - Radix UI Primitives
+  - Lucide React (icons)
+  - Vaul (drawer/sheet component)
+  - Sonner (toast notifications)
+  - Hugeicons React
+  - Icons Pack React Simple Icons
+  - Liquid Glass React
+- **State Management**:
+  - Zustand
+  - React Query (TanStack Query v5)
+  - React Hook Form
+- **Form Handling**:
+  - React Hook Form v7
+  - Zod (schema validation)
+  - Hook Form Resolvers
+- **Rich Text Editing**:
+  - Tiptap v3 (with extensions for collaboration, AI, etc.)
+  - TipTap Starter Kit
+  - Various Tiptap extensions (math, mention, collaboration, etc.)
+- **Code Editing**:
+  - React Codemirror (via @uiw/react-codemirror)
+  - Various CodeMirror extensions and themes
+- **Data Visualization & Tables**:
+  - Recharts
+  - TanStack React Table v8
+  - Chart.js
+  - Syncfusion React Spreadsheet
+  - Silevis React Grid
+- **File Handling & Preview**:
+  - React PDF
+  - Docx Preview
+  - Read Excel File
+  - File Saver
+  - JSZip
+  - XLSX
+- **Internationalization**: Next.js Intl
+- **Analytics & Monitoring**:
+  - Vercel Analytics
+  - Vercel Speed Insights
+  - PostHog (JS and Node)
+  - Novu Notification Center
+- **Authentication**:
+  - Supabase Auth (via @supabase/ssr and @supabase/supabase-js)
+  - Stripe React/JS (payment processing)
+- **Development & Tooling**:
+  - ESLint
+  - Prettier
+  - TypeScript
+  - Next.js Lint
+  - Shiki (syntax highlighting)
+  - Playwright (testing)
+  - Turndown + Turndown Plugin GFM (markdown to HTML)
+  - Remark GFM
+  - Remark Raw
+  - Rehype Sanitize
+  - Rehype Raw
+  - Marked
+- **Other Notable Dependencies**:
+  - Framer Motion (animations)
+  - GSAP (animations)
+  - Konva + React Konva (canvas manipulation)
+  - React Resizable Panels
+  - React Colorful/Color Palette
+  - React Day Picker
+  - React Phone Number Input
+  - React Markdown
+  - Mermaid (diagrams)
+  - Katex (math rendering)
+  - Lottie React
+  - HTML2PDF.js
+  - Yjs + Y-IndexedDB (real-time collaboration)
+  - Canvas + Canvas Confetti
+  - UUID libraries
+  - Lodash
+  - Date-fns
+  - Hjson
+  - Comment JSON
+  - JSON5 + JSON Repair
+  - Papaparse (CSV parsing)
+  - Libphonenumber JS
 
-## Mobile app (`apps/mobile`)
+## Infrastructure & DevOps
+- **Containerization**: Docker
+- **Orchestration**: Docker Compose (local development)
+- **Infrastructure as Code**: 
+  - Pulumi (primary IaC tool)
+  - Azure Bicep (Azure-specific deployments)
+- **Cloud Provider**: Microsoft Azure (primary)
+- **CI/CD**: GitHub Actions (implied from .github directory)
+- **Environment Management**: 
+  - .env files
+  - mises.toml (tool version manager)
+- **Quality & Testing**:
+  - Pytest (backend testing)
+  - Playwright (frontend E2E testing)
+  - Various pytest plugins (asyncio, cov, mock, etc.)
+- **Monitoring & Observability**:
+  - Prometheus metrics
+  - Watchtower (CloudWatch Logs handler)
+  - Langfuse (LLM observability)
+  - Sentry (implied from sentry-cli in dependencies)
 
-- **Framework:** **Expo SDK ~54** with **Expo Router** (`expo-router`), React Native.
-- **Styling:** NativeWind-related stack (see `apps/mobile/package.json` for `nativewind`, `tailwindcss`, `react-native-reanimated`, etc.).
-- **Primitives:** `@rn-primitives/*` family for accessible RN components.
-- **Shared code:** `@agentpress/shared` workspace dependency (same as frontend).
-- **Backend client:** `@supabase/supabase-js`, TanStack Query.
+## Configuration Files
+- **Root Level**:
+  - package.json (workspace scripts and dependencies)
+  - pnpm-workspace.yaml (pnpm workspace configuration)
+  - pnpm-lock.yaml (locked dependencies)
+  - mise.toml (development environment configuration)
+  - Dockerfile (root-level build context references)
+  - docker-compose.yaml (local development services)
+- **Backend**:
+  - pyproject.toml (Python project configuration and dependencies)
+  - uv.lock (Python lockfile)
+  - backend/Dockerfile
+  - backend/.env (environment variables)
+  - supabase/config.toml (Supabase local emulator config)
+- **Frontend**:
+  - apps/frontend/package.json
+  - apps/frontend/tsconfig.json (TypeScript configuration)
+  - apps/frontend/tailwind.config.* (Tailwind configuration)
+  - apps/frontend/next.config.js (Next.js configuration)
+  - apps/frontend/Dockerfile
+- **Infrastructure**:
+  - infra/pulumi/ (Pulumi programs)
+  - infra/azure/ (Azure Bicep templates)
+  - infra/kubernetes/ (Kubernetes manifests)
+- **Shared Packages**:
+  - packages/shared/ (common TypeScript utilities)
+  - packages/db/ (database schemas and Prisma client)
+  - packages/auth/ (authentication utilities)
+  - packages/agentpress/ (agent-related shared code)
 
-## Desktop (`apps/desktop`)
-
-- Separate **Electron-style** desktop package (`apps/desktop/package.json`) — inspect that file for exact Electron/Tauri stack and build scripts.
-
-## Shared TypeScript library (`packages/shared`)
-
-- Package name: **`@agentpress/shared`** (`packages/shared/package.json`).
-- **Exports:** main types, streaming helpers, tools, utils, errors (`packages/shared/package.json` `exports` map).
-- **State:** `zustand` as a dependency; **peer** React 18/19.
-
-## Python backend (`backend/`)
-
-- **Project:** `kidpen` in `backend/pyproject.toml` (Python **>= 3.11**).
-- **API framework:** **FastAPI** (`fastapi`, `uvicorn`, `gunicorn`).
-- **App entry:** `backend/api.py` — constructs `FastAPI` app, lifespan, mounts routers from `core.*` and `auth.api`.
-- **LLM / agents:** `litellm`, `openai`, `anthropic`, **MCP** (`mcp`), eval tooling (`braintrust`, `autoevals`, `langfuse`).
-- **Data / infra clients:** `supabase`, `redis`, `upstash-redis`, **Prisma Python client** (`prisma` in dependencies — schema location may be outside this grep; treat DB access as Prisma/Supabase-backed), `boto3`.
-- **Sandboxes / code execution:** `e2b-code-interpreter`, **Daytona** SDKs (`daytona-sdk`, `daytona-api-client*`, `daytona`).
-- **Integrations:** `stripe`, `composio`, `tavily-python`, `replicate`, `apify-client`, Google APIs (`google-api-python-client`, `google-auth*`), `novu-py`, `chunkr-ai`, email (`mailtrap`), **WeasyPrint** / document stack, `paramiko`, etc. (see full `backend/pyproject.toml`).
-
-## SDK (`sdk/`)
-
-- **Purpose:** Kidpen SDK (`sdk/pyproject.toml`) — **`fastmcp`**, `httpx`, minimal surface for agent/MCP-style clients.
-
-## Infrastructure (`infra/`)
-
-- **`infra/package.json`** — treat as Node-based infra tooling (scripts/deps for deploy or IaC helpers); open file for specifics.
-
-## Runtime and deployment signals
-
-- **GitHub Actions:** `.github/workflows/` includes `e2e-api-tests.yml`, `docker-build.yml`, `azure-deploy.yml`, `mobile-eas-update.yml`, `desktop-build.yml`, etc. — indicates **multi-target CI** (API, Docker, Azure, EAS).
-- **Docker:** `backend/core/sandbox/docker/` contains Node `package.json` for sandbox images and related tooling.
-
-## Version skew to watch
-
-- Root `package.json` pins `next` while `Kidpen` frontend has its own Next — align upgrades deliberately.
-- Mobile Expo SDK and frontend Next/React versions evolve on different cadences; shared types in `packages/shared` reduce drift but do not eliminate it.
+## AI/ML Specific Technologies
+- **LLM Providers**: 
+  - OpenAI (GPT series)
+  - Anthropic (Claude series)
+  - Google (Gemini series)
+  - Meta/Llama (via various providers)
+  - Mistral AI
+  - Local models via WebLLM
+- **Embedding Models**: Various via LiteLLM
+- **Vector Stores**: Supabase (with pgvector extension implied)
+- **Training/Fine-tuning**: 
+  - Hugging Face Transformers
+  - Datasets library
+  - PEFT (Parameter-Efficient Fine-Tuning implied)
+- **Knowledge Tracing**: pyBKT
+- **NLP Specialization**: PyThaiNLP (Thai language processing)
+- **Document Processing**: 
+  - PDF (PyPDF2, pdfjs-dist)
+  - DOCX (python-docx)
+  - Spreadsheets (openpyxl)
+  - Presentations (python-pptx)
+  - Images (Pillow, vtracer)
+  - OCR (pytesseract)
+- **AI Agent Framework**: Custom agent architecture with tool integration
+- **MLOps**: 
+  - Langfuse (experiment tracking, observability)
+  - Model versioning (Hugging Face Hub implied)
+  - Batch processing (APScheduler)
