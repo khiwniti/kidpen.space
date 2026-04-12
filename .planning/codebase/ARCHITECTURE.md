@@ -1,236 +1,296 @@
-# Kidpen Space Architecture
+# Kidpen Codebase Architecture
 
-## Overview
-Kidpen Space is an educational platform forked from the Kidpen AI Suna agent, designed to create, manage, and deploy autonomous AI agents. The platform follows a modular monolithic architecture with clear separation of concerns between backend services and frontend applications.
+## Platform Architecture Overview
 
-## Architectural Pattern
-- **Modular Monolith**: The backend is structured as a modular monolith using FastAPI, with distinct modules for different functionalities
-- **Layered Architecture**: Clear separation between API layer, service layer, data access layer, and external integrations
-- **Event-Driven Components**: Uses Redis for pub/sub mechanisms and background workers
-- **Microservice-Ready Design**: Although deployed as a monolith, the architecture allows for easy extraction of services
+Kidpen follows a modular, layered architecture designed for extensibility and scalability. The platform consists of four primary components as described in the README:
 
-## Layers
+1. **Backend API** - Python/FastAPI service handling agent orchestration, thread management, and LLM integration
+2. **Frontend Dashboard** - Next.js/React application for agent management and configuration
+3. **Agent Runtime** - Isolated Docker execution environments for secure agent operation
+4. **Database & Storage** - Supabase-powered data layer for persistence and real-time features
+
+## Architectural Layers
 
 ### 1. Presentation Layer
-- **Backend**: FastAPI-based REST API endpoints (backend/api.py)
-- **Frontend**: Next.js 13+ application using React Server Components (apps/frontend/src/app/)
-- **Desktop**: Electron-based desktop application (apps/desktop/)
+- **Frontend**: Next.js 13+ App Router with React 18
+  - Server Components for data fetching and initial render
+  - Client Components for interactivity
+  - Route groups for organization (`(home)`, `auth`, `api`)
+- **Mobile**: React Native with custom native modules
+- **Desktop**: Tauri/Rust application
 
-### 2. API Layer
-- **Entry Point**: backend/api.py - Main FastAPI application
-- **Routing**: Modular router inclusion pattern where each feature registers its own router
-- **Middleware**: Request logging, CORS, authentication, rate limiting
-- **Versioning**: API versioning support through core/versioning/
+### 2. Application Layer (Backend)
+- **API Gateway**: FastAPI application (`api.py`) with middleware (CORS, logging)
+- **Route Controllers**: Modular API routers organized by domain
+- **Service Layer**: Business logic implementations in `core/services/`
+- **Domain Models**: Pydantic models in `core/api_models/` and database models
+- **Agent Press**: Core agent communication and thread management system
 
-### 3. Service Layer
-- **Core Services**: Located in backend/core/services/
-  - Database connection and query services
-  - Redis caching and pub/sub
-  - File storage services
-  - External API integrations (OpenAI, Composio, etc.)
-  - Authentication and authorization
-  - Webhook handling
-  - Background job processing
+### 3. Domain Layer
+- **Agent Core**: Agent lifecycle, configuration, and execution logic
+- **Tool System**: Extensible tool framework for agent capabilities
+- **Memory & Knowledge**: Context management, extraction, and retrieval systems
+- **Trigger System**: Event-driven automation capabilities
+- **Analytics & Monitoring**: Usage tracking and performance metrics
 
-### 4. Data Access Layer
-- **Database**: Supabase PostgreSQL as primary database
-- **ORM**: Direct SQL queries with some abstraction layers
-- **Caching**: Redis for temporary storage and session management
-- **File Storage**: Supabase Storage for user uploads and agent assets
-
-### 5. Infrastructure Layer
-- **Configuration**: Environment-based configuration in backend/core/config/
-- **Deployment**: Docker-compose for local development, Kubernetes-ready manifests
-- **Monitoring**: Logging, metrics collection, health checks
-- **Security**: Authentication, authorization, input validation, secure headers
+### 4. Infrastructure Layer
+- **Data Persistence**: Supabase (PostgreSQL) with real-time subscriptions
+- **Caching**: Redis for session storage and temporary data
+- **File Storage**: AWS S3 integration for uploads
+- **Execution Sandbox**: Docker-based isolated environments (Daytona/E2B)
+- **External Integrations**: API integrations via composio and direct SDKs
+- **Configuration**: Environment-based configuration management
+- **Deployment**: Docker Compose (local), Terraform (cloud)
 
 ## Key Abstractions
 
-### Agent System
-- **Agent Definition**: JSON-based agent configuration with tools and instructions
-- **Agent Runs**: Execution instances with state management
-- **Thread Management**: Conversation context preservation
-- **Tool Interface**: Standardized tool creation and integration mechanism
-- **Pipeline**: Stateless agent execution pipeline for scalable processing
+### Agent Architecture
+```
+Agent
+├── Configuration (agent_json/agent_setup/)
+├── Thread Management (agentpress/thread_manager/)
+├── Tool Execution (tools/agent_tools/)
+├── Memory System (memory/extraction_service/)
+├── Knowledge Base (knowledge_base/)
+└── Triggers (triggers/)
+```
 
-### Data Models
-- **Users**: Authentication, profiles, subscription tiers
-- **Agents**: Configurable AI agents with tools and knowledge bases
-- **Threads**: Conversation sessions between users and agents
-- **Files**: User-uploaded files and agent-generated content
-- **Tools**: Extendable capabilities for agents (browser, file ops, APIs, etc.)
+### Thread and Message Flow
+1. User sends message via frontend/WebSocket
+2. Message received by backend API endpoint
+3. ThreadManager processes and stores message
+4. Agent processes message using LLM and tools
+5. Tool execution occurs in sandboxed environment
+6. Results stored and streamed back to user
+7. Thread state updated in database
 
-### External Integrations
-- **AI Models**: OpenAI, Anthropic, and other LLM providers
-- **API Platforms**: Composio for 200+ app integrations
-- **Communication**: Email, Slack, webhook endpoints
-- **Storage**: Supabase Storage for file handling
-- **Caching**: Redis for session and temporary data
+### Tool Execution Pipeline
+```
+Tool Request
+├── Validation (parameters, permissions)
+├── Sandbox Creation (Docker/Daytona/E2B)
+├── Dependency Injection (API keys, context)
+├── Execution (with timeout and resource limits)
+├── Result Capture (output, errors, artifacts)
+├── Sandbox Cleanup
+└── Result Return to Agent
+```
 
-## Data Flow
+### Data Flow Patterns
 
-### User Request Flow
-1. **Frontend Request**: User interacts with Next.js frontend
-2. **API Gateway**: Request routed to backend/api.py FastAPI application
-3. **Middleware Processing**: Logging, authentication, CORS handled
-4. **Route Matching**: Request directed to appropriate feature router
-5. **Service Layer**: Business logic executed via core services
-6. **Data Access**: Database operations performed
-7. **External Calls**: AI model APIs, third-party integrations invoked
-8. **Response Assembly**: Results formatted and returned to frontend
-9. **Real-time Updates**: WebSocket connections for live agent status
+#### 1. User Interaction Flow
+```
+Frontend/Web → Backend API → Thread Manager → Agent Service → 
+LLM Provider → Tool Execution (Sandbox) → Result → Backend → Frontend
+```
 
-### Agent Execution Flow
-1. **Agent Creation**: User configures agent via frontend → API → database
-2. **Execution Trigger**: User initiates agent run via chat interface
-3. **Pipeline Initialization**: Stateless pipeline loads agent configuration
-4. **Tool Execution**: Agent uses tools through standardized interface
-5. **State Management**: Conversation state stored in Redis/database
-6. **Result Streaming**: Output streamed back to user in real-time
-7. **Completion Handling**: Run status updated, resources cleaned up
+#### 2. Agent Lifecycle Flow
+```
+Agent Creation → Configuration Storage → Thread Initialization → 
+Message Processing → Tool Usage → State Updates → Persistence → 
+Completion/Cleanup
+```
 
-### Background Processing
-1. **Task Queuing**: Redis streams or database flags trigger background jobs
-2. **Worker Processes**: Dedicated workers handle long-running tasks
-3. **Metrics Collection**: System metrics gathered and reported
-4. **Cleanup Operations**: Periodic cleanup of temporary resources
-5. **Monitoring**: Health checks and alerting mechanisms
+#### 3. Real-time Updates Flow
+```
+Database Change (Supabase) → Realtime Subscription → 
+Backend WebSocket → Frontend Update → UI Refresh
+```
 
 ## Entry Points
 
 ### Backend Entry Points
-- **Main API**: backend/api.py - Primary HTTP API server
-- **Worker Scripts**: backend/scripts/ - Maintenance and batch operations
-- **CLI Tools**: Various command-line utilities for administration
-- **Webhook Receivers**: Specific endpoints for third-party callbacks
+1. **Main API**: `backend/api.py` - FastAPI application factory
+2. **Setup Wizard**: `setup.py` - Interactive configuration utility
+3. **Service Manager**: `start.py` - Backend/frontend service orchestration
+4. **Worker Scripts**: Various scripts in `backend/scripts/` and `backend/evals/`
+5. **Docker Entrypoint**: `backend/Dockerfile` - Container startup
 
 ### Frontend Entry Points
-- **Web Application**: apps/frontend/src/app/layout.tsx - Root Next.js application
-- **Authentication Pages**: apps/frontend/src/app/auth/ - Login/register flows
-- **Agent Builder**: apps/frontend/src/app/(agent)/ - Agent creation/management
-- **Dashboard**: apps/frontend/src/app/dashboard/ - User overview and analytics
+1. **Next.js App**: `apps/frontend/app/layout.tsx` - Root layout
+2. **Page Routes**: `apps/frontend/app/*/page.tsx` - Route handlers
+3. **API Routes**: `apps/frontend/app/api/*/route.ts` - Backend proxies
+4. **Component Entrypoints**: `apps/frontend/components/*` - Reusable UI
 
-### Desktop Entry Points
-- **Main Process**: apps/desktop/main.js - Electron application entry point
-- **Preload Scripts**: Inter-process communication bridges
-- **Renderer Processes**: Windows for different application views
+### Mobile Entry Points
+1. **Android**: `apps/mobile/android/app/src/main/` - Native Android
+2. **iOS**: `apps/mobile/ios/` - Native iOS
+3. **JS Entry**: `apps/mobile/lib/index.ts` - React Native root
 
 ### Infrastructure Entry Points
-- **Docker Entry**: Dockerfile in backend/ and apps/frontend/
-- **Compose Entry**: docker-compose.yaml for multi-service orchestration
-- **Startup Scripts**: infra/scripts/ for environment setup
-- **Migration Scripts**: Database migration and initialization routines
+1. **Terraform**: `infra/*/main.tf` - Infrastructure definitions
+2. **Deployment Scripts**: `infra/scripts/` - Deployment automation
+3. **Docker Compose**: `docker-compose.yml` - Local development
+4. **Setup Wizard**: `setup/ui/` - Interactive configuration
 
 ## Communication Patterns
 
 ### Synchronous Communication
-- **REST API**: Primary communication between frontend and backend
-- **GraphQL**: Limited use for specific data fetching scenarios
-- **Internal RPC**: Service-to-service calls within the backend monolith
+- **REST API**: Backend frontend communication via JSON over HTTP
+- **GraphQL**: Limited use for specific data fetching (via Supabase)
+- **gRPC**: Internal service communication where performance critical
 
 ### Asynchronous Communication
-- **WebSocket**: Real-time updates for agent execution status
-- **Redis Pub/Sub**: Event broadcasting between services
-- **Background Workers**: Long-running task processing
-- **Webhooks**: Outbound notifications to external systems
+- **WebSockets**: Real-time updates via Supabase Realtime
+- **Message Queues**: Background task processing (implicit in worker setup)
+- **Event Streaming**: Supabase change feeds for real-time collaboration
+- **Webhooks**: External service integrations (Stripe, GitHub, etc.)
 
 ### Data Storage Patterns
-- **Primary Database**: Supabase PostgreSQL for relational data
-- **Cache Layer**: Redis for temporary, high-speed access
-- **Object Storage**: Supabase Storage for binary assets
-- **Search**: Full-text search capabilities in PostgreSQL
-- **Analytics**: Event streaming for usage analytics
+- **Relational Data**: Supabase PostgreSQL for structured data (users, agents, threads)
+- **JSONB Fields**: Flexible schema for agent configurations and metadata
+- **File Storage**: Supabase Storage/S3 for binary assets and exports
+- **Caching Layer**: Redis for temporary state, sessions, and rate limiting
+- **Search**: Full-text search via PostgreSQL or external services
 
-## Cross-Cutting Concerns
+## Cross-cutting Concerns
 
-### Authentication & Authorization
-- **JWT-based Auth**: JSON Web Tokens for stateless authentication
-- **Role-Based Access**: Different permissions for user tiers
-- **API Keys**: Service-to-service authentication
-- **Magic Links**: Passwordless email authentication
+### Security
+- **Authentication**: Supabase Auth (JWT-based) with FastAPI-SSO extension
+- **Authorization**: Role-based access control (RBAC) in development
+- **Input Validation**: Pydantic models for API validation
+- **Sanitization**: HTML/script sanitization for user-generated content
+- **Secrets Management**: Environment variables and secret managers
+- **Sandboxing**: Isolated execution environments for untrusted code
 
-### Error Handling & Logging
-- **Structured Logging**: Consistent log formatting with structlog
-- **Error Boundaries**: Frontend error recovery mechanisms
-- **Exception Handling**: Centralized exception catching in API layer
-- **Monitoring Integration**: Error reporting to observability tools
+### Reliability
+- **Error Handling**: Structured exception handling with logging
+- **Retry Logic**: Exponential backoff for external service calls
+- **Circuit Breakers**: Pattern implemented for critical integrations
+- **Health Checks**: Endpoints for service liveness/readiness
+- **Graceful Degradation**: Fallback mechanisms for non-critical features
 
-### Performance Optimization
-- **Caching Layers**: Multiple levels (Redis, in-memory, HTTP)
-- **Database Connection Pooling**: Efficient database resource usage
-- **Lazy Loading**: Frontend code splitting and dynamic imports
-- **Background Prewarming**: Anticipatory cache warming
-- **CDN Integration**: Static asset delivery optimization
+### Observability
+- **Logging**: Structured logging with multiple backends (console, file, cloud)
+- **Metrics**: Prometheus exporter for service metrics
+- **Tracing**: Langfuse integration for LLM call tracing
+- **Analytics**: PostHog for product analytics
+- **Error Tracking**: Integrated error reporting (Sentry-like capabilities)
 
-### Security Measures
-- **Input Validation**: Pydantic models for request validation
-- **SQL Injection Prevention**: Parameterized queries
-- **XSS Protection**: Proper escaping in frontend templates
-- **CSRF Protection**: State-changing operations require authentication
-- **Rate Limiting**: Abuse prevention through request throttling
-- **Secure Headers**: HTTP security headers configuration
+### Scalability
+- **Horizontal Scaling**: Stateless backend services behind load balancer
+- **Database Scaling**: Supabase managed PostgreSQL with read replicas
+- **Caching**: Redis clustering for distributed cache
+- **Async Processing**: Background workers for long-running tasks
+- **Resource Limits**: Sandbox resource constraints (CPU, memory, time)
+
+## Design Patterns Employed
+
+### Creational Patterns
+- **Factory Pattern**: Agent and tool creation factories
+- **Builder Pattern**: Complex agent configuration builders
+- **Dependency Injection**: Service container for testability
+
+### Structural Patterns
+- **Adapter Pattern**: Third-party service integrations (LLM providers, APIs)
+- **Facade Pattern**: Simplified interfaces to complex subsystems
+- **Decorator Pattern**: Middleware for cross-cutting concerns (logging, auth)
+
+### Behavioral Patterns
+- **Observer Pattern**: Event-driven architecture (triggers, realtime updates)
+- **Strategy Pattern**: Pluggable LLM providers and tool implementations
+- **Command Pattern**: Encapsulated tool execution requests
+- **State Pattern**: Agent and thread lifecycle state management
+- **Template Pattern**: Standardized workflows for agent operations
+
+## Integration Architecture
+
+### External Services Integration
+```
+Kidpen Core
+├── LLM Providers (via LiteLLM abstraction)
+│   ├── OpenAI
+│   ├── Anthropic
+│   ├── Google (Vertex AI)
+│   ├── AWS Bedrock
+│   └── Others (OpenRouter, Replicate, etc.)
+├── Authentication Providers
+│   ├── Supabase Auth (primary)
+│   ├── FastAPI-SSO (social logins)
+│   └── Custom JWT handling
+├── Payment Processing
+│   └── Stripe (subscriptions, checkout, webhooks)
+├── Communication
+│   ├── Novu (notifications: email, SMS, push, in-app)
+│   ├── Supabase Realtime (collaboration)
+│   └── WebSocket connections
+├── File & Storage
+│   ├── AWS S3 (object storage)
+│   └── Supabase Storage (user uploads)
+├── Monitoring & Analytics
+│   ├── PostHog (product analytics)
+│   ├── Langfuse (LLM observability)
+│   ├── Prometheus (metrics)
+│   └── Vercel Analytics (web vitals)
+└── Development & Deployment
+    ├── Docker (containerization)
+    ├── GitHub (version control, CI/CD)
+    └── Terraform (infrastructure as code)
+```
+
+### Internal Module Dependencies
+```
+api.py
+├── core/services/ (database, redis, llm, etc.)
+├── core/agents/ (agent CRUD, tools, setup)
+├── core/agentpress/ (thread management, messaging)
+├── core/utils/ (logging, config, helpers)
+├── core/tools/ (specific tool implementations)
+├── core/endpoints/ (API endpoint definitions)
+├── core/admin/ (administrative interfaces)
+└── core/notifications/ (notification systems)
+```
+
+## Evolution and Extensibility Points
+
+### Plugin Architecture
+- **Tool System**: New tools can be added via `core/tools/` following interface contracts
+- **LLM Providers**: New providers added through LiteLLM abstraction
+- **Authentication**: Additional providers via FastAPI-SSO configuration
+- **Storage**: Alternative storage backends through abstraction layers
+
+### Customization Mechanisms
+- **Environment Variables**: Configuration via `.env` files
+- **Theme Customization**: Frontend theming via CSS/Tailwind
+- **Workflow Customization**: Agent configuration JSON schemas
+- **Branding**: White-label capabilities through configuration
+
+### API Extensibility
+- **REST Endpoints**: Easy addition through APIRouter modules
+- **WebSocket Events**: Real-time event handling extensions
+- **GraphQL Schema**: Extensible through Supabase metadata
+- **Webhook Receivers**: Incoming webhook handling capabilities
 
 ## Deployment Architecture
 
 ### Development Environment
-- **Local Docker Compose**: Full stack deployment for development
-- **Hot Reload**: Frontend and backend development servers
-- **Database Migrations**: Automated schema updates
-- **Mock Services**: Simulated external APIs for testing
+```
+Local Machine
+├── Docker Compose (services: redis, backend, frontend, worker)
+├── Local Python backend development (uv run api.py)
+├── Local frontend development (pnpm run dev)
+├── Local mobile development (expo/react-native run)
+└── Local infrastructure (optional local services)
+```
 
-### Production Environment
-- **Container Orchestration**: Kubernetes-ready deployment manifests
-- **Blue/Green Deployment**: Zero-downtime release strategy
-- **Horizontal Scaling**: Stateless backend services scale independently
-- **Database Read Replicas**: Separate read/write database instances
-- **Edge Caching**: CDN for static assets and global distribution
+### Staging/Production Environments
+```
+Cloud Infrastructure
+├── Load Balancer (HTTP/S termination)
+├── Backend Services (auto-scaling groups/containers)
+├── Frontend Services (CDN + edge hosting)
+├── Worker Services (background processing queues)
+├── Database (Supabase managed PostgreSQL)
+├── Cache (Redis managed service)
+├── Object Storage (AWS S3)
+├── Monitoring Stack (Prometheus, Grafana, Langfuse)
+└── Logging Infrastructure (centralized log aggregation)
+```
 
-### Infrastructure Components
-- **Load Balancer**: Distributes traffic across backend instances
-- **Database Cluster**: Primary-replica PostgreSQL setup
-- **Redis Cluster**: Distributed caching and session storage
-- **Object Storage**: Scalable file storage with CDN
-- **Monitoring Stack**: Logging, metrics, tracing, and alerting
-- **CI/CD Pipeline**: Automated testing, building, and deployment
+### Container Strategy
+- **Backend**: Multi-stage Docker build with production optimizations
+- **Frontend**: Next.js optimized build with static/dynamic hybrid
+- **Worker**: Shared backend image with different entrypoint
+- **Shared Base**: Common dependencies and security patches
 
-## Architectural Decisions
-
-### Technology Choices
-- **Backend**: Python/FastAPI for rapid development and async performance
-- **Frontend**: Next.js/React for SEO and developer experience
-- **Database**: Supabase PostgreSQL for managed relational database
-- **Cache**: Redis for high-performance temporary storage
-- **Deployment**: Docker containers for environment consistency
-
-### Scalability Considerations
-- **Stateless Services**: Backend designed for horizontal scaling
-- **Database Sharding**: Prepared for future database partitioning
-- **Cache Layer**: Redis enables scaling read-heavy operations
-- **Async Processing**: Background workers handle CPU-intensive tasks
-- **Microservice Boundaries**: Clear module separation enables future extraction
-
-### Maintainability Focus
-- **Modular Structure**: Each feature encapsulated in its own directory
-- **Consistent Patterns**: Standardized approaches for APIs, services, and components
-- **Documentation**: Inline code comments and architectural documentation
-- **Testing Strategy**: Unit, integration, and end-to-end test coverage
-- **Type Safety**: Python typing and TypeScript for reduced runtime errors
-
-## Evolution Path
-
-### Planned Improvements
-- **Microservice Extraction**: Split high-traffic services into independent deployments
-- **Event Sourcing**: Implement audit trails for agent operations
-- **GraphQL Expansion**: Increase GraphQL usage for flexible data fetching
-- **Plugin Architecture**: Allow third-party extensions to core functionality
-- **Multi-tenancy**: Enhanced isolation for enterprise customer deployments
-
-### Technical Debt Areas
-- **Legacy Code**: Some inherited patterns from original Suna fork
-- **Configuration Centralization**: Further consolidation of configuration management
-- **API Consistency**: Uniform response formats across all endpoints
-- **Testing Coverage**: Increase test coverage for edge cases
-- **Performance Monitoring**: Enhanced observability for bottleneck identification
-
-## Summary
-Kidpen Space implements a well-structured modular monolith architecture that balances development velocity with operational scalability. The clear separation of concerns, consistent patterns, and thoughtful layering enable both rapid feature development and paths to future scaling through microservice extraction when needed.
+This architecture provides a solid foundation for building, deploying, and scaling AI agent platforms while maintaining flexibility for customization and extension.

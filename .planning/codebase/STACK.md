@@ -1,223 +1,101 @@
-# Kidpen Space Technology Stack
+# Technology Stack
 
-## Overview
-Kidpen Space is an educational platform forked from Kidpen AI Suna agent, featuring a monorepo architecture with Python backend, React/TypeScript frontend, and infrastructure managed via Pulumi and Docker.
+## Languages
+- TypeScript (frontend)
+- Python 3.11+ (backend)
+- JavaScript/Node.js (runtime)
 
-## Languages & Runtimes
-- **Python 3.11+** - Backend services and AI/ML components
-- **Node.js** - Frontend development and tooling
-- **TypeScript** - Frontend application logic (React)
-- **JavaScript/TSX** - React components
+## Runtime & Platform
+- Node.js (for frontend)
+- Python 3.11 (for backend)
+- Docker (containerization)
 
-## Package Managers
-- **pnpm** - Primary package manager for frontend/workspace packages
-- **pip/uv** - Python package management (backend)
-- **npm** - Referenced in frontend package.json scripts
+## Frameworks & Libraries
+### Frontend
+- Next.js ^15.3.8 (React framework)
+- React ^18
+- TailwindCSS ^4 (styling)
+- TypeScript ^5
 
-## Backend Technologies
-- **Framework**: FastAPI 0.115.12
-- **ASGI Server**: Uvicorn 0.27.1
-- **WSGI Server**: Gunicorn (for production)
-- **Database**: 
-  - PostgreSQL (via Supabase)
-  - Redis 7-alpine (caching and session storage)
-  - Upstash Redis (serverless Redis option)
-- **ORM/Query Builders**:
-  - Prisma 0.15.0
-  - SQLAlchemy 2.0.45+
-  - psycopg[binary] (PostgreSQL adapter)
-- **AI/ML Frameworks & Libraries**:
-  - LiteLLM (unified LLM interface)
-  - OpenAI Python SDK
-  - Anthropic SDK
-  - Google AI Python Client
-  - Hugging Face Hub
-  - Transformers/Datasets
-  - PyBKT (Bayesian Knowledge Tracing)
-  - PyThaiNLP (Thai language processing)
-  - WebLLM (browser-based LLM inference)
-- **Other Key Dependencies**:
-  - Supabase Python client
-  - Stripe Python SDK
-  - Tavily Python (search API)
-  - Daytona SDK (sandbox execution)
-  - Boto3 (AWS services)
-  - Composio (tool integrations)
-  - Langfuse (observability)
-  - Structured logging (structlog)
-  - APScheduler (task scheduling)
-  - Prometheus client (metrics)
-  - Novu (notification infrastructure)
-  - MCP (Model Context Protocol)
-  - E2B Code Interpreter
-  - Various document processing libraries (PyPDF2, python-docx, etc.)
+### Backend
+- FastAPI (Python web framework)
+- Uvicorn (ASGI server)
+- Gunicorn (WSGI HTTP server)
+- Prisma (ORM)
+- SQLAlchemy (alternative ORM)
 
-## Frontend Technologies
-- **Framework**: React 18 with Next.js 15.3.8
-- **Styling**: 
-  - Tailwind CSS v4
-  - Tailwind CSS Typography plugin
-  - Tailwind CSS Animate plugin
-  - Class Variance Authority
-  - clsx
-- **UI Component Libraries**:
-  - Radix UI Primitives
-  - Lucide React (icons)
-  - Vaul (drawer/sheet component)
-  - Sonner (toast notifications)
-  - Hugeicons React
-  - Icons Pack React Simple Icons
-  - Liquid Glass React
-- **State Management**:
-  - Zustand
-  - React Query (TanStack Query v5)
-  - React Hook Form
-- **Form Handling**:
-  - React Hook Form v7
-  - Zod (schema validation)
-  - Hook Form Resolvers
-- **Rich Text Editing**:
-  - Tiptap v3 (with extensions for collaboration, AI, etc.)
-  - TipTap Starter Kit
-  - Various Tiptap extensions (math, mention, collaboration, etc.)
-- **Code Editing**:
-  - React Codemirror (via @uiw/react-codemirror)
-  - Various CodeMirror extensions and themes
-- **Data Visualization & Tables**:
-  - Recharts
-  - TanStack React Table v8
-  - Chart.js
-  - Syncfusion React Spreadsheet
-  - Silevis React Grid
-- **File Handling & Preview**:
-  - React PDF
-  - Docx Preview
-  - Read Excel File
-  - File Saver
-  - JSZip
-  - XLSX
-- **Internationalization**: Next.js Intl
-- **Analytics & Monitoring**:
-  - Vercel Analytics
-  - Vercel Speed Insights
-  - PostHog (JS and Node)
-  - Novu Notification Center
-- **Authentication**:
-  - Supabase Auth (via @supabase/ssr and @supabase/supabase-js)
-  - Stripe React/JS (payment processing)
-- **Development & Tooling**:
-  - ESLint
-  - Prettier
-  - TypeScript
-  - Next.js Lint
-  - Shiki (syntax highlighting)
-  - Playwright (testing)
-  - Turndown + Turndown Plugin GFM (markdown to HTML)
-  - Remark GFM
-  - Remark Raw
-  - Rehype Sanitize
-  - Rehype Raw
-  - Marked
-- **Other Notable Dependencies**:
-  - Framer Motion (animations)
-  - GSAP (animations)
-  - Konva + React Konva (canvas manipulation)
-  - React Resizable Panels
-  - React Colorful/Color Palette
-  - React Day Picker
-  - React Phone Number Input
-  - React Markdown
-  - Mermaid (diagrams)
-  - Katex (math rendering)
-  - Lottie React
-  - HTML2PDF.js
-  - Yjs + Y-IndexedDB (real-time collaboration)
-  - Canvas + Canvas Confetti
-  - UUID libraries
-  - Lodash
-  - Date-fns
-  - Hjson
-  - Comment JSON
-  - JSON5 + JSON Repair
-  - Papaparse (CSV parsing)
-  - Libphonenumber JS
+## Key Dependencies
+### Frontend
+- @supabase/supabase-js & @supabase/ssr (Supabase client)
+- @stripe/stripe-js & @stripe/react-stripe-js (Stripe payments)
+- @novu/nextjs & @novu/notification-center (Novu notifications)
+- posthog-js & posthog-node (PostHog analytics)
+- @calcom/embed-react (Cal.com scheduling)
+- @tiptap/* (rich text editor)
+- @radix-ui/* (UI components)
+- @dnd-kit/* (drag and drop)
+- zod (schema validation)
+- react-hook-form (form handling)
+- @tanstack/react-query (data fetching)
+- framer-motion (animations)
+- lucide-react (icons)
+- zustand (state management)
 
-## Infrastructure & DevOps
-- **Containerization**: Docker
-- **Orchestration**: Docker Compose (local development)
-- **Infrastructure as Code**: 
-  - Pulumi (primary IaC tool)
-  - Azure Bicep (Azure-specific deployments)
-- **Cloud Provider**: Microsoft Azure (primary)
-- **CI/CD**: GitHub Actions (implied from .github directory)
-- **Environment Management**: 
-  - .env files
-  - mises.toml (tool version manager)
-- **Quality & Testing**:
-  - Pytest (backend testing)
-  - Playwright (frontend E2E testing)
-  - Various pytest plugins (asyncio, cov, mock, etc.)
-- **Monitoring & Observability**:
-  - Prometheus metrics
-  - Watchtower (CloudWatch Logs handler)
-  - Langfuse (LLM observability)
-  - Sentry (implied from sentry-cli in dependencies)
+### Backend
+- fastapi & uvicorn (web framework)
+- prisma (PostgreSQL ORM)
+- redis & upstash-redis (caching)
+- supabase (backend client)
+- stripe (payment processing)
+- openai & anthropic (LLM providers)
+- litellm (LLM abstraction)
+- boto3 (AWS S3 storage)
+- daytona-sdk (code execution sandbox)
+- google-api-python-client (Google APIs)
+- novu-py (notification backend)
+- langfuse (LLM observability)
+- psycopg[binary] (PostgreSQL adapter)
+- python-dotenv (environment variables)
+- python-multipart (file upload handling)
+- e2b-code-interpreter (code execution)
+- replicate (AI model API)
+- composio (tool/agent integrations)
+- weasyprint (PDF generation)
+- pillow, opencv (image processing)
+- pytesseract (OCR)
+- httpx, aiohttp (HTTP clients)
+- cryptography (security)
+- apscheduler, croniter (scheduling)
+- structlog (structured logging)
+- prometheus-client (metrics)
+- watchtower (CloudWatch logging)
+- psutil (system monitoring)
+- email-validator, mailtrap (email handling)
+- phone numbers (phonenumbers)
+- pdf processing (PyPDF2, pdfjs-dist)
+- document processing (python-docx, openpyxl, reportlab)
+- spreadsheet (xlsx)
+- chunkr-ai (document chunking)
+- vtracer (vector tracing)
+- svglib (SVG processing)
+- cssutils (CSS parsing)
+- braintrust, autoevals (LLM evaluation)
+- huggingface-hub (model hosting)
+- datasets (ML datasets)
+- orjson (fast JSON)
+- google-analytics-data (GA4)
+- realitydefender (deepfake detection)
+- apify-client (web scraping)
+- paramiko (SSH)
+- pythainlp, sympy, pyBKT (specialized libraries)
+- freestyle (drawing)
 
-## Configuration Files
-- **Root Level**:
-  - package.json (workspace scripts and dependencies)
-  - pnpm-workspace.yaml (pnpm workspace configuration)
-  - pnpm-lock.yaml (locked dependencies)
-  - mise.toml (development environment configuration)
-  - Dockerfile (root-level build context references)
-  - docker-compose.yaml (local development services)
-- **Backend**:
-  - pyproject.toml (Python project configuration and dependencies)
-  - uv.lock (Python lockfile)
-  - backend/Dockerfile
-  - backend/.env (environment variables)
-  - supabase/config.toml (Supabase local emulator config)
-- **Frontend**:
-  - apps/frontend/package.json
-  - apps/frontend/tsconfig.json (TypeScript configuration)
-  - apps/frontend/tailwind.config.* (Tailwind configuration)
-  - apps/frontend/next.config.js (Next.js configuration)
-  - apps/frontend/Dockerfile
-- **Infrastructure**:
-  - infra/pulumi/ (Pulumi programs)
-  - infra/azure/ (Azure Bicep templates)
-  - infra/kubernetes/ (Kubernetes manifests)
-- **Shared Packages**:
-  - packages/shared/ (common TypeScript utilities)
-  - packages/db/ (database schemas and Prisma client)
-  - packages/auth/ (authentication utilities)
-  - packages/agentpress/ (agent-related shared code)
-
-## AI/ML Specific Technologies
-- **LLM Providers**: 
-  - OpenAI (GPT series)
-  - Anthropic (Claude series)
-  - Google (Gemini series)
-  - Meta/Llama (via various providers)
-  - Mistral AI
-  - Local models via WebLLM
-- **Embedding Models**: Various via LiteLLM
-- **Vector Stores**: Supabase (with pgvector extension implied)
-- **Training/Fine-tuning**: 
-  - Hugging Face Transformers
-  - Datasets library
-  - PEFT (Parameter-Efficient Fine-Tuning implied)
-- **Knowledge Tracing**: pyBKT
-- **NLP Specialization**: PyThaiNLP (Thai language processing)
-- **Document Processing**: 
-  - PDF (PyPDF2, pdfjs-dist)
-  - DOCX (python-docx)
-  - Spreadsheets (openpyxl)
-  - Presentations (python-pptx)
-  - Images (Pillow, vtracer)
-  - OCR (pytesseract)
-- **AI Agent Framework**: Custom agent architecture with tool integration
-- **MLOps**: 
-  - Langfuse (experiment tracking, observability)
-  - Model versioning (Hugging Face Hub implied)
-  - Batch processing (APScheduler)
+## Configuration
+- pnpm-workspace.yaml (monorepo setup)
+- .npmrc (npm configuration)
+- Dockerfiles (container configuration)
+- .env files (environment variables)
+- pyproject.toml (Python dependencies)
+- package.json files (Node.js dependencies)
+- Makefile (build/scripts)
+- .github/workflows/ (CI/CD)
