@@ -305,7 +305,11 @@
     "orContinueWithEmail": "หรือดำเนินการต่อด้วยอีเมล",
     "signInWithEmail": "เข้าสู่ระบบด้วยอีเมล",
     "createNewAccount": "สร้างบัญชีใหม่",
-    "byContinuingYouAgreeSimple": "เมื่อดำเนินการต่อ คุณยอมรับ"
+    "byContinuingYouAgreeSimple": "เมื่อดำเนินการต่อ คุณยอมรับ",
+    "callbackLoading": "กำลังประมวลผลการเข้าสู่ระบบ...",
+    "callbackSuccess": "เข้าสู่ระบบสำเร็จ! กำลังนำทางไปยังหน้าหลัก...",
+    "callbackError": "เกิดข้อผิดพลาดในการเข้าสู่ระบบ",
+    "callbackRetry": "ลองใหม่"
   },
   "onboarding": {
     "welcome": "ยินดีต้อนรับ",
