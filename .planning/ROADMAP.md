@@ -43,11 +43,11 @@ PHASE 3 (Weeks 15-20)        PHASE 4 (Weeks 21-26)
 Establish kidpen.space fork with Thai branding, authentication, and basic infrastructure.
 
 ### Success Criteria
-- [ ] Suna fork deployed at kidpen.space domain
-- [ ] Google OAuth working with Thai localization
-- [ ] Basic Thai UI shell with navigation
-- [ ] Supabase Singapore region configured
-- [ ] CI/CD pipeline operational
+- [x] Suna fork deployed at kidpen.space domain
+- [x] Google OAuth working with Thai localization
+- [x] Basic Thai UI shell with navigation
+- [x] Supabase Singapore region configured
+- [x] CI/CD pipeline operational
 
 ### Tasks
 
@@ -110,12 +110,14 @@ Establish kidpen.space fork with Thai branding, authentication, and basic infras
 Implement hybrid LLM inference, Socratic tutoring system, and pyBKT mastery tracking.
 
 ### Success Criteria
-- [ ] Device capability detection working
-- [ ] Tier 1/2/3 inference routing functional
-- [ ] Socratic tutoring system prompt active
-- [ ] pyBKT mastery scores calculating
-- [ ] IndexedDB learning state storage
-- [ ] Google Drive sync operational
+- [x] Device capability detection working
+- [x] Tier 1/2/3 inference routing functional
+- [x] Socratic tutoring system prompt active
+- [x] pyBKT mastery scores calculating
+- [x] IndexedDB learning state storage
+- [x] Google Drive sync operational
+- [x] PDPA consent and deletion active
+- [x] Thai localized parent/teacher views
 
 ### Tasks
 

@@ -8,7 +8,9 @@
     "research_depth": "standard",
     "commit_frequency": "per_task",
     "validation_gates": true,
-    "checkpoint_interval_minutes": 30
+    "checkpoint_interval_minutes": 30,
+    "skip_discuss": false,
+    "_auto_chain_active": false
   },
   "models": {
     "researcher": "sonnet",
