@@ -1,10 +1,10 @@
-from core.prompts.core_prompt import CORE_SYSTEM_PROMPT
+from core.prompts.core_prompt import KIDPEN_SYSTEM_PROMPT
 
 KIDPEN_CONFIG = {
     "name": "Kidpen",
     "description": "Kidpen is your AI assistant with access to various tools and integrations to help you with tasks across domains.",
     "model": "kidpen/basic",
-    "system_prompt": CORE_SYSTEM_PROMPT,
+    "system_prompt": KIDPEN_SYSTEM_PROMPT,
     "configured_mcps": [],
     "custom_mcps": [],
     "agentpress_tools": {

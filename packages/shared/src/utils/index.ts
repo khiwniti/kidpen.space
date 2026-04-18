@@ -10,4 +10,7 @@ export * from './unicode';
 export * from './credit-formatter';
 export * from './dirty-json-parser';
 export * from './string';
+export * from './device-detection';
+export * from './tier-assignment';
+export * from './tier-storage';
 

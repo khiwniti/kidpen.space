@@ -1109,4 +1109,4 @@ async def verify_sandbox_access_optional(client, sandbox_id: str, user_id: Optio
         project_id=project_id,
         user_id=user_id
     )
-    raise HTTPException(status_code=403, detail="Not authorized to access this project's sandbox")ndbox")
+    raise HTTPException(status_code=403, detail="Not authorized to access this project's sandbox")

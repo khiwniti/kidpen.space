@@ -1,52 +1,65 @@
 # Phase 2 Sprint 01 Summary: Device Detection
 
+**Status**: ✅ Implemented (2026-04-17)
+**Previously**: ❌ Claimed Complete (incorrect documentation)
+
+---
+
 ## Coverage
 
 Implemented device capability detection system for hybrid inference architecture with the following capabilities:
 
-- **Memory Detection**: `navigator.deviceMemory` with 2GB fallback
-- **WebGPU Detection**: Adapter availability, features, and limits via `navigator.gpu.requestAdapter()`
+- **Memory Detection**: `navigator.deviceMemory` with fallback estimation
+- **WebGPU Detection**: Adapter availability via `navigator.gpu.requestAdapter()`
 - **Storage Detection**: Quota and usage via `navigator.storage.estimate()`
-- **Feature Support**: SharedArrayBuffer, WASM SIMD, WASM Memory Growth, BigInt detection
-- **Device Fingerprinting**: Deterministic fingerprint from capabilities for caching
+- **Feature Support**: WebGPU, WebAssembly, IndexedDB, Service Worker, WebLLM detection
 - **Tier Assignment**: Deterministic routing to cloud/hybrid/edge based on capability thresholds
-- **Persistence**: localStorage-based tier decision caching with fingerprint validation
-- **Diagnostics**: Fallback event tracking and tier assignment logging
+- **Persistence**: localStorage-based tier decision caching
+- **Diagnostics**: Tier decision logging and validation
+
+---
 
 ## Deliverables
 
-### Core Files Created
+### Files Created (2026-04-17)
 
 | File | Purpose |
 |------|---------|
-| `packages/shared/src/types/device.ts` | Type definitions for DeviceCapabilities, InferenceTier, TierAssignment, etc. |
-| `packages/shared/src/utils/device-detection.ts` | Capability detection functions (detectMemory, detectWebGPU, detectStorage, detectFeatureSupport) |
-| `packages/shared/src/utils/tier-assignment.ts` | Tier selection logic with INFERENCE_CONFIGS for each tier |
-| `packages/shared/src/utils/tier-storage.ts` | Persistence, retrieval, and diagnostics for tier decisions |
+| `packages/shared/src/types/device.ts` | Type definitions for DeviceCapabilities, InferenceTier, TierAssignment, INFERENCE_CONFIGS |
+| `packages/shared/src/utils/device-detection.ts` | Capability detection functions |
+| `packages/shared/src/utils/tier-assignment.ts` | Tier selection logic |
+| `packages/shared/src/utils/tier-storage.ts` | Persistence and diagnostics |
+| `apps/frontend/src/hooks/useDeviceTier.ts` | React hook for tier management |
 
 ### Exports
 
 - `packages/shared/src/types/index.ts` - exports `device` types
-- `packages/shared/src/utils/index.ts` - exports `device-detection` and `tier-assignment` utilities
+- `packages/shared/src/utils/index.ts` - exports device utilities
+- `apps/frontend/src/hooks/index.ts` - exports `useDeviceTier`
 
-### Tier Assignment Rules
+---
 
-| Tier | Memory | WebGPU | Features | Max Local Model |
-|------|--------|--------|----------|-----------------|
-| cloud | < 4GB | No | Any | 0MB |
-| hybrid | 4-8GB | Yes | Any | 500MB |
-| edge | 8GB+ | Yes | SIMD | 2000MB |
+## Tier Assignment Rules
 
-## Next Actions
+| Tier | Min Memory | WebGPU | Storage | Model |
+|------|------------|--------|---------|-------|
+| cloud | Any | No | Any | Qwen2.5-7B-Instruct (cloud) |
+| hybrid | 4GB | Yes | 500MB+ | Qwen2.5-0.5B-INT4 (400MB) |
+| edge | 8GB | Yes | 2.5GB+ | Phi-3-mini-INT4 (2.2GB) |
 
-1. **02-02 (Hybrid Inference)**: Use `selectInferenceTier()` and `INFERENCE_CONFIGS` to configure WebLLM loading strategy
-2. **Frontend Integration**: Create React hook `useDeviceTier` that calls `detectDeviceCapabilities()` and `selectInferenceTier()`
-3. **Testing**: Add unit tests for tier assignment edge cases (low memory, no WebGPU, SIMD variations)
-4. **Verification**: Run manual browser console test: `detectDeviceCapabilities()` should return full capabilities object
+---
+
+## Next Steps
+
+1. **02-02 (Hybrid Inference)**: Integrate WebLLM loading with `INFERENCE_CONFIGS`
+2. **Frontend Integration**: Add tier selection UI in settings
+3. **Testing**: Unit tests for tier assignment edge cases
+
+---
 
 ## Dependencies for Downstream Workstreams
 
 - `detectDeviceCapabilities()` - async function returning `DeviceCapabilities`
 - `selectInferenceTier(capabilities)` - sync function returning `TierAssignment`
 - `INFERENCE_CONFIGS` - static config object for each tier
-- `persistTierDecision()` / `getPersistedTierDecision()` - for caching across sessions
+- `useDeviceTier()` - React hook for frontend integration

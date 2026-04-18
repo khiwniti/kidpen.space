@@ -58,6 +58,12 @@ export * from './onboarding';
 // Integrations
 export * from './integrations';
 
+// Device Tier (kidpen.space EdTech feature)
+export * from './useDeviceTier';
+
+// Sync Status (kidpen.space EdTech feature)
+export * from './useSyncStatus';
+
 
 
  

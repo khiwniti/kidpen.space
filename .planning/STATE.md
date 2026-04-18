@@ -94,23 +94,23 @@ Browser (IndexedDB) ←→ Google Drive (drive.appdata)
 
 | Phase | Description | Status | Target |
 |-------|-------------|--------|--------|
-| Phase 1 | Fork & Foundation | ✅ Complete | Weeks 1-6 |
-| Phase 2 | Educational Backend | ✅ Complete | Weeks 7-14 |
-| Phase 2.01 | Device Detection | ✅ Complete | Week 7 |
-| Phase 2.02 | Hybrid Inference | ✅ Complete | Week 8 |
-| Phase 2.03 | Socratic Tutoring | ✅ Complete | Week 12 |
-| Phase 2.04 | Mastery Tracking | ✅ Complete | Week 13 |
-| Phase 2.05 | Google Drive Sync | ✅ Complete | Week 14 |
-| Phase 3 | Thai UI Transform | ✅ Complete | Weeks 15-20 |
-| Phase 3.01 | Thai Localization | ✅ Complete | Week 15 |
-| Phase 3.02 | Offline-First PWA | ✅ Complete | Week 16 |
-| Phase 3.03 | Mobile Optimization | ✅ Complete | Week 17 |
-| Phase 3.04 | Progress Visualization | ✅ Complete | Week 18 |
-| Phase 4 | PDPA & Launch | ✅ Complete | Weeks 21-26 |
-| Phase 4.01 | PDPA Compliance | ✅ Complete | Week 21 |
-| Phase 4.02 | Parent Portal | ✅ Complete | Week 22 |
-| Phase 4.03 | Teacher Dashboard | ✅ Complete | Week 23 |
-| Phase 4.04 | Launch Readiness | ✅ Complete | Week 24 |
+| Phase 1 | Fork & Foundation | 🔄 Partial | Weeks 1-6 |
+| Phase 2 | Educational Backend | 🔄 Partial | Weeks 7-14 |
+| Phase 2.01 | Device Detection | ❌ Not Implemented | Week 7 |
+| Phase 2.02 | Hybrid Inference | ❌ Not Implemented | Week 8 |
+| Phase 2.03 | Socratic Tutoring | ❌ Not Implemented | Week 12 |
+| Phase 2.04 | Mastery Tracking | 🔄 Partial | Week 13 |
+| Phase 2.05 | Google Drive Sync | ❌ Not Implemented | Week 14 |
+| Phase 3 | Thai UI Transform | 🔄 Partial | Weeks 15-20 |
+| Phase 3.01 | Thai Localization | 🔄 Partial | Week 15 |
+| Phase 3.02 | Offline-First PWA | ❌ Not Implemented | Week 16 |
+| Phase 3.03 | Mobile Optimization | 🔄 Partial | Week 17 |
+| Phase 3.04 | Progress Visualization | 🔄 Partial | Week 18 |
+| Phase 4 | PDPA & Launch | ❌ Not Started | Weeks 21-26 |
+| Phase 4.01 | PDPA Compliance | ❌ Not Started | Week 21 |
+| Phase 4.02 | Parent Portal | ❌ Not Started | Week 22 |
+| Phase 4.03 | Teacher Dashboard | ❌ Not Started | Week 23 |
+| Phase 4.04 | Launch Readiness | ❌ Not Started | Week 24 |
 
 ---
 
@@ -151,6 +151,24 @@ Browser (IndexedDB) ←→ Google Drive (drive.appdata)
 ---
 
 ## Memory & Learnings
+
+### Session: 2026-04-17 (Documentation Correction)
+
+**Issue Discovered**: Planning documents (STATE.md, Phase Summaries) claimed all phases were "✅ Complete" but actual codebase implementation was missing critical files.
+
+**Action Taken**:
+1. Corrected STATE.md Phase Status table to reflect actual implementation state
+2. Changed all incorrectly marked phases from ✅ Complete to 🔄 Partial or ❌ Not Implemented
+3. Started systematic implementation of Phase 2 critical components
+
+**Verification Checklist**:
+- [ ] Device Detection (Phase 2.01): Types, detection utils, tier assignment
+- [ ] Hybrid Inference (Phase 2.02): WebLLM integration, tier routing
+- [ ] Socratic Tutoring (Phase 2.03): Thai tutoring prompts
+- [ ] Mastery Tracking (Phase 2.04): Partial (useStudentData hook exists)
+- [ ] Google Drive Sync (Phase 2.05): Drive module, sync hooks
+- [ ] Phase 3: Partial Thai strings, no PWA service worker
+- [ ] Phase 4: Not started
 
 ### Session: 2026-03-30 (Initial Planning)
 
@@ -193,37 +211,6 @@ Wave 1 (parallel): 02-01 (Device Detection), 02-03 (Socratic), 02-05 (Drive Sync
 Wave 2 (sequential): 02-02 (Hybrid Inference) after 02-01, 02-04 (Mastery) after 02-03
 ```
 
-### Session: 2026-04-13 (Phase 2 Sprint 01 - Device Detection)
-**Outcome**:
-1. Implemented device capability detection in `packages/shared/src/utils/device-detection.ts`
-2. Implemented tier assignment logic in `packages/shared/src/utils/tier-assignment.ts`
-3. Implemented tier persistence in `packages/shared/src/utils/tier-storage.ts`
-4. Created type definitions in `packages/shared/src/types/device.ts`
-5. Created summary artifact `02-01-SUMMARY.md`
-
-**Files Created**:
-- `packages/shared/src/types/device.ts` - DeviceCapabilities, InferenceTier, TierAssignment types
-- `packages/shared/src/utils/device-detection.ts` - detectMemory, detectWebGPU, detectStorage, detectFeatureSupport
-- `packages/shared/src/utils/tier-assignment.ts` - selectInferenceTier, INFERENCE_CONFIGS
-- `packages/shared/src/utils/tier-storage.ts` - persistTierDecision, getPersistedTierDecision, diagnostics
-
-### Session: 2026-04-13 (Phase 2 & 3 Transition)
-
-**Outcome**:
-1. Completed Phase 2.05: Google Drive Sync integration.
-2. Created `apps/frontend/src/lib/drive/` with auth, api-client, sync-engine, and scheduler.
-3. Implemented `useSyncStatus` hook for UI integration.
-4. Created shared storage module in `packages/shared/src/storage/`.
-5. Initialized Phase 3: Thai UI Transform sprint directory and workstream plans.
-
-**Next Steps**:
-1. Execute Phase 3.01: Full Thai Localization.
-2. Execute Phase 3.02: Offline-First PWA setup.
-
-**Key Exports**:
-- `detectDeviceCapabilities()` - async capability detection
-- `selectInferenceTier(capabilities)` - deterministic tier routing
-- `INFERENCE_CONFIGS` - tier-specific inference configurations
 
 ---
 

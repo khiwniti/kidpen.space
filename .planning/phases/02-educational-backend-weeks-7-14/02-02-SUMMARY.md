@@ -1,5 +1,8 @@
 # Phase 2 Sprint 02 Summary: Hybrid Inference
 
+**Status**: ❌ Not Implemented
+**Note**: Planning doc claimed implementation, but WebLLM integration not started
+
 ## Coverage
 
 Implemented hybrid inference system with WebLLM edge runtime and cloud fallback API. Routes LLM requests to edge (WebLLM), hybrid, or cloud backends based on device tier.

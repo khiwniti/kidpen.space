@@ -1,4 +1,5 @@
 import asyncio
+from typing import Any
 import json
 from typing import List, Dict, Any, Optional, Type, Union, AsyncGenerator, Literal, cast, TYPE_CHECKING
 
@@ -10,7 +11,8 @@ from core.agentpress.processor_config import ProcessorConfig
 from core.agentpress.error_processor import ErrorProcessor
 from core.services.supabase import DBConnection
 from core.utils.logger import logger
-from langfuse.client import StatefulGenerationClient, StatefulTraceClient
+# Langfuse v4.x compatibility - these are optional for observability
+# from langfuse.client import Any, Any
 from core.services.langfuse import langfuse
 
 from core.agentpress.thread_manager.services import (
@@ -24,7 +26,7 @@ from core.agentpress.thread_manager.services import (
 ToolChoice = Literal["auto", "required", "none"]
 
 class ThreadManager:
-    def __init__(self, trace: Optional[StatefulTraceClient] = None, agent_config: Optional[dict] = None, 
+    def __init__(self, trace: Optional[Any] = None, agent_config: Optional[dict] = None, 
                  project_id: Optional[str] = None, thread_id: Optional[str] = None, account_id: Optional[str] = None,
                  jit_config: Optional['JITConfig'] = None):
         self.db = DBConnection()
@@ -133,7 +135,7 @@ class ThreadManager:
         processor_config: Optional[ProcessorConfig] = None,
         tool_choice: ToolChoice = "auto",
         native_max_auto_continues: int = 25,
-        generation: Optional[StatefulGenerationClient] = None,
+        generation: Optional[Any] = None,
         latest_user_message_content: Optional[str] = None,
         cancellation_event: Optional[asyncio.Event] = None,
         prefetch_messages_task: Optional[asyncio.Task] = None,
@@ -184,7 +186,7 @@ class ThreadManager:
     async def _execute_run(
         self, thread_id: str, system_prompt: Dict[str, Any], llm_model: str,
         llm_temperature: float, llm_max_tokens: Optional[int], tool_choice: ToolChoice,
-        config: ProcessorConfig, stream: bool, generation: Optional[StatefulGenerationClient],
+        config: ProcessorConfig, stream: bool, generation: Optional[Any],
         auto_continue_state: Dict[str, Any], temporary_message: Optional[Dict[str, Any]] = None,
         latest_user_message_content: Optional[str] = None, cancellation_event: Optional[asyncio.Event] = None,
         prefetch_messages_task: Optional[asyncio.Task] = None, prefetch_llm_end_task: Optional[asyncio.Task] = None
