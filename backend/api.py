@@ -50,6 +50,7 @@ from core.notifications import api as notifications_api
 from core.services.orphan_cleanup import cleanup_orphaned_agent_runs
 from auth import api as auth_api
 from core.utils.auth_utils import verify_and_get_user_id_from_jwt
+from core.education import router as education_router
 
 
 if sys.platform == "win32":
@@ -397,6 +398,9 @@ api_router.include_router(transcription_api.router)
 
 from core.services import voice_generation as voice_api
 api_router.include_router(voice_api.router)
+
+# Education platform router (Phase 2+)
+api_router.include_router(education_router)
 
 from core.knowledge_base import api as knowledge_base_api
 api_router.include_router(knowledge_base_api.router)
