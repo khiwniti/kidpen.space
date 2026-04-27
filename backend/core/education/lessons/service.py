@@ -11,8 +11,8 @@ Handles:
 
 from typing import Optional
 
-from backend.core.services.supabase import DBConnection
-from backend.core.education.lessons.models import (
+from core.services.supabase import DBConnection
+from core.education.lessons.models import (
     ContentBlock,
     ContentBlockType,
     CheckpointItem,
@@ -23,8 +23,8 @@ from backend.core.education.lessons.models import (
     LessonStatus,
     UserCheckpointState,
 )
-from backend.core.education.mastery.service import update_mastery
-from backend.core.education.mastery.interactions import write_interaction
+from core.education.mastery.service import update_mastery
+from core.education.mastery.interactions import write_interaction
 
 db = DBConnection()
 
@@ -257,7 +257,7 @@ async def complete_lesson(
     TODO: Persist completion in a lesson_completions table.
     """
     # Award XP
-    from backend.core.education.mastery.service import award_xp
+    from core.education.mastery.service import award_xp
     xp = await award_xp(student_id, 50)
 
     return {

@@ -3,3 +3,5 @@ node_modules
 packages/shared/node_modules
 .setup_progress
 .setup_progress
+package-lock.json
+.DS_Store

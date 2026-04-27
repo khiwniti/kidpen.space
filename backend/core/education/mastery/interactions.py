@@ -11,7 +11,7 @@ Logs each student interaction for:
 from datetime import datetime, timezone
 from typing import Optional
 
-from backend.core.services.supabase import DBConnection
+from core.services.supabase import DBConnection
 
 db = DBConnection()
 

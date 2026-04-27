@@ -14,15 +14,15 @@ import os
 from pathlib import Path
 from typing import Optional, AsyncGenerator, Dict, Any
 
-from backend.core.agentpress.thread_manager import ThreadManager
-from backend.core.agentpress.processor_config import ProcessorConfig
-from backend.core.education.tutoring.classifier import classify_message, TutorIntent
-from backend.core.education.safety.policy import (
+from core.agentpress.thread_manager import ThreadManager
+from core.agentpress.processor_config import ProcessorConfig
+from core.education.tutoring.classifier import classify_message, TutorIntent
+from core.education.safety.policy import (
     SAFETY_RULES,
     HOMEWORK_POLICY_MODES,
     MENTAL_HEALTH_RESOURCES,
 )
-from backend.core.services.supabase import DBConnection
+from core.services.supabase import DBConnection
 
 db = DBConnection()
 

@@ -9,8 +9,8 @@ Handles:
 
 from typing import Optional
 
-from backend.core.services.supabase import DBConnection
-from backend.core.education.mastery.service import get_student_mastery
+from core.services.supabase import DBConnection
+from core.education.mastery.service import get_student_mastery
 
 db = DBConnection()
 

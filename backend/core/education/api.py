@@ -20,15 +20,9 @@ from pydantic import BaseModel
 from typing import Optional
 
 from .curriculum.service import list_subjects, get_subject
-from .tutoring.service import (
-    run_tutor_message,
-    create_tutor_thread,
-    get_thread_messages,
-    get_student_threads,
-)
 from .mastery.service import get_student_mastery, update_mastery, award_xp
 from .mastery.interactions import write_interaction
-from backend.core.utils.auth_utils import verify_and_get_user_id_from_jwt
+from core.utils.auth_utils import verify_and_get_user_id_from_jwt
 
 router = APIRouter()
 
@@ -95,6 +89,8 @@ async def tutor_send_message(
     If thread_id is not provided, creates a new tutor thread.
     Returns SSE stream of text_delta events + final message_complete.
     """
+    from .tutoring.service import run_tutor_message, create_tutor_thread
+
     thread_id = body.thread_id
     if not thread_id:
         thread_id = await create_tutor_thread(
@@ -156,6 +152,7 @@ async def tutor_get_thread(
     user_id: str = Depends(verify_and_get_user_id_from_jwt),
 ):
     """Get messages for a tutor thread."""
+    from .tutoring.service import get_thread_messages
     messages = await get_thread_messages(thread_id)
     return {"thread_id": thread_id, "messages": messages}
 
@@ -165,6 +162,7 @@ async def tutor_list_threads(
     user_id: str = Depends(verify_and_get_user_id_from_jwt),
 ):
     """List all tutor threads for the current student."""
+    from .tutoring.service import get_student_threads
     threads = await get_student_threads(user_id)
     return {"threads": threads}
 
@@ -183,14 +181,6 @@ async def mastery_get_mine(
 # T040: Lesson endpoints (US2)
 # ═══════════════════════════════════════════════════════
 
-from .lessons.service import (
-    list_published_lessons,
-    get_lesson,
-    submit_checkpoint,
-    get_lesson_progress,
-    complete_lesson,
-)
-
 
 class CheckpointSubmitRequest(BaseModel):
     checkpoint_index: int
@@ -203,6 +193,7 @@ async def lessons_list(
     user_id: str = Depends(verify_and_get_user_id_from_jwt),
 ):
     """List published lessons, optionally filtered by subject key."""
+    from .lessons.service import list_published_lessons
     lessons = await list_published_lessons(subject_id=subject)
     return {"lessons": lessons}
 
@@ -213,6 +204,7 @@ async def lessons_get(
     user_id: str = Depends(verify_and_get_user_id_from_jwt),
 ):
     """Get a full lesson with content blocks, checkpoints, and practice items."""
+    from .lessons.service import get_lesson
     lesson = await get_lesson(lesson_id)
     if lesson is None:
         raise HTTPException(status_code=404, detail="Lesson not found")
@@ -226,6 +218,7 @@ async def lessons_submit_checkpoint(
     user_id: str = Depends(verify_and_get_user_id_from_jwt),
 ):
     """Submit an answer for a checkpoint and get feedback."""
+    from .lessons.service import submit_checkpoint
     result = await submit_checkpoint(
         lesson_id=lesson_id,
         student_id=user_id,
@@ -241,6 +234,7 @@ async def lessons_get_progress(
     user_id: str = Depends(verify_and_get_user_id_from_jwt),
 ):
     """Get current progress through a lesson."""
+    from .lessons.service import get_lesson_progress
     progress = await get_lesson_progress(lesson_id, user_id)
     return progress
 
@@ -251,6 +245,7 @@ async def lessons_complete(
     user_id: str = Depends(verify_and_get_user_id_from_jwt),
 ):
     """Mark a lesson as complete and award XP."""
+    from .lessons.service import complete_lesson
     result = await complete_lesson(lesson_id, user_id)
     return result
 
@@ -258,15 +253,6 @@ async def lessons_complete(
 # ═══════════════════════════════════════════════════════
 # T052: Teacher assignment/dashboard endpoints (US4)
 # ═══════════════════════════════════════════════════════
-
-from .assignments.service import (
-    create_assignment,
-    publish_assignment,
-    list_teacher_assignments,
-    close_assignment,
-    get_class_mastery_summary,
-    get_kc_misconception_summary,
-)
 
 
 class CreateAssignmentRequest(BaseModel):
@@ -284,7 +270,7 @@ async def assignments_create(
     user_id: str = Depends(verify_and_get_user_id_from_jwt),
 ):
     """Create a new assignment (teacher only)."""
-    # TODO: Get tenant_id from user profile
+    from .assignments.service import create_assignment
     result = await create_assignment(
         teacher_id=user_id,
         tenant_id="default",
@@ -303,6 +289,7 @@ async def assignments_list(
     user_id: str = Depends(verify_and_get_user_id_from_jwt),
 ):
     """List teacher's assignments."""
+    from .assignments.service import list_teacher_assignments
     assignments = await list_teacher_assignments(user_id)
     return {"assignments": assignments}
 
@@ -313,6 +300,7 @@ async def assignments_publish(
     user_id: str = Depends(verify_and_get_user_id_from_jwt),
 ):
     """Publish a draft assignment."""
+    from .assignments.service import publish_assignment
     result = await publish_assignment(assignment_id, user_id)
     return result
 
@@ -323,6 +311,7 @@ async def assignments_close(
     user_id: str = Depends(verify_and_get_user_id_from_jwt),
 ):
     """Close an assignment."""
+    from .assignments.service import close_assignment
     result = await close_assignment(assignment_id, user_id)
     return result
 
@@ -333,7 +322,7 @@ async def teacher_dashboard(
     user_id: str = Depends(verify_and_get_user_id_from_jwt),
 ):
     """Teacher dashboard with class mastery and misconception summary."""
-    # TODO: Get tenant_id from user profile
+    from .assignments.service import get_class_mastery_summary, get_kc_misconception_summary
     mastery = await get_class_mastery_summary("default", subject)
     misconceptions = await get_kc_misconception_summary("default", subject)
     return {
@@ -346,8 +335,6 @@ async def teacher_dashboard(
 # T055/US5: Parent visibility + consent endpoints (US5)
 # ═══════════════════════════════════════════════════════
 
-from .pdpa.service import get_consent_state, require_consent_or_raise, ConsentScope
-
 
 @router.get("/education/parent/dashboard")
 async def parent_dashboard(
@@ -355,6 +342,7 @@ async def parent_dashboard(
     user_id: str = Depends(verify_and_get_user_id_from_jwt),
 ):
     """Parent/guardian dashboard showing linked child's progress."""
+    from .pdpa.service import require_consent_or_raise, ConsentScope
     # TODO: Verify guardian relationship exists
     if child_id:
         await require_consent_or_raise(child_id, ConsentScope.DATA_COLLECTION)

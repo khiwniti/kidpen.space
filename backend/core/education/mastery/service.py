@@ -9,7 +9,7 @@ Implements a simplified BKT (Bayesian Knowledge Tracing) update:
 
 from typing import Optional
 
-from backend.core.services.supabase import DBConnection
+from core.services.supabase import DBConnection
 
 db = DBConnection()
 
