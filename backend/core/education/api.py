@@ -253,3 +253,111 @@ async def lessons_complete(
     """Mark a lesson as complete and award XP."""
     result = await complete_lesson(lesson_id, user_id)
     return result
+
+
+# ═══════════════════════════════════════════════════════
+# T052: Teacher assignment/dashboard endpoints (US4)
+# ═══════════════════════════════════════════════════════
+
+from .assignments.service import (
+    create_assignment,
+    publish_assignment,
+    list_teacher_assignments,
+    close_assignment,
+    get_class_mastery_summary,
+    get_kc_misconception_summary,
+)
+
+
+class CreateAssignmentRequest(BaseModel):
+    subject_id: Optional[str] = None
+    title: str
+    instructions: Optional[str] = None
+    due_at: Optional[str] = None
+    homework_policy: Optional[str] = "strict_no_answer"
+    knowledge_component_ids: Optional[list[str]] = None
+
+
+@router.post("/education/assignments")
+async def assignments_create(
+    body: CreateAssignmentRequest,
+    user_id: str = Depends(verify_and_get_user_id_from_jwt),
+):
+    """Create a new assignment (teacher only)."""
+    # TODO: Get tenant_id from user profile
+    result = await create_assignment(
+        teacher_id=user_id,
+        tenant_id="default",
+        subject_id=body.subject_id,
+        title=body.title,
+        instructions=body.instructions,
+        due_at=body.due_at,
+        homework_policy=body.homework_policy or "strict_no_answer",
+        knowledge_component_ids=body.knowledge_component_ids,
+    )
+    return result
+
+
+@router.get("/education/assignments")
+async def assignments_list(
+    user_id: str = Depends(verify_and_get_user_id_from_jwt),
+):
+    """List teacher's assignments."""
+    assignments = await list_teacher_assignments(user_id)
+    return {"assignments": assignments}
+
+
+@router.post("/education/assignments/{assignment_id}/publish")
+async def assignments_publish(
+    assignment_id: str,
+    user_id: str = Depends(verify_and_get_user_id_from_jwt),
+):
+    """Publish a draft assignment."""
+    result = await publish_assignment(assignment_id, user_id)
+    return result
+
+
+@router.post("/education/assignments/{assignment_id}/close")
+async def assignments_close(
+    assignment_id: str,
+    user_id: str = Depends(verify_and_get_user_id_from_jwt),
+):
+    """Close an assignment."""
+    result = await close_assignment(assignment_id, user_id)
+    return result
+
+
+@router.get("/education/teacher/dashboard")
+async def teacher_dashboard(
+    subject: Optional[str] = None,
+    user_id: str = Depends(verify_and_get_user_id_from_jwt),
+):
+    """Teacher dashboard with class mastery and misconception summary."""
+    # TODO: Get tenant_id from user profile
+    mastery = await get_class_mastery_summary("default", subject)
+    misconceptions = await get_kc_misconception_summary("default", subject)
+    return {
+        "class_mastery": mastery,
+        "misconceptions": misconceptions,
+    }
+
+
+# ═══════════════════════════════════════════════════════
+# T055/US5: Parent visibility + consent endpoints (US5)
+# ═══════════════════════════════════════════════════════
+
+from .pdpa.service import get_consent_state, require_consent_or_raise, ConsentScope
+
+
+@router.get("/education/parent/dashboard")
+async def parent_dashboard(
+    child_id: Optional[str] = None,
+    user_id: str = Depends(verify_and_get_user_id_from_jwt),
+):
+    """Parent/guardian dashboard showing linked child's progress."""
+    # TODO: Verify guardian relationship exists
+    if child_id:
+        await require_consent_or_raise(child_id, ConsentScope.DATA_COLLECTION)
+        mastery = await get_student_mastery(child_id)
+        return {"child_id": child_id, "mastery": mastery}
+    return {"children": [], "message": "ยังไม่ได้เชื่อมต่อกับบัญชีนักเรียน"}
