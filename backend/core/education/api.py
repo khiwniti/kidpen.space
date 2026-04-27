@@ -177,3 +177,79 @@ async def mastery_get_mine(
     """Get the current student's mastery states."""
     mastery = await get_student_mastery(user_id, subject)
     return {"mastery": mastery}
+
+
+# ═══════════════════════════════════════════════════════
+# T040: Lesson endpoints (US2)
+# ═══════════════════════════════════════════════════════
+
+from .lessons.service import (
+    list_published_lessons,
+    get_lesson,
+    submit_checkpoint,
+    get_lesson_progress,
+    complete_lesson,
+)
+
+
+class CheckpointSubmitRequest(BaseModel):
+    checkpoint_index: int
+    answer: str
+
+
+@router.get("/education/lessons")
+async def lessons_list(
+    subject: Optional[str] = None,
+    user_id: str = Depends(verify_and_get_user_id_from_jwt),
+):
+    """List published lessons, optionally filtered by subject key."""
+    lessons = await list_published_lessons(subject_id=subject)
+    return {"lessons": lessons}
+
+
+@router.get("/education/lessons/{lesson_id}")
+async def lessons_get(
+    lesson_id: str,
+    user_id: str = Depends(verify_and_get_user_id_from_jwt),
+):
+    """Get a full lesson with content blocks, checkpoints, and practice items."""
+    lesson = await get_lesson(lesson_id)
+    if lesson is None:
+        raise HTTPException(status_code=404, detail="Lesson not found")
+    return lesson
+
+
+@router.post("/education/lessons/{lesson_id}/checkpoint")
+async def lessons_submit_checkpoint(
+    lesson_id: str,
+    body: CheckpointSubmitRequest,
+    user_id: str = Depends(verify_and_get_user_id_from_jwt),
+):
+    """Submit an answer for a checkpoint and get feedback."""
+    result = await submit_checkpoint(
+        lesson_id=lesson_id,
+        student_id=user_id,
+        checkpoint_index=body.checkpoint_index,
+        answer=body.answer,
+    )
+    return result
+
+
+@router.get("/education/lessons/{lesson_id}/progress")
+async def lessons_get_progress(
+    lesson_id: str,
+    user_id: str = Depends(verify_and_get_user_id_from_jwt),
+):
+    """Get current progress through a lesson."""
+    progress = await get_lesson_progress(lesson_id, user_id)
+    return progress
+
+
+@router.post("/education/lessons/{lesson_id}/complete")
+async def lessons_complete(
+    lesson_id: str,
+    user_id: str = Depends(verify_and_get_user_id_from_jwt),
+):
+    """Mark a lesson as complete and award XP."""
+    result = await complete_lesson(lesson_id, user_id)
+    return result
