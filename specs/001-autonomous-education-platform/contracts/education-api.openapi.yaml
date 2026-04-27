@@ -1,0 +1,426 @@
+openapi: 3.0.3
+info:
+  title: Kidpen Education Platform API
+  version: 0.1.0
+  description: Initial contract for the autonomous education platform vertical slices.
+servers:
+  - url: /api
+security:
+  - bearerAuth: []
+paths:
+  /education/subjects:
+    get:
+      summary: List available subjects and learning paths
+      operationId: listEducationSubjects
+      responses:
+        '200':
+          description: Subjects returned
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  subjects:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Subject'
+  /education/students/me:
+    get:
+      summary: Get current learner profile
+      operationId: getCurrentLearnerProfile
+      responses:
+        '200':
+          description: Learner profile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LearnerProfile'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+  /education/dashboard/me:
+    get:
+      summary: Get student dashboard data
+      operationId: getStudentDashboard
+      responses:
+        '200':
+          description: Dashboard data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StudentDashboard'
+  /education/tutor/messages:
+    post:
+      summary: Send a tutor message and start or continue a production agent run
+      operationId: sendTutorMessage
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TutorMessageRequest'
+      responses:
+        '202':
+          description: Tutor run accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TutorRunAccepted'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+  /education/tutor/threads/{threadId}:
+    get:
+      summary: Get tutor thread metadata and permitted messages
+      operationId: getTutorThread
+      parameters:
+        - name: threadId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Thread returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TutorThread'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /education/mastery/me:
+    get:
+      summary: Get current learner mastery by subject and knowledge component
+      operationId: getCurrentLearnerMastery
+      responses:
+        '200':
+          description: Mastery returned
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  mastery:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/MasteryState'
+  /education/interactions:
+    post:
+      summary: Record a learning interaction
+      operationId: recordLearningInteraction
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LearningInteractionInput'
+      responses:
+        '201':
+          description: Interaction recorded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LearningInteraction'
+  /education/teacher/dashboard:
+    get:
+      summary: Get teacher class progress dashboard
+      operationId: getTeacherDashboard
+      responses:
+        '200':
+          description: Teacher dashboard
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TeacherDashboard'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+  /education/parent/dashboard:
+    get:
+      summary: Get parent safe child progress dashboard
+      operationId: getParentDashboard
+      parameters:
+        - name: learnerId
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Parent dashboard
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ParentDashboard'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+  /education/consent/me:
+    get:
+      summary: Get current user's consent and visibility state
+      operationId: getConsentState
+      responses:
+        '200':
+          description: Consent state
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  records:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ConsentRecord'
+  /education/consent:
+    post:
+      summary: Create or update consent record
+      operationId: updateConsent
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConsentUpdateRequest'
+      responses:
+        '201':
+          description: Consent updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConsentRecord'
+  /education/labs/sessions:
+    post:
+      summary: Start a controlled computer-use learning lab session
+      operationId: startLabSession
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StartLabSessionRequest'
+      responses:
+        '202':
+          description: Lab session accepted or blocked by policy
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LabSessionResponse'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+  responses:
+    BadRequest:
+      description: Invalid request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Forbidden:
+      description: Not authorized for this resource or action
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  schemas:
+    Error:
+      type: object
+      required: [error]
+      properties:
+        error:
+          type: string
+        reasonCode:
+          type: string
+    Subject:
+      type: object
+      required: [id, key, nameTh, nameEn, icon, color]
+      properties:
+        id: { type: string }
+        key: { type: string }
+        nameTh: { type: string }
+        nameEn: { type: string }
+        icon: { type: string }
+        color: { type: string }
+        description: { type: string }
+        learningPaths:
+          type: array
+          items:
+            type: object
+            properties:
+              id: { type: string }
+              titleTh: { type: string }
+              topicCount: { type: integer }
+    LearnerProfile:
+      type: object
+      required: [id, displayName, gradeLevel, preferredLanguage, consentState]
+      properties:
+        id: { type: string }
+        displayName: { type: string }
+        gradeLevel: { type: integer }
+        preferredLanguage: { type: string, enum: [th, en] }
+        consentState: { type: string, enum: [active, missing, withdrawn, expired] }
+    StudentDashboard:
+      type: object
+      required: [learner, subjects, masterySummary, recommendedActions]
+      properties:
+        learner:
+          $ref: '#/components/schemas/LearnerProfile'
+        subjects:
+          type: array
+          items:
+            $ref: '#/components/schemas/Subject'
+        masterySummary:
+          type: object
+          additionalProperties: true
+        recommendedActions:
+          type: array
+          items:
+            type: string
+        recentThreads:
+          type: array
+          items:
+            $ref: '#/components/schemas/TutorThreadSummary'
+    TutorMessageRequest:
+      type: object
+      required: [message]
+      properties:
+        threadId: { type: string }
+        subjectKey: { type: string }
+        knowledgeComponentId: { type: string }
+        assignmentId: { type: string }
+        message: { type: string }
+        clientContext:
+          type: object
+          additionalProperties: true
+    TutorRunAccepted:
+      type: object
+      required: [threadId, runId, streamUrl, policyMode]
+      properties:
+        threadId: { type: string }
+        runId: { type: string }
+        streamUrl: { type: string }
+        policyMode: { type: string, enum: [socratic, homework_guidance, safety, fallback] }
+    TutorThreadSummary:
+      type: object
+      required: [id, title, updatedAt]
+      properties:
+        id: { type: string }
+        title: { type: string }
+        subjectKey: { type: string }
+        updatedAt: { type: string, format: date-time }
+    TutorThread:
+      allOf:
+        - $ref: '#/components/schemas/TutorThreadSummary'
+        - type: object
+          properties:
+            messages:
+              type: array
+              items:
+                type: object
+                properties:
+                  id: { type: string }
+                  role: { type: string }
+                  content: { type: string }
+                  createdAt: { type: string, format: date-time }
+    MasteryState:
+      type: object
+      required: [knowledgeComponentId, pMastery, opportunityCount, correctCount]
+      properties:
+        knowledgeComponentId: { type: string }
+        subjectKey: { type: string }
+        nameTh: { type: string }
+        pMastery: { type: number, minimum: 0, maximum: 1 }
+        opportunityCount: { type: integer }
+        correctCount: { type: integer }
+        lastPracticedAt: { type: string, format: date-time }
+    LearningInteractionInput:
+      type: object
+      required: [interactionType]
+      properties:
+        threadId: { type: string }
+        lessonId: { type: string }
+        assignmentId: { type: string }
+        knowledgeComponentId: { type: string }
+        subjectKey: { type: string }
+        interactionType: { type: string }
+        isCorrect: { type: boolean }
+        scaffoldingLevel: { type: integer }
+        evidenceSummary: { type: string }
+    LearningInteraction:
+      allOf:
+        - $ref: '#/components/schemas/LearningInteractionInput'
+        - type: object
+          required: [id, createdAt]
+          properties:
+            id: { type: string }
+            createdAt: { type: string, format: date-time }
+    TeacherDashboard:
+      type: object
+      properties:
+        classSummary:
+          type: object
+          additionalProperties: true
+        masteryGaps:
+          type: array
+          items:
+            type: object
+            additionalProperties: true
+        interventionSuggestions:
+          type: array
+          items:
+            type: string
+    ParentDashboard:
+      type: object
+      properties:
+        learnerSummary:
+          type: object
+          additionalProperties: true
+        strengths:
+          type: array
+          items: { type: string }
+        supportSuggestions:
+          type: array
+          items: { type: string }
+        consentState:
+          type: string
+    ConsentRecord:
+      type: object
+      required: [id, scope, status, policyVersion, effectiveAt]
+      properties:
+        id: { type: string }
+        learnerId: { type: string }
+        scope: { type: string }
+        status: { type: string, enum: [granted, withdrawn, expired] }
+        policyVersion: { type: string }
+        effectiveAt: { type: string, format: date-time }
+        expiresAt: { type: string, format: date-time }
+    ConsentUpdateRequest:
+      type: object
+      required: [learnerId, scope, status]
+      properties:
+        learnerId: { type: string }
+        scope: { type: string }
+        status: { type: string, enum: [granted, withdrawn] }
+    StartLabSessionRequest:
+      type: object
+      required: [assignmentId, requestedMode]
+      properties:
+        assignmentId: { type: string }
+        requestedMode: { type: string, enum: [coding, simulation, research, document] }
+    LabSessionResponse:
+      type: object
+      required: [status]
+      properties:
+        status: { type: string, enum: [accepted, blocked] }
+        sessionId: { type: string }
+        reasonCode: { type: string }
+        auditEventId: { type: string }

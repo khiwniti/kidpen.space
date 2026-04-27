@@ -1,0 +1,10 @@
+{
+  "workflow": "speckit",
+  "specName": "001-autonomous-education-platform",
+  "branch": "001-autonomous-education-platform",
+  "selectedAt": "2026-04-25T14:55:00.002Z",
+  "currentStep": "specify",
+  "status": "draft",
+  "stepHistory": {},
+  "transitions": []
+}
